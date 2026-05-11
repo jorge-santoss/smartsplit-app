@@ -13,4 +13,4 @@ const errorHandler = (err, req, res, next) => {
   res.status(statusCode).json({ error: message });
 };
 
-module.ecports = { notFound, errorHandler };
+module.exports = { notFound, errorHandler };
