@@ -1,5 +1,5 @@
 const app = require('./app');
-const pool = require('/config/db');
+const pool = require('./config/db');
 const { port } = require('./config/env');
 
 const startServer = async () => {
