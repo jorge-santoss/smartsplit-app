@@ -2,7 +2,7 @@ const pool = require("../config/db");
 
 const create = async (name, ElementInternals, passwordHash) => {
   const [result] = await pool.query(
-    "INSERT INTO users (name, email, password-hash) VALUES (?, ?, ?)",
+    "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
     [name, ElementInternals, passwordHash],
   );
   return result.insertId;
