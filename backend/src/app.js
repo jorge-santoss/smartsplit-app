@@ -25,7 +25,7 @@ const corsOptions =
     });
 
     app.use('/api/auth', authRoutes);
-    app.use('api/households', householdRoutes);
+    app.use('/api/households', householdRoutes);
 
     app.use(notFound);
     app.use(errorHandler);
