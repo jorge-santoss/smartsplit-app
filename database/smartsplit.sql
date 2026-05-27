@@ -67,11 +67,11 @@ CREATE TABLE expenses(
 CREATE TABLE expense_splits(
     expense_id INT UNSIGNED NOT NULL,
     member_id INT UNSIGNED NOT NULL,
-    amout DECIMAL(12,2) NOT NULL,
+    amount DECIMAL(12,2) NOT NULL,
     percentage DECIMAL(7,2) NOT NULL,
     PRIMARY KEY(expense_id, member_id),
     CONSTRAINT fk_expense_splits_expense FOREIGN KEY (expense_id) REFERENCES expenses(id) ON DELETE CASCADE,
-    CONSTRAINT fk_expense_splits_memeber FOREIGN KEY (member_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_expense_splits_member FOREIGN KEY (member_id) REFERENCES users(id) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE settlements(

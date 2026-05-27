@@ -5,6 +5,7 @@ const authMiddleware = require('./middleware/authMiddleware');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const authRoutes = require('./routes/authRoutes');
 const householdRoutes = require('./routes/householdRoutes')
+const expenseRoutes = require('./routes/expenseRoutes')
 
 const app = express();
 
@@ -26,6 +27,7 @@ const corsOptions =
 
     app.use('/api/auth', authRoutes);
     app.use('/api/households', householdRoutes);
+    app.use('/api/households', expenseRoutes)
 
     app.use(notFound);
     app.use(errorHandler);
