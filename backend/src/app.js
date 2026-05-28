@@ -4,32 +4,34 @@ const { corsOrigin } = require('./config/env');
 const authMiddleware = require('./middleware/authMiddleware');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const authRoutes = require('./routes/authRoutes');
-const householdRoutes = require('./routes/householdRoutes')
-const expenseRoutes = require('./routes/expenseRoutes')
+const householdRoutes = require('./routes/householdRoutes');
+const expenseRoutes = require('./routes/expenseRoutes');
+const settlementRoutes = require('./routes/settlementRoutes');
 
 const app = express();
 
 const corsOptions =
   corsOrigin === '*'
     ? {}
-    : { 
-        origin: corsOrigin.split(',').map((origin) => origin.trim()) 
-    };
+    : {
+        origin: corsOrigin.split(',').map((origin) => origin.trim()),
+      };
 
-    app.use(cors(corsOptions));
-    app.use(express.json());
+app.use(cors(corsOptions));
+app.use(express.json());
 
-    app.get('/health', (_req,  res) => {
-        res.status(200).json({
-            status: 'ok',
-        });
-    });
+app.get('/health', (_req, res) => {
+  res.status(200).json({
+    status: 'ok',
+  });
+});
 
-    app.use('/api/auth', authRoutes);
-    app.use('/api/households', householdRoutes);
-    app.use('/api/households', expenseRoutes)
+app.use('/api/auth', authRoutes);
+app.use('/api/households', householdRoutes);
+app.use('/api/households', expenseRoutes);
+app.use('/api/households', settlementRoutes);
 
-    app.use(notFound);
-    app.use(errorHandler);
+app.use(notFound);
+app.use(errorHandler);
 
-    module.exports = app;
+module.exports = app;
