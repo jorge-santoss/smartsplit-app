@@ -3,6 +3,7 @@ import { useAuth } from './hooks/useAuth';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import HouseholdPage from './pages/HouseholdPage';
 
 function ProtectedRoute({ children }) {
   const { token } = useAuth();
@@ -45,6 +46,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/households/:id"
+          element={
+            <ProtectedRoute>
+              <HouseholdPage />
             </ProtectedRoute>
           }
         />
