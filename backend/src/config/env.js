@@ -14,7 +14,7 @@ const env = {
 
     jwt: {
         secret: process.env.JWT_SECRET,
-        expireIn: process.env.JWT_EXPIRE_IN || '7d',
+        expireIn: process.env.JWT_EXPIRES_IN || '7d',
     },
 
     corsOrigin: process.env.CORS_ORIGIN || '*',

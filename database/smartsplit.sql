@@ -30,7 +30,7 @@ CREATE TABLE household_members(
     joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (household_id, user_id),
     CONSTRAINT fk_household_members_household FOREIGN KEY (household_id) REFERENCES households(id) ON DELETE CASCADE,
-    CONSTRAINT fk_household_members_user FOREIGN KEY (household_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_household_members_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
