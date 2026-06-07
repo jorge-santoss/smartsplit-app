@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '../hooks/useAuth';
+
 import AppLayout from '../layouts/AppLayout';
 import * as householdApi from '../api/householdApi';
 
 export default function DashboardPage() {
-  const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [newName, setNewName] = useState('');
@@ -30,18 +29,6 @@ export default function DashboardPage() {
     e.preventDefault();
     if (newName.trim()) {
       createMutation.mutate({ name: newName, description: newDesc });
-    }
-  };
-
-  const handleSubmitAndNavigate = async (e) => {
-    e.preventDefault();
-    if (newName.trim()) {
-      try {
-        const res = await householdApi.create(newName, newDesc);
-        navigate(`/households/${res.data.householdId}`);
-      } catch (err) {
-        console.error(err);
-      }
     }
   };
 

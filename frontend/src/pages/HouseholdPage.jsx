@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useAuth } from '../hooks/useAuth';
 import AppLayout from '../layouts/AppLayout';
 import * as householdApi from '../api/householdApi';
 import * as expenseApi from '../api/expenseApi';
