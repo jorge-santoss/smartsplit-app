@@ -5,7 +5,8 @@ import AppLayout from '../layouts/AppLayout';
 import * as householdApi from '../api/householdApi';
 import * as expenseApi from '../api/expenseApi';
 import * as settlementApi from '../api/settlementApi';
-import { SkeletonCard } from '../components/Skeleton';
+import * as balanceApi from '../api/balanceApi';
+import Skeleton, { SkeletonCard } from '../components/Skeleton';
 import { useToast } from '../components/Toast';
 
 export default function HouseholdPage() {
@@ -42,6 +43,11 @@ export default function HouseholdPage() {
     queryFn: () => settlementApi.listByHousehold(householdId).then((r) => r.data),
   });
 
+  const { data: balances, isLoading: balLoading } = useQuery({
+    queryKey: ['balances', householdId],
+    queryFn: () => balanceApi.getBalances(householdId).then((r) => r.data),
+  });
+
   const addMemberMutation = useMutation({
     mutationFn: (email) => householdApi.addMember(householdId, email),
     onSuccess: () => {
@@ -59,6 +65,7 @@ export default function HouseholdPage() {
     onSuccess: () => {
       toast('Expense added!', 'success');
       queryClient.invalidateQueries({ queryKey: ['expenses', householdId] });
+      queryClient.invalidateQueries({ queryKey: ['balances', householdId] });
       setExpTitle('');
       setExpAmount('');
       setExpPayerId('');
@@ -76,6 +83,7 @@ export default function HouseholdPage() {
     onSuccess: () => {
       toast('Expense deleted', 'success');
       queryClient.invalidateQueries({ queryKey: ['expenses', householdId] });
+      queryClient.invalidateQueries({ queryKey: ['balances', householdId] });
     },
     onError: (err) => {
       toast(err.response?.data?.error || 'Failed to delete expense', 'error');
@@ -87,6 +95,7 @@ export default function HouseholdPage() {
     onSuccess: () => {
       toast('Settlement recorded!', 'success');
       queryClient.invalidateQueries({ queryKey: ['settlements', householdId] });
+      queryClient.invalidateQueries({ queryKey: ['balances', householdId] });
       setSettleFrom('');
       setSettleTo('');
       setSettleAmount('');
@@ -420,6 +429,35 @@ export default function HouseholdPage() {
               </div>
             )}
           </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-sm border h-fit">
+          <h2 className="text-lg font-semibold mb-4">Balances</h2>
+          {balLoading ? (
+            <div className="space-y-2">
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
+            </div>
+          ) : balances ? (
+            <div className="space-y-2">
+              {balances.map((b) => (
+                <div key={b.userId} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <span className="font-medium text-sm">{b.name}</span>
+                  <span
+                    className={`text-sm font-bold ${
+                      b.balance > 0
+                        ? 'text-green-600'
+                        : b.balance < 0
+                          ? 'text-red-600'
+                          : 'text-gray-400'
+                    }`}
+                  >
+                    {b.balance > 0 ? '+' : ''}${Math.abs(b.balance).toFixed(2)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : null}
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-sm border h-fit">
