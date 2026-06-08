@@ -15,7 +15,7 @@ const register = async (name, email, password) => {
 
     const userId = await userRepository.create(name, email, passwordHash);
 
-    const token = jwt.sign({ id: userId, email }, env.jwt.secret, {
+    const token = jwt.sign({ id: userId, email, name }, env.jwt.secret, {
         expiresIn: env.jwt.expireIn,
     });
 
@@ -34,7 +34,7 @@ const login = async (email, password) => {
     }
 
     const token = jwt.sign(
-        {id: user.id, email: user.email},
+        { id: user.id, email: user.email, name: user.name },
         env.jwt.secret,
         { expiresIn: env.jwt.expireIn }
     );

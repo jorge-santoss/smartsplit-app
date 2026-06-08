@@ -1,6 +1,6 @@
 const householdRepository = require('../repositories/householdRepository');
 const userRepository = require('../repositories/userRepository');
-const { NotFoundError, ForbiddenError } = require('../utils/errors');
+const { NotFoundError, ForbiddenError, ValidationError } = require('../utils/errors');
 
 const create = async (name, description, ownerId) => {
   const householdId = await householdRepository.create(name, description, ownerId);
@@ -44,7 +44,7 @@ const addMember = async (householdId, email, role, currentUserId) => {
 
   const alreadyMember = await householdRepository.isMember(householdId, user.id);
   if (alreadyMember) {
-    throw new NotFoundError('User is already a member');
+    throw new ValidationError('User is already a member');
   }
 
   await householdRepository.addMember(householdId, user.id, role);

@@ -30,7 +30,7 @@ CREATE TABLE household_members(
     joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (household_id, user_id),
     CONSTRAINT fk_household_members_household FOREIGN KEY (household_id) REFERENCES households(id) ON DELETE CASCADE,
-    CONSTRAINT fk_household_members_user FOREIGN KEY (household_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_household_members_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -90,5 +90,5 @@ CREATE TABLE settlements(
     CONsTRAINT fk_settlements_creator FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE RESTRICT 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE INDEX idx_espenses_household_date ON expenses (household_id, expense_date);
+CREATE INDEX idx_expenses_household_date ON expenses (household_id, expense_date);
 CREATE INDEX idx_settlements_household_date ON settlements (household_id, settlement_date);
