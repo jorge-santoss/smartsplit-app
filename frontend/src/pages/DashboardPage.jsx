@@ -5,6 +5,7 @@ import AppLayout from '../layouts/AppLayout';
 import { SkeletonCard } from '../components/Skeleton';
 import { useToast } from '../components/Toast';
 import * as householdApi from '../api/householdApi';
+import * as balanceApi from '../api/balanceApi';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -16,6 +17,11 @@ export default function DashboardPage() {
   const { data: households, isLoading } = useQuery({
     queryKey: ['households'],
     queryFn: () => householdApi.list().then((r) => r.data),
+  });
+
+  const { data: summary } = useQuery({
+    queryKey: ['balanceSummary'],
+    queryFn: () => balanceApi.getSummary().then((r) => r.data),
   });
 
   const deleteMutation = useMutation({
@@ -52,6 +58,21 @@ export default function DashboardPage() {
   return (
     <AppLayout>
       <div className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <p className="text-sm text-gray-500 mb-1">Owed to you</p>
+            <p className={`text-2xl font-bold ${summary?.totalOwedToMe > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+              {summary ? `$${summary.totalOwedToMe.toFixed(2)}` : '—'}
+            </p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <p className="text-sm text-gray-500 mb-1">You owe</p>
+            <p className={`text-2xl font-bold ${summary?.totalIOwe > 0 ? 'text-red-600' : 'text-gray-400'}`}>
+              {summary ? `$${summary.totalIOwe.toFixed(2)}` : '—'}
+            </p>
+          </div>
+        </div>
+
         <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h2 className="text-lg font-semibold mb-4">Create Household</h2>
           <form onSubmit={handleCreate} className="space-y-3">
