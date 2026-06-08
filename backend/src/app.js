@@ -8,6 +8,7 @@ const householdRoutes = require('./routes/householdRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const settlementRoutes = require('./routes/settlementRoutes');
 const balanceRoutes = require('./routes/balanceRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use('/api/households', householdRoutes);
 app.use('/api/households', expenseRoutes);
 app.use('/api/households', settlementRoutes);
 app.use('/api/households', balanceRoutes);
+app.use('/api/households', categoryRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
