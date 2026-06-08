@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { useAuth } from './hooks/useAuth';
+import ErrorBoundary from './components/ErrorBoundary';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import HouseholdPage from './pages/HouseholdPage';
+import ExpenseDetailPage from './pages/ExpenseDetailPage';
 
 function ProtectedRoute({ children }) {
   const { token } = useAuth();
@@ -24,6 +26,7 @@ function PublicRoute({ children }) {
 export default function App() {
   return (
     <BrowserRouter>
+      <ErrorBoundary>
       <Routes>
         <Route
           path="/login"
@@ -57,6 +60,14 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/households/:householdId/expenses/:expenseId"
+          element={
+            <ProtectedRoute>
+              <ExpenseDetailPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route
           path="*"
@@ -69,6 +80,7 @@ export default function App() {
           }
         />
       </Routes>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }

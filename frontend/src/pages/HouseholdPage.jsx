@@ -5,11 +5,14 @@ import AppLayout from '../layouts/AppLayout';
 import * as householdApi from '../api/householdApi';
 import * as expenseApi from '../api/expenseApi';
 import * as settlementApi from '../api/settlementApi';
+import { SkeletonCard } from '../components/Skeleton';
+import { useToast } from '../components/Toast';
 
 export default function HouseholdPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const toast = useToast();
   const householdId = parseInt(id, 10);
 
   const [addEmail, setAddEmail] = useState('');
@@ -17,6 +20,8 @@ export default function HouseholdPage() {
   const [expAmount, setExpAmount] = useState('');
   const [expPayerId, setExpPayerId] = useState('');
   const [expDate, setExpDate] = useState('');
+  const [splitType, setSplitType] = useState('equal');
+  const [splits, setSplits] = useState([]);
   const [settleFrom, setSettleFrom] = useState('');
   const [settleTo, setSettleTo] = useState('');
   const [settleAmount, setSettleAmount] = useState('');
@@ -40,37 +45,65 @@ export default function HouseholdPage() {
   const addMemberMutation = useMutation({
     mutationFn: (email) => householdApi.addMember(householdId, email),
     onSuccess: () => {
+      toast('Member added!', 'success');
       queryClient.invalidateQueries({ queryKey: ['household', householdId] });
       setAddEmail('');
+    },
+    onError: (err) => {
+      toast(err.response?.data?.error || 'Failed to add member', 'error');
     },
   });
 
   const createExpenseMutation = useMutation({
     mutationFn: (data) => expenseApi.create(householdId, data),
     onSuccess: () => {
+      toast('Expense added!', 'success');
       queryClient.invalidateQueries({ queryKey: ['expenses', householdId] });
       setExpTitle('');
       setExpAmount('');
       setExpPayerId('');
       setExpDate('');
+      setSplitType('equal');
+      setSplits([]);
+    },
+    onError: (err) => {
+      toast(err.response?.data?.error || 'Failed to add expense', 'error');
+    },
+  });
+
+  const deleteExpenseMutation = useMutation({
+    mutationFn: (expenseId) => expenseApi.remove(expenseId),
+    onSuccess: () => {
+      toast('Expense deleted', 'success');
+      queryClient.invalidateQueries({ queryKey: ['expenses', householdId] });
+    },
+    onError: (err) => {
+      toast(err.response?.data?.error || 'Failed to delete expense', 'error');
     },
   });
 
   const createSettlementMutation = useMutation({
     mutationFn: (data) => settlementApi.create(householdId, data),
     onSuccess: () => {
+      toast('Settlement recorded!', 'success');
       queryClient.invalidateQueries({ queryKey: ['settlements', householdId] });
       setSettleFrom('');
       setSettleTo('');
       setSettleAmount('');
       setSettleDate('');
     },
+    onError: (err) => {
+      toast(err.response?.data?.error || 'Failed to record settlement', 'error');
+    },
   });
 
   if (isLoading) {
     return (
       <AppLayout>
-        <p className="text-gray-500">Loading...</p>
+        <div className="space-y-4">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
       </AppLayout>
     );
   }
@@ -94,13 +127,25 @@ export default function HouseholdPage() {
     e.preventDefault();
     const amount = parseFloat(expAmount);
     if (expTitle.trim() && amount > 0 && expPayerId && expDate) {
-      createExpenseMutation.mutate({
+      const payload = {
         title: expTitle,
-        amount: amount,
-        splitType: 'equal',
+        amount,
+        splitType,
         payerId: parseInt(expPayerId, 10),
         expenseDate: expDate,
-      });
+      };
+      if (splitType === 'exact') {
+        payload.splits = splits.map((s) => ({
+          memberId: s.memberId,
+          amount: parseFloat(s.amount) || 0,
+        }));
+      } else if (splitType === 'percentage') {
+        payload.splits = splits.map((s) => ({
+          memberId: s.memberId,
+          percentage: parseFloat(s.percentage) || 0,
+        }));
+      }
+      createExpenseMutation.mutate(payload);
     }
   };
 
@@ -176,6 +221,67 @@ export default function HouseholdPage() {
                   </option>
                 ))}
               </select>
+
+              <div>
+                <label className="text-sm text-gray-600 block mb-1">Split type</label>
+                <div className="flex gap-4">
+                  {['equal', 'exact', 'percentage'].map((type) => (
+                    <label key={type} className="flex items-center gap-1 text-sm">
+                      <input
+                        type="radio"
+                        name="splitType"
+                        value={type}
+                        checked={splitType === type}
+                        onChange={() => {
+                          setSplitType(type);
+                          if (type !== 'equal' && household.members) {
+                            const perMember = type === 'percentage'
+                              ? 100 / household.members.length
+                              : 0;
+                            setSplits(
+                              household.members.map((m) => ({
+                                memberId: m.id,
+                                memberName: m.name,
+                                amount: type === 'exact' ? '' : '0',
+                                percentage: type === 'percentage' ? perMember.toFixed(1) : '0',
+                              })),
+                            );
+                          }
+                        }}
+                      />
+                      {type.charAt(0).toUpperCase() + type.slice(1)}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {splitType !== 'equal' && splits.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-600">
+                    {splitType === 'exact' ? 'Enter amount for each member' : 'Enter percentage for each member'}
+                  </p>
+                  {splits.map((split, idx) => (
+                    <div key={split.memberId} className="flex items-center gap-2">
+                      <span className="text-sm w-32 truncate">{split.memberName}</span>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder={splitType === 'exact' ? 'Amount' : '%'}
+                        value={split[splitType] || ''}
+                        onChange={(e) => {
+                          const updated = [...splits];
+                          updated[idx] = { ...updated[idx], [splitType]: e.target.value };
+                          setSplits(updated);
+                        }}
+                        className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <button
                 type="submit"
                 disabled={createExpenseMutation.isPending}
@@ -186,13 +292,17 @@ export default function HouseholdPage() {
             </form>
 
             {expLoading ? (
-              <p className="text-gray-500">Loading...</p>
+              <div className="space-y-3"><SkeletonCard /><SkeletonCard /></div>
             ) : expenses?.length === 0 ? (
               <p className="text-gray-500">No expenses yet.</p>
             ) : (
               <div className="space-y-3">
                 {expenses?.map((exp) => (
-                  <div key={exp.id} className="p-4 border rounded-lg">
+                  <div
+                    key={exp.id}
+                    onClick={() => navigate(`/households/${householdId}/expenses/${exp.id}`)}
+                    className="p-4 border rounded-lg cursor-pointer hover:bg-gray-50"
+                  >
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-semibold">{exp.title}</h3>
@@ -201,9 +311,24 @@ export default function HouseholdPage() {
                           {new Date(exp.expense_date).toLocaleDateString()}
                         </p>
                       </div>
-                      <span className="text-lg font-bold">
-                        ${parseFloat(exp.amount).toFixed(2)}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold">
+                          ${parseFloat(exp.amount).toFixed(2)}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (window.confirm('Delete this expense?')) {
+                              deleteExpenseMutation.mutate(exp.id);
+                            }
+                          }}
+                          disabled={deleteExpenseMutation.isPending}
+                          className="text-red-500 hover:text-red-700 text-sm"
+                        >
+                          &times;
+                        </button>
+                      </div>
                     </div>
                     <p className="text-xs text-gray-400 mt-1">
                       Split: {exp.split_type}
@@ -270,7 +395,7 @@ export default function HouseholdPage() {
             </form>
 
             {settLoading ? (
-              <p className="text-gray-500">Loading...</p>
+              <div className="space-y-3"><SkeletonCard /><SkeletonCard /></div>
             ) : settlements?.length === 0 ? (
               <p className="text-gray-500">No settlements yet.</p>
             ) : (

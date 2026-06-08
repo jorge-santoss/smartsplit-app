@@ -10,4 +10,8 @@ export const listByHousehold = (householdId) => {
 
 export const getById = (expenseId) => {
   return client.get(`/api/households/expenses/${expenseId}`);
-};  
+};
+
+export const remove = (expenseId) => {
+  return client.delete(`/api/households/expenses/${expenseId}`);
+};

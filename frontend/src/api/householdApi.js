@@ -15,3 +15,7 @@ export const getById = (id) => {
 export const addMember = (householdId, email, role) => {
   return client.post(`/api/households/${householdId}/members`, { email, role });
 };
+
+export const remove = (householdId) => {
+  return client.delete(`/api/households/${householdId}`);
+};
