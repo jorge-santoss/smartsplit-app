@@ -9,5 +9,6 @@ router.post('/', householdController.create);
 router.get('/', householdController.list);
 router.get('/:id', householdController.getById);
 router.post('/:id/members', householdController.addMember);
+router.delete('/:id', householdController.remove);
 
 module.exports = router;

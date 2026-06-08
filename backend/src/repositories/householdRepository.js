@@ -52,6 +52,10 @@ const isMember = async (householdId, userId) => {
   return rows.length > 0;
 };
 
+const deleteById = async (id) => {
+  await pool.query("DELETE FROM households WHERE id = ?", [id]);
+};
+
 module.exports = {
   create,
   addMember,
@@ -59,4 +63,5 @@ module.exports = {
   findAllByUserId,
   findMembersByHouseholdId,
   isMember,
+  deleteById,
 };

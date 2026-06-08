@@ -71,10 +71,15 @@ const findSplitsByExpenseId = async (expenseId) => {
   return rows;
 };
 
+const deleteById = async (id) => {
+  await pool.query("DELETE FROM expenses WHERE id = ?", [id]);
+};
+
 module.exports = {
   create,
   createSplit,
   findById,
   findAllByHouseholdId,
   findSplitsByExpenseId,
+  deleteById,
 };

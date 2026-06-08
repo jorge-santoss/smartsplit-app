@@ -114,4 +114,21 @@ const getById = async (expenseId, userId) => {
   return { ...expense, splits };
 };
 
-module.exports = { create, listByHousehold, getById };
+const remove = async (expenseId, userId) => {
+  const expense = await expenseRepository.findById(expenseId);
+  if (!expense) {
+    throw new NotFoundError("Expense not found");
+  }
+
+  const member = await householdRepository.isMember(
+    expense.household_id,
+    userId,
+  );
+  if (!member) {
+    throw new ForbiddenError("You are not a member of this household");
+  }
+
+  await expenseRepository.deleteById(expenseId);
+};
+
+module.exports = { create, listByHousehold, getById, remove };

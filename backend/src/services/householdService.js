@@ -51,4 +51,17 @@ const addMember = async (householdId, email, role, currentUserId) => {
   return user;
 };
 
-module.exports = { create, listByUser, getById, addMember };
+const remove = async (householdId, userId) => {
+  const household = await householdRepository.findById(householdId);
+  if (!household) {
+    throw new NotFoundError('Household not found');
+  }
+
+  if (household.owner_id !== userId) {
+    throw new ForbiddenError('Only the owner can delete the household');
+  }
+
+  await householdRepository.deleteById(householdId);
+};
+
+module.exports = { create, listByUser, getById, addMember, remove };
