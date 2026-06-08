@@ -10,4 +10,13 @@ const getBalances = async (req, res, next) => {
   }
 };
 
-module.exports = { getBalances };
+const getSummary = async (req, res, next) => {
+  try {
+    const summary = await balanceService.getSummary(req.user.id);
+    res.status(200).json(summary);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getBalances, getSummary };
