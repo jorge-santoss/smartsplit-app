@@ -8,7 +8,14 @@ import HouseholdPage from './pages/HouseholdPage';
 import ExpenseDetailPage from './pages/ExpenseDetailPage';
 
 function ProtectedRoute({ children }) {
-  const { token } = useAuth();
+  const { token, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+      </div>
+    );
+  }
   if (!token) {
     return <Navigate to="/login" replace />;
   }
@@ -72,11 +79,9 @@ export default function App() {
         <Route
           path="*"
           element={
-            <ProtectedRoute>
-              <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <p className="text-xl text-gray-500">Page not found</p>
-              </div>
-            </ProtectedRoute>
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+              <p className="text-xl text-gray-500">Page not found</p>
+            </div>
           }
         />
       </Routes>
