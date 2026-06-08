@@ -6,6 +6,7 @@ import * as householdApi from '../api/householdApi';
 import * as expenseApi from '../api/expenseApi';
 import * as settlementApi from '../api/settlementApi';
 import * as balanceApi from '../api/balanceApi';
+import * as categoryApi from '../api/categoryApi';
 import Skeleton, { SkeletonCard } from '../components/Skeleton';
 import { useToast } from '../components/Toast';
 
@@ -23,8 +24,10 @@ export default function HouseholdPage() {
   const [expDate, setExpDate] = useState('');
   const [splitType, setSplitType] = useState('equal');
   const [splits, setSplits] = useState([]);
+  const [expCategoryId, setExpCategoryId] = useState('');
+  const [newCatName, setNewCatName] = useState('');
+
   const [settleFrom, setSettleFrom] = useState('');
-  const [settleTo, setSettleTo] = useState('');
   const [settleAmount, setSettleAmount] = useState('');
   const [settleDate, setSettleDate] = useState('');
 
@@ -48,6 +51,11 @@ export default function HouseholdPage() {
     queryFn: () => balanceApi.getBalances(householdId).then((r) => r.data),
   });
 
+  const { data: categories } = useQuery({
+    queryKey: ['categories', householdId],
+    queryFn: () => categoryApi.listByHousehold(householdId).then((r) => r.data),
+  });
+
   const addMemberMutation = useMutation({
     mutationFn: (email) => householdApi.addMember(householdId, email),
     onSuccess: () => {
@@ -57,6 +65,18 @@ export default function HouseholdPage() {
     },
     onError: (err) => {
       toast(err.response?.data?.error || 'Failed to add member', 'error');
+    },
+  });
+
+  const createCategoryMutation = useMutation({
+    mutationFn: (name) => categoryApi.create(householdId, name),
+    onSuccess: () => {
+      toast('Category added!', 'success');
+      queryClient.invalidateQueries({ queryKey: ['categories', householdId] });
+      setNewCatName('');
+    },
+    onError: (err) => {
+      toast(err.response?.data?.error || 'Failed to add category', 'error');
     },
   });
 
@@ -142,6 +162,7 @@ export default function HouseholdPage() {
         splitType,
         payerId: parseInt(expPayerId, 10),
         expenseDate: expDate,
+        categoryId: expCategoryId ? parseInt(expCategoryId, 10) : null,
       };
       if (splitType === 'exact') {
         payload.splits = splits.map((s) => ({
@@ -291,6 +312,39 @@ export default function HouseholdPage() {
                 </div>
               )}
 
+              <div>
+                <label className="text-sm text-gray-600 block mb-1">Category</label>
+                <div className="flex gap-2">
+                  <select
+                    value={expCategoryId}
+                    onChange={(e) => setExpCategoryId(e.target.value)}
+                    className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  >
+                    <option value="">None</option>
+                    {categories?.map((c) => (
+                      <option key={c.id} value={c.id}>{c.name}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    placeholder="New category"
+                    value={newCatName}
+                    onChange={(e) => setNewCatName(e.target.value)}
+                    className="flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (newCatName.trim()) createCategoryMutation.mutate(newCatName.trim());
+                    }}
+                    disabled={createCategoryMutation.isPending}
+                    className="bg-gray-600 text-white px-3 py-2 rounded-lg hover:bg-gray-700 disabled:opacity-50 text-sm whitespace-nowrap"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
               <button
                 type="submit"
                 disabled={createExpenseMutation.isPending}
@@ -340,6 +394,7 @@ export default function HouseholdPage() {
                       </div>
                     </div>
                     <p className="text-xs text-gray-400 mt-1">
+                      {exp.category_name && <span className="mr-2">{exp.category_name} &middot;</span>}
                       Split: {exp.split_type}
                     </p>
                   </div>
