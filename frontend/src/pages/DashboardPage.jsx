@@ -6,6 +6,7 @@ import { SkeletonCard } from '../components/Skeleton';
 import { useToast } from '../components/Toast';
 import * as householdApi from '../api/householdApi';
 import * as balanceApi from '../api/balanceApi';
+import * as activityApi from '../api/activityApi';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -22,6 +23,11 @@ export default function DashboardPage() {
   const { data: summary } = useQuery({
     queryKey: ['balanceSummary'],
     queryFn: () => balanceApi.getSummary().then((r) => r.data),
+  });
+
+  const { data: feed } = useQuery({
+    queryKey: ['activityFeed'],
+    queryFn: () => activityApi.getFeed().then((r) => r.data),
   });
 
   const deleteMutation = useMutation({
@@ -139,6 +145,39 @@ export default function DashboardPage() {
                       &times;
                     </button>
                   </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-sm border">
+          <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
+          {!feed ? (
+            <div className="space-y-3">
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          ) : feed.length === 0 ? (
+            <p className="text-gray-500">No activity yet.</p>
+          ) : (
+            <div className="space-y-3">
+              {feed.map((item, idx) => (
+                <div key={`${item.type}-${item.item_id}-${idx}`} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <p className="text-sm">
+                      {item.type === 'expense' && <span>Added <strong>{item.label}</strong></span>}
+                      {item.type === 'member' && <span><strong>{item.label}</strong> joined</span>}
+                      {item.type === 'settlement' && <span>Settlement: {item.label}</span>}
+                    </p>
+                    <p className="text-xs text-gray-400">
+                      {item.household_name}
+                      {item.amount !== null && ` · $${parseFloat(item.amount).toFixed(2)}`}
+                    </p>
+                  </div>
+                  <span className="text-xs text-gray-400">
+                    {new Date(item.created_at).toLocaleDateString()}
+                  </span>
                 </div>
               ))}
             </div>
