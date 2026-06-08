@@ -41,4 +41,9 @@ const getBalances = async (householdId, userId) => {
   return summary;
 };
 
-module.exports = { getBalances };
+const getSummary = async (userId) => {
+  const summary = await balanceRepository.getSummary(userId);
+  return summary;
+};
+
+module.exports = { getBalances, getSummary };
