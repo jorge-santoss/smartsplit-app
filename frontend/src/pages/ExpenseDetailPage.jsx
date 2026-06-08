@@ -53,7 +53,9 @@ export default function ExpenseDetailPage() {
       <div className="bg-white p-6 rounded-lg shadow-sm border max-w-2xl">
         <h1 className="text-2xl font-bold mb-2">{expense.title}</h1>
         <p className="text-gray-500 text-sm mb-4">
-          {new Date(expense.expense_date).toLocaleDateString()} &middot; Split: {expense.split_type}
+          {new Date(expense.expense_date).toLocaleDateString()}
+          {expense.category_name && <span> &middot; {expense.category_name}</span>}
+          &middot; Split: {expense.split_type}
         </p>
 
         <div className="text-3xl font-bold text-blue-700 mb-6">
