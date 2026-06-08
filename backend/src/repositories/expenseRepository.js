@@ -39,9 +39,10 @@ const createSplit = async (expenseId, memberId, amount, percentage) => {
 
 const findById = async (id) => {
   const [rows] = await pool.query(
-    `SELECT e.*, u.name AS payer_name 
+    `SELECT e.*, u.name AS payer_name, c.name AS category_name
      FROM expenses e 
      JOIN users u ON e.payer_id = u.id 
+     LEFT JOIN categories c ON e.category_id = c.id
      WHERE e.id = ?`,
     [id],
   );
@@ -50,9 +51,10 @@ const findById = async (id) => {
 
 const findAllByHouseholdId = async (householdId) => {
   const [rows] = await pool.query(
-    `SELECT e.*, u.name AS payer_name 
+    `SELECT e.*, u.name AS payer_name, c.name AS category_name
      FROM expenses e 
      JOIN users u ON e.payer_id = u.id 
+     LEFT JOIN categories c ON e.category_id = c.id
      WHERE e.household_id = ? 
      ORDER BY e.expense_date DESC, e.created_at DESC`,
     [householdId],
