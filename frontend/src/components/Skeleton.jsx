@@ -17,6 +17,10 @@ export function SkeletonCard() {
   );
 }
 
+<<<<<<< Updated upstream
 export function SkeletonLine({ width = 'w-full' }) {
+=======
+export function SkeletonLine({ width = '100%' }) {
+>>>>>>> Stashed changes
   return <Skeleton className={`h-4 ${width}`} />;
 }

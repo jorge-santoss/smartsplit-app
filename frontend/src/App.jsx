@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+=======
+﻿import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+>>>>>>> Stashed changes
 import { useAuth } from './hooks/useAuth';
 import ErrorBoundary from './components/ErrorBoundary';
 import LoginPage from './pages/LoginPage';
@@ -88,4 +92,8 @@ export default function App() {
       </ErrorBoundary>
     </BrowserRouter>
   );
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
