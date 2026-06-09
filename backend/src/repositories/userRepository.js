@@ -23,4 +23,23 @@ const findById = async (id) => {
   return rows[0] || null;
 };
 
-module.exports = { create, findByEmail, findById };
+const findByIdWithPassword = async (id) => {
+  const [rows] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
+  return rows[0] || null;
+};
+
+const updateProfile = async (id, name, email) => {
+  await pool.query(
+    "UPDATE users SET name = ?, email = ? WHERE id = ?",
+    [name, email, id],
+  );
+};
+
+const updatePassword = async (id, passwordHash) => {
+  await pool.query(
+    "UPDATE users SET password_hash = ? WHERE id = ?",
+    [passwordHash, id],
+  );
+};
+
+module.exports = { create, findByEmail, findById, findByIdWithPassword, updateProfile, updatePassword };
