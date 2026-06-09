@@ -30,6 +30,16 @@ const getById = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const expenseId = parseInt(req.params.id, 10);
+    await expenseService.update(expenseId, req.body, req.user.id);
+    res.status(200).json({ message: "Expense updated" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const remove = async (req, res, next) => {
   try {
     const expenseId = parseInt(req.params.id, 10);
@@ -40,4 +50,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { create, listByHousehold, getById, remove };
+module.exports = { create, listByHousehold, getById, update, remove };

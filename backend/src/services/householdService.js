@@ -51,6 +51,17 @@ const addMember = async (householdId, email, role, currentUserId) => {
   return user;
 };
 
+const update = async (householdId, data, userId) => {
+  const household = await householdRepository.findById(householdId);
+  if (!household) {
+    throw new NotFoundError("Household not found");
+  }
+  if (household.owner_id !== userId) {
+    throw new ForbiddenError("Only the owner can edit this household");
+  }
+  await householdRepository.update(householdId, data.name, data.description);
+};
+
 const remove = async (householdId, userId) => {
   const household = await householdRepository.findById(householdId);
   if (!household) {
@@ -64,4 +75,4 @@ const remove = async (householdId, userId) => {
   await householdRepository.deleteById(householdId);
 };
 
-module.exports = { create, listByUser, getById, addMember, remove };
+module.exports = { create, listByUser, getById, addMember, update, remove };

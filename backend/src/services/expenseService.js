@@ -151,6 +151,47 @@ const getById = async (expenseId, userId) => {
   return { ...expense, splits };
 };
 
+
+const update = async (expenseId, data, userId) => {
+  const expense = await expenseRepository.findById(expenseId);
+  if (!expense) {
+    throw new NotFoundError("Expense not found");
+  }
+
+  const member = await householdRepository.isMember(expense.household_id, userId);
+  if (!member) {
+    throw new ForbiddenError("You are not a member of this household");
+  }
+  if (expense.payer_id !== userId) {
+    throw new ForbiddenError("Only the payer can edit this expense");
+  }
+
+  const members = await householdRepository.findMembersByHouseholdId(expense.household_id);
+  const memberIds = members.map((m) => m.id);
+
+  await expenseRepository.update(expenseId, data);
+  await expenseRepository.deleteSplitsByExpenseId(expenseId);
+
+  if (data.splitType === "equal") {
+    const splitAmount = parseFloat((data.amount / memberIds.length).toFixed(2));
+    const remainder = parseFloat((data.amount - splitAmount * memberIds.length).toFixed(2));
+    for (let i = 0; i < memberIds.length; i++) {
+      const amount = i === 0 ? splitAmount + remainder : splitAmount;
+      const percentage = parseFloat(((amount / data.amount) * 100).toFixed(2));
+      await expenseRepository.createSplit(expenseId, memberIds[i], amount, percentage);
+    }
+  } else {
+    for (const split of data.splits) {
+      const percentage = data.splitType === "exact"
+        ? parseFloat(((split.amount / data.amount) * 100).toFixed(2))
+        : split.percentage;
+      await expenseRepository.createSplit(expenseId, split.memberId, split.amount, percentage);
+    }
+  }
+
+  return expenseId;
+};
+
 const remove = async (expenseId, userId) => {
   const expense = await expenseRepository.findById(expenseId);
   if (!expense) {
@@ -168,4 +209,4 @@ const remove = async (expenseId, userId) => {
   await expenseRepository.deleteById(expenseId);
 };
 
-module.exports = { create, listByHousehold, getById, remove };
+module.exports = { create, listByHousehold, getById, update, remove };
