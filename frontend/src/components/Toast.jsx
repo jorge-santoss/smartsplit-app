@@ -1,10 +1,7 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 
 const ToastContext = createContext(null);
-<<<<<<< Updated upstream
 let nextId = 0;
-=======
->>>>>>> Stashed changes
 
 export function useToast() {
   return useContext(ToastContext);
@@ -14,11 +11,7 @@ export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
 
   const showToast = useCallback((message, type = 'success') => {
-<<<<<<< Updated upstream
     const id = ++nextId;
-=======
-    const id = Date.now();
->>>>>>> Stashed changes
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));

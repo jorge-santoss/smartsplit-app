@@ -1,4 +1,4 @@
-import { Component } from 'react';
+﻿import { Component } from 'react';
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -10,13 +10,10 @@ export default class ErrorBoundary extends Component {
     return { hasError: true, error };
   }
 
-<<<<<<< Updated upstream
   componentDidCatch(error, info) {
     console.error('ErrorBoundary caught:', error, info);
   }
 
-=======
->>>>>>> Stashed changes
   render() {
     if (this.state.hasError) {
       return (

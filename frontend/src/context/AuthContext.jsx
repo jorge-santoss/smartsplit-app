@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 import { createContext, useState, useCallback, useEffect } from 'react';
-=======
-import { createContext, useState, useCallback } from 'react';
->>>>>>> Stashed changes
 import * as authApi from '../api/authApi';
 
 export const AuthContext = createContext(null);
@@ -15,14 +11,11 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => {
     return localStorage.getItem('token') || null;
   });
-<<<<<<< Updated upstream
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(false);
   }, []);
-=======
->>>>>>> Stashed changes
 
   const login = useCallback(async (email, password) => {
     const response = await authApi.login(email, password);
@@ -49,11 +42,7 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
-<<<<<<< Updated upstream
   const value = { user, token, loading, login, register, logout };
-=======
-  const value = { user, token, login, register, logout };
->>>>>>> Stashed changes
 
   return (
     <AuthContext.Provider value={value}>
