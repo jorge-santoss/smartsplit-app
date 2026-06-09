@@ -28,10 +28,7 @@ export default function HouseholdPage() {
   const [newCatName, setNewCatName] = useState('');
 
   const [settleFrom, setSettleFrom] = useState('');
-<<<<<<< Updated upstream
-=======
   const [settleTo, setSettleTo] = useState('');
->>>>>>> Stashed changes
   const [settleAmount, setSettleAmount] = useState('');
   const [settleDate, setSettleDate] = useState('');
 
