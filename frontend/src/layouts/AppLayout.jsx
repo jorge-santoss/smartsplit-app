@@ -10,6 +10,7 @@ export default function AppLayout({ children }) {
           <h1 className="text-xl font-bold text-blue-600">SmartSplit</h1>
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-600">{user?.email}</span>
+            <a href="/settings" className="text-sm text-gray-600 hover:text-gray-900">Settings</a>
             <button
               onClick={logout}
               className="text-sm text-red-500 hover:text-red-700"

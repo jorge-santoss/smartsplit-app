@@ -1,11 +1,12 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
-import { useAuth } from './hooks/useAuth';
-import ErrorBoundary from './components/ErrorBoundary';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
-import HouseholdPage from './pages/HouseholdPage';
-import ExpenseDetailPage from './pages/ExpenseDetailPage';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
+import { useAuth } from "./hooks/useAuth";
+import ErrorBoundary from "./components/ErrorBoundary";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import DashboardPage from "./pages/DashboardPage";
+import HouseholdPage from "./pages/HouseholdPage";
+import ExpenseDetailPage from "./pages/ExpenseDetailPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function ProtectedRoute({ children }) {
   const { token, loading } = useAuth();
@@ -34,57 +35,65 @@ export default function App() {
   return (
     <BrowserRouter>
       <ErrorBoundary>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            <PublicRoute>
-              <LoginPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PublicRoute>
-              <RegisterPage />
-            </PublicRoute>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/households/:id"
-          element={
-            <ProtectedRoute>
-              <HouseholdPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/households/:householdId/expenses/:expenseId"
-          element={
-            <ProtectedRoute>
-              <ExpenseDetailPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route
-          path="*"
-          element={
-            <div className="min-h-screen flex items-center justify-center bg-gray-50">
-              <p className="text-xl text-gray-500">Page not found</p>
-            </div>
-          }
-        />
-      </Routes>
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <RegisterPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/households/:id"
+            element={
+              <ProtectedRoute>
+                <HouseholdPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/households/:householdId/expenses/:expenseId"
+            element={
+              <ProtectedRoute>
+                <ExpenseDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route
+            path="*"
+            element={
+              <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <p className="text-xl text-gray-500">Page not found</p>
+              </div>
+            }
+          />
+        </Routes>
       </ErrorBoundary>
     </BrowserRouter>
   );

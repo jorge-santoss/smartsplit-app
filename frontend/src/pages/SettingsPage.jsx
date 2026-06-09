@@ -1,0 +1,167 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
+import { getProfile, updateProfile, changePassword } from '../api/userApi';
+import AppLayout from '../layouts/AppLayout';
+
+export default function SettingsPage() {
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState({ name: '', email: '' });
+  const [password, setPassword] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [changingPw, setChangingPw] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getProfile()
+      .then((res) => {
+        setProfile({ name: res.data.name, email: res.data.email });
+        setLoading(false);
+      })
+      .catch(() => {
+        navigate('/login');
+      });
+  }, [navigate]);
+
+  const handleProfileSubmit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    setMessage(null);
+    setError(null);
+    try {
+      await updateProfile(profile.name, profile.email);
+      localStorage.setItem('user', JSON.stringify({ ...JSON.parse(localStorage.getItem('user') || '{}'), name: profile.name, email: profile.email }));
+      setMessage('Profile updated');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to update profile');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    if (password.newPassword !== password.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+    if (password.newPassword.length < 6) {
+      setError('New password must be at least 6 characters');
+      return;
+    }
+    setChangingPw(true);
+    setMessage(null);
+    setError(null);
+    try {
+      await changePassword(password.currentPassword, password.newPassword);
+      setMessage('Password changed');
+      setPassword({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to change password');
+    } finally {
+      setChangingPw(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="flex justify-center py-12">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
+        </div>
+      </AppLayout>
+    );
+  }
+
+  return (
+    <AppLayout>
+      <div className="max-w-2xl mx-auto space-y-8">
+        <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
+
+        {message && (
+          <div className="bg-green-50 text-green-700 px-4 py-3 rounded-md text-sm">{message}</div>
+        )}
+        {error && (
+          <div className="bg-red-50 text-red-700 px-4 py-3 rounded-md text-sm">{error}</div>
+        )}
+
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile</h3>
+          <form onSubmit={handleProfileSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Name</label>
+              <input
+                type="text"
+                value={profile.name}
+                onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                value={profile.email}
+                onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={saving}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
+            >
+              {saving ? 'Saving...' : 'Save'}
+            </button>
+          </form>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Change Password</h3>
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Current Password</label>
+              <input
+                type="password"
+                value={password.currentPassword}
+                onChange={(e) => setPassword({ ...password, currentPassword: e.target.value })}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">New Password</label>
+              <input
+                type="password"
+                value={password.newPassword}
+                onChange={(e) => setPassword({ ...password, newPassword: e.target.value })}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
+              <input
+                type="password"
+                value={password.confirmPassword}
+                onChange={(e) => setPassword({ ...password, confirmPassword: e.target.value })}
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={changingPw}
+              className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
+            >
+              {changingPw ? 'Changing...' : 'Change Password'}
+            </button>
+          </form>
+        </div>
+      </div>
+    </AppLayout>
+  );
+}
