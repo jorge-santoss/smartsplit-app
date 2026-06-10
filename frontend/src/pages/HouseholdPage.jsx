@@ -131,6 +131,21 @@ export default function HouseholdPage() {
     },
   });
 
+  const deleteSettlementMutation = useMutation({
+    mutationFn: (settlementId) => settlementApi.remove(settlementId),
+    onSuccess: () => {
+      toast("Settlement deleted", "success");
+      queryClient.invalidateQueries({ queryKey: ["settlements", householdId] });
+      queryClient.invalidateQueries({ queryKey: ["balances", householdId] });
+    },
+    onError: (err) => {
+      toast(
+        err.response?.data?.error || "Failed to delete settlement",
+        "error",
+      );
+    },
+  });
+
   if (isLoading) {
     return (
       <AppLayout>
@@ -434,11 +449,9 @@ export default function HouseholdPage() {
                         </span>
                         <button
                           type="button"
-                          onClick={(e) => {
+                                                    onClick={(e) => {
                             e.stopPropagation();
-                            if (window.confirm("Delete this expense?")) {
-                              deleteExpenseMutation.mutate(exp.id);
-                            }
+                            deleteExpenseMutation.mutate(exp.id);
                           }}
                           disabled={deleteExpenseMutation.isPending}
                           className="text-red-500 hover:text-red-700 text-sm"
@@ -547,9 +560,17 @@ export default function HouseholdPage() {
                           {new Date(s.settlement_date).toLocaleDateString()}
                         </p>
                       </div>
-                      <span className="text-lg font-bold text-green-600">
-                        ${parseFloat(s.amount).toFixed(2)}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-lg font-bold text-green-600">
+                          ${parseFloat(s.amount).toFixed(2)}
+                        </span>
+                        <button
+                          onClick={() => deleteSettlementMutation.mutate(s.id)}
+                          className="text-red-500 hover:text-red-700 text-sm"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

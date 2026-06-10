@@ -12,6 +12,10 @@ export const getById = (expenseId) => {
   return client.get(`/api/households/expenses/${expenseId}`);
 };
 
+export const update = (expenseId, data) => {
+  return client.put(`/api/households/expenses/${expenseId}`, data);
+};
+
 export const remove = (expenseId) => {
   return client.delete(`/api/households/expenses/${expenseId}`);
 };
