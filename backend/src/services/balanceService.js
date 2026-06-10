@@ -25,8 +25,8 @@ const getBalances = async (householdId, userId) => {
   }
 
   for (const settlement of settlements) {
-    balances[settlement.from_user_id] = (balances[settlement.from_user_id] || 0) - parseFloat(settlement.amount);
-    balances[settlement.to_user_id] = (balances[settlement.to_user_id] || 0) + parseFloat(settlement.amount);
+     balances[settlement.from_user_id] = (balances[settlement.from_user_id] || 0) + parseFloat(settlement.amount);
+    balances[settlement.to_user_id] = (balances[settlement.to_user_id] || 0) - parseFloat(settlement.amount);
   }
 
   const members = await householdRepository.findMembersByHouseholdId(householdId);

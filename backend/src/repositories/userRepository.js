@@ -30,7 +30,7 @@ const findByIdWithPassword = async (id) => {
 
 const updateProfile = async (id, name, email) => {
   await pool.query(
-    "UPDATE users SET name = ?, email = ? WHERE id = ?",
+    "UPDATE users SET name = ?, email = ?, updated_at = NOW() WHERE id = ?",
     [name, email, id],
   );
 };
