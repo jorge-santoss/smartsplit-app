@@ -20,4 +20,14 @@ const listByHousehold = async (req, res, next) => {
   }
 };
 
-module.exports = { create, listByHousehold };
+const remove = async (req, res, next) => {
+  try {
+    const settlementId = parseInt(req.params.id, 10);
+    await settlementService.remove(settlementId, req.user.id);
+    res.status(200).json({ message: 'Settlement deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { create, listByHousehold, remove };

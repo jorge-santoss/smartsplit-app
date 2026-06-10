@@ -23,4 +23,20 @@ const findAllByHouseholdId = async (householdId) => {
   return rows;
 };
 
-module.exports = { create, findAllByHouseholdId };
+const findById = async (id) => {
+  const [rows] = await pool.query(
+    `SELECT s.*, fu.name AS from_user_name, tu.name AS to_user_name
+     FROM settlements s
+     JOIN users fu ON s.from_user_id = fu.id
+     JOIN users tu ON s.to_user_id = tu.id
+     WHERE s.id = ?`,
+    [id]
+  );
+  return rows[0] || null;
+};
+
+const deleteById = async (id) => {
+  await pool.query("DELETE FROM settlements WHERE id = ?", [id]);
+};
+
+module.exports = { create, findAllByHouseholdId, findById, deleteById };

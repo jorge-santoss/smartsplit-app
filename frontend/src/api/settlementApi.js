@@ -7,3 +7,7 @@ export const create = (householdId, data) => {
 export const listByHousehold = (householdId) => {
   return client.get(`/api/households/${householdId}/settlements`);
 };
+
+export const remove = (settlementId) => {
+  return client.delete(`/api/households/settlements/${settlementId}`);
+};

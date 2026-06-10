@@ -15,25 +15,26 @@ const create = async (householdId, data, userId) => {
 
   const fromMember = await householdRepository.isMember(householdId, data.fromUserId);
   if (!fromMember) {
-    throw new ValidationError('Payer is not a member of this household');
+    throw new ValidationError('From user is not a member of this household');
   }
 
   const toMember = await householdRepository.isMember(householdId, data.toUserId);
   if (!toMember) {
-    throw new ValidationError('Receiver is not a member of this household');
+    throw new ValidationError('To user is not a member of this household');
   }
 
-  if (data.fromUserId === data.toUserId) {
-    throw new ValidationError('Cannot settle with yourself');
-  }
-
-  if (data.amount <= 0) {
-    throw new ValidationError('Amount must be greater than zero');
+  if (typeof data.amount !== 'number' || data.amount <= 0) {
+    throw new ValidationError('Amount must be a positive number');
   }
 
   const settlementId = await settlementRepository.create(
-    householdId, data.fromUserId, data.toUserId, data.amount,
-    data.settlementDate, data.note || null, userId
+    householdId,
+    data.fromUserId,
+    data.toUserId,
+    data.amount,
+    data.settlementDate,
+    data.note || null,
+    userId,
   );
 
   return settlementId;
@@ -53,4 +54,18 @@ const listByHousehold = async (householdId, userId) => {
   return settlementRepository.findAllByHouseholdId(householdId);
 };
 
-module.exports = { create, listByHousehold };
+const remove = async (settlementId, userId) => {
+  const settlement = await settlementRepository.findById(settlementId);
+  if (!settlement) {
+    throw new NotFoundError('Settlement not found');
+  }
+
+  const member = await householdRepository.isMember(settlement.household_id, userId);
+  if (!member) {
+    throw new ForbiddenError('You are not a member of this household');
+  }
+
+  await settlementRepository.deleteById(settlementId);
+};
+
+module.exports = { create, listByHousehold, remove };

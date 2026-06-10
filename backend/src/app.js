@@ -33,7 +33,7 @@ app.get('/health', (_req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/households', householdRoutes);
-app.use('/api/households', expenseRoutes);
+app.use('/api', balanceRoutes);
 app.use('/api/households', settlementRoutes);
 app.use('/api/households', balanceRoutes);
 app.use('/api/households', categoryRoutes);

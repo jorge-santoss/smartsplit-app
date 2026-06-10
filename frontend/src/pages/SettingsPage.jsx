@@ -34,7 +34,7 @@ export default function SettingsPage() {
       localStorage.setItem('user', JSON.stringify({ ...JSON.parse(localStorage.getItem('user') || '{}'), name: profile.name, email: profile.email }));
       setMessage('Profile updated');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update profile');
+      setError(err.response?.data?.error || 'Failed to update profile');
     } finally {
       setSaving(false);
     }
@@ -58,7 +58,7 @@ export default function SettingsPage() {
       setMessage('Password changed');
       setPassword({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to change password');
+      setError(err.response?.data?.error || 'Failed to change password');
     } finally {
       setChangingPw(false);
     }

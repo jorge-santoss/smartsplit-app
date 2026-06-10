@@ -169,27 +169,80 @@ const update = async (expenseId, data, userId) => {
   const members = await householdRepository.findMembersByHouseholdId(expense.household_id);
   const memberIds = members.map((m) => m.id);
 
-  await expenseRepository.update(expenseId, data);
-  await expenseRepository.deleteSplitsByExpenseId(expenseId);
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
 
-  if (data.splitType === "equal") {
-    const splitAmount = parseFloat((data.amount / memberIds.length).toFixed(2));
-    const remainder = parseFloat((data.amount - splitAmount * memberIds.length).toFixed(2));
-    for (let i = 0; i < memberIds.length; i++) {
-      const amount = i === 0 ? splitAmount + remainder : splitAmount;
-      const percentage = parseFloat(((amount / data.amount) * 100).toFixed(2));
-      await expenseRepository.createSplit(expenseId, memberIds[i], amount, percentage);
+    await conn.query(
+      `UPDATE expenses 
+       SET title = ?, note = ?, amount = ?, expense_date = ?, category_id = ?, payer_id = ?, split_type = ?
+       WHERE id = ?`,
+      [data.title, data.note || null, data.amount, data.expenseDate, data.categoryId || null, data.payerId, data.splitType, expenseId],
+    );
+
+    await conn.query("DELETE FROM expense_splits WHERE expense_id = ?", [expenseId]);
+
+    if (data.splitType === "equal") {
+      const splitAmount = parseFloat((data.amount / memberIds.length).toFixed(2));
+      const remainder = parseFloat((data.amount - splitAmount * memberIds.length).toFixed(2));
+      for (let i = 0; i < memberIds.length; i++) {
+        const amount = i === 0 ? splitAmount + remainder : splitAmount;
+        const percentage = parseFloat(((amount / data.amount) * 100).toFixed(2));
+        await conn.query(
+          "INSERT INTO expense_splits (expense_id, member_id, amount, percentage) VALUES (?, ?, ?, ?)",
+          [expenseId, memberIds[i], amount, percentage],
+        );
+      }
+    } else {
+      if (!Array.isArray(data.splits) || data.splits.length === 0) {
+        throw new ValidationError("Splits are required for this split type");
+      }
+
+      for (const split of data.splits) {
+        if (!memberIds.includes(split.memberId)) {
+          throw new ValidationError("Each split member must be part of the household");
+        }
+        if (split.amount !== undefined && split.amount < 0) {
+          throw new ValidationError("Split amounts cannot be negative");
+        }
+        if (split.percentage !== undefined && (split.percentage < 0 || split.percentage > 100)) {
+          throw new ValidationError("Split percentages must be between 0 and 100");
+        }
+      }
+
+      if (data.splitType === "exact") {
+        const totalSplit = data.splits.reduce((sum, s) => sum + (parseFloat(s.amount) || 0), 0);
+        if (Math.abs(totalSplit - data.amount) > 0.01) {
+          throw new ValidationError("Split amounts must add up to the total expense amount");
+        }
+      }
+
+      if (data.splitType === "percentage") {
+        const totalPct = data.splits.reduce((sum, s) => sum + (parseFloat(s.percentage) || 0), 0);
+        if (Math.abs(totalPct - 100) > 0.01) {
+          throw new ValidationError("Split percentages must add up to 100");
+        }
+      }
+
+      for (const split of data.splits) {
+        const pct = data.splitType === "exact"
+          ? parseFloat(((split.amount / data.amount) * 100).toFixed(2))
+          : split.percentage;
+        await conn.query(
+          "INSERT INTO expense_splits (expense_id, member_id, amount, percentage) VALUES (?, ?, ?, ?)",
+          [expenseId, split.memberId, split.amount, pct],
+        );
+      }
     }
-  } else {
-    for (const split of data.splits) {
-      const percentage = data.splitType === "exact"
-        ? parseFloat(((split.amount / data.amount) * 100).toFixed(2))
-        : split.percentage;
-      await expenseRepository.createSplit(expenseId, split.memberId, split.amount, percentage);
-    }
+
+    await conn.commit();
+    return expenseId;
+  } catch (error) {
+    await conn.rollback();
+    throw error;
+  } finally {
+    conn.release();
   }
-
-  return expenseId;
 };
 
 const remove = async (expenseId, userId) => {
@@ -206,6 +259,11 @@ const remove = async (expenseId, userId) => {
     throw new ForbiddenError("You are not a member of this household");
   }
 
+  if (expense.payer_id !== userId) {
+    throw new ForbiddenError("Only the payer can delete this expense");
+  }
+
+  await expenseRepository.deleteSplitsByExpenseId(expenseId);
   await expenseRepository.deleteById(expenseId);
 };
 
