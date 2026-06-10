@@ -17,6 +17,3 @@ export function SkeletonCard() {
   );
 }
 
-export function SkeletonLine({ width = 'w-full' }) {
-  return <Skeleton className={`h-4 ${width}`} />;
-}

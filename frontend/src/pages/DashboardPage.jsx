@@ -162,8 +162,8 @@ export default function DashboardPage() {
             <p className="text-gray-500">No activity yet.</p>
           ) : (
             <div className="space-y-3">
-              {feed.map((item, idx) => (
-                <div key={`${item.type}-${item.item_id}-${idx}`} className="flex items-center justify-between p-3 border rounded-lg">
+              {feed.map((item) => (
+                <div key={`${item.type}-${item.item_id}`} className="flex items-center justify-between p-3 border rounded-lg">
                   <div>
                     <p className="text-sm">
                       {item.type === 'expense' && <span>Added <strong>{item.label}</strong></span>}
