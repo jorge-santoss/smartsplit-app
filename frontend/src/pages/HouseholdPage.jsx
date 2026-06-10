@@ -26,7 +26,7 @@ export default function HouseholdPage() {
   const [splits, setSplits] = useState([]);
   const [expCategoryId, setExpCategoryId] = useState("");
   const [newCatName, setNewCatName] = useState("");
-
+  const [expNote, setExpNote] = useState("");
   const [settleFrom, setSettleFrom] = useState("");
   const [settleTo, setSettleTo] = useState("");
   const [settleAmount, setSettleAmount] = useState("");
@@ -168,6 +168,7 @@ export default function HouseholdPage() {
         payerId: parseInt(expPayerId, 10),
         expenseDate: expDate,
         categoryId: expCategoryId ? parseInt(expCategoryId, 10) : null,
+        note: expNote,
       };
       if (splitType === "exact") {
         payload.splits = splits.map((s) => ({
@@ -382,7 +383,17 @@ export default function HouseholdPage() {
                   </button>
                 </div>
               </div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Note (optional)
+                </label>
+                <textarea
+                  value={expNote}
+                  onChange={(e) => setExpNote(e.target.value)}
+                  rows={2}
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                />
+              </div>
               <button
                 type="submit"
                 disabled={createExpenseMutation.isPending}

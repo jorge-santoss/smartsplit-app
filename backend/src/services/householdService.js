@@ -59,6 +59,9 @@ const update = async (householdId, data, userId) => {
   if (household.owner_id !== userId) {
     throw new ForbiddenError("Only the owner can edit this household");
   }
+  if (!data.name || typeof data.name !== 'string' || data.name.trim().length === 0) {
+    throw new ValidationError("Household name is required");
+  }
   await householdRepository.update(householdId, data.name, data.description);
 };
 

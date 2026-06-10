@@ -38,6 +38,10 @@ const getById = async (req, res, next) => {
 const addMember = async (req, res, next) => {
   try {
     const { email, role } = req.body;
+    const allowedRoles = ['member', 'admin'];
+    if (role && !allowedRoles.includes(role)) {
+      return res.status(400).json({ error: 'Role must be "member" or "admin"' });
+    }
     const user = await householdService.addMember(
       parseInt(req.params.id, 10),
       email,

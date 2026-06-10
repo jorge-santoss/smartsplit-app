@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { getProfile, updateProfile, changePassword } from '../api/userApi';
 import AppLayout from '../layouts/AppLayout';
+import { useAuth } from '../hooks/useAuth';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function SettingsPage() {
   const [changingPw, setChangingPw] = useState(false);
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
+  const { updateUser } = useAuth();
 
   useEffect(() => {
     getProfile()
@@ -31,7 +33,7 @@ export default function SettingsPage() {
     setError(null);
     try {
       await updateProfile(profile.name, profile.email);
-      localStorage.setItem('user', JSON.stringify({ ...JSON.parse(localStorage.getItem('user') || '{}'), name: profile.name, email: profile.email }));
+      updateUser({ name: profile.name, email: profile.email });
       setMessage('Profile updated');
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to update profile');
