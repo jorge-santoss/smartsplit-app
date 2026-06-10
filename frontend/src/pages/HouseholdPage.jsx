@@ -9,6 +9,7 @@ import * as balanceApi from "../api/balanceApi";
 import * as categoryApi from "../api/categoryApi";
 import Skeleton, { SkeletonCard } from "../components/Skeleton";
 import { useToast } from "../components/Toast";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 export default function HouseholdPage() {
   const { id } = useParams();
@@ -31,6 +32,7 @@ export default function HouseholdPage() {
   const [settleTo, setSettleTo] = useState("");
   const [settleAmount, setSettleAmount] = useState("");
   const [settleDate, setSettleDate] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   const { data: household, isLoading } = useQuery({
     queryKey: ["household", householdId],
@@ -449,9 +451,9 @@ export default function HouseholdPage() {
                         </span>
                         <button
                           type="button"
-                                                    onClick={(e) => {
+                          onClick={(e) => {
                             e.stopPropagation();
-                            deleteExpenseMutation.mutate(exp.id);
+                            setConfirmDelete({ type: "expense", id: exp.id });
                           }}
                           disabled={deleteExpenseMutation.isPending}
                           className="text-red-500 hover:text-red-700 text-sm"
@@ -565,7 +567,9 @@ export default function HouseholdPage() {
                           ${parseFloat(s.amount).toFixed(2)}
                         </span>
                         <button
-                          onClick={() => deleteSettlementMutation.mutate(s.id)}
+                          onClick={() =>
+                            setConfirmDelete({ type: "settlement", id: s.id })
+                          }
                           className="text-red-500 hover:text-red-700 text-sm"
                         >
                           Delete
@@ -648,6 +652,24 @@ export default function HouseholdPage() {
           </div>
         </div>
       </div>
+      {confirmDelete && (
+        <ConfirmDialog
+          message={
+            confirmDelete.type === 'expense'
+              ? "Delete this expense?"
+              : "Delete this settlement?"
+          }
+          onConfirm={() => {
+            if (confirmDelete.type === 'expense') {
+              deleteExpenseMutation.mutate(confirmDelete.id);
+            } else {
+              deleteSettlementMutation.mutate(confirmDelete.id);
+            }
+            setConfirmDelete(null);
+          }}
+          onCancel={() => setConfirmDelete(null)}
+        />
+      )}
     </AppLayout>
   );
 }
