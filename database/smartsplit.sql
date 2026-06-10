@@ -90,5 +90,5 @@ CREATE TABLE settlements(
     CONsTRAINT fk_settlements_creator FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE RESTRICT 
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE INDEX idx_espenses_household_date ON expenses (household_id, expense_date);
+CREATE INDEX idx_expenses_household_date ON expenses (household_id, expense_date);
 CREATE INDEX idx_settlements_household_date ON settlements (household_id, settlement_date);

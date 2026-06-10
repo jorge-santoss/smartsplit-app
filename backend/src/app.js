@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
 const { corsOrigin } = require('./config/env');
-const authMiddleware = require('./middleware/authMiddleware');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 const authRoutes = require('./routes/authRoutes');
 const householdRoutes = require('./routes/householdRoutes');
@@ -13,20 +14,21 @@ const activityRoutes = require('./routes/activityRoutes');
 
 const app = express();
 
+app.use(helmet());
+app.use(morgan('dev'));
+
 const corsOptions =
   corsOrigin === '*'
     ? {}
     : {
-        origin: corsOrigin.split(',').map((origin) => origin.trim()),
+        origin: (corsOrigin || '').split(',').map((origin) => origin.trim()),
       };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 
 app.get('/health', (_req, res) => {
-  res.status(200).json({
-    status: 'ok',
-  });
+  res.status(200).json({ status: 'ok' });
 });
 
 app.use('/api/auth', authRoutes);

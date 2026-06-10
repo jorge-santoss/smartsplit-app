@@ -1,6 +1,6 @@
 const householdRepository = require('../repositories/householdRepository');
 const userRepository = require('../repositories/userRepository');
-const { NotFoundError, ForbiddenError } = require('../utils/errors');
+const { NotFoundError, ForbiddenError, ValidationError } = require('../utils/errors');
 
 const create = async (name, description, ownerId) => {
   const householdId = await householdRepository.create(name, description, ownerId);
@@ -44,11 +44,35 @@ const addMember = async (householdId, email, role, currentUserId) => {
 
   const alreadyMember = await householdRepository.isMember(householdId, user.id);
   if (alreadyMember) {
-    throw new NotFoundError('User is already a member');
+    throw new ValidationError('User is already a member');
   }
 
   await householdRepository.addMember(householdId, user.id, role);
   return user;
 };
 
-module.exports = { create, listByUser, getById, addMember };
+const update = async (householdId, data, userId) => {
+  const household = await householdRepository.findById(householdId);
+  if (!household) {
+    throw new NotFoundError("Household not found");
+  }
+  if (household.owner_id !== userId) {
+    throw new ForbiddenError("Only the owner can edit this household");
+  }
+  await householdRepository.update(householdId, data.name, data.description);
+};
+
+const remove = async (householdId, userId) => {
+  const household = await householdRepository.findById(householdId);
+  if (!household) {
+    throw new NotFoundError('Household not found');
+  }
+
+  if (household.owner_id !== userId) {
+    throw new ForbiddenError('Only the owner can delete the household');
+  }
+
+  await householdRepository.deleteById(householdId);
+};
+
+module.exports = { create, listByUser, getById, addMember, update, remove };
