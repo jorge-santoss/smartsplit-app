@@ -86,4 +86,17 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { create, list, getById, addMember, update, remove };
+const removeMember = async (req, res, next) => {
+  try {
+    await householdService.removeMember(
+      parseInt(req.params.id, 10),
+      parseInt(req.params.userId, 10),
+      req.user.id,
+    );
+    res.status(200).json({ message: 'Member removed' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { create, list, getById, addMember, update, remove, removeMember };
