@@ -1,8 +1,9 @@
 import { useAuth } from "../hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 export default function AppLayout({ children }) {
   const { user, logout } = useAuth();
+  const { pathname } = useLocation();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -15,7 +16,7 @@ export default function AppLayout({ children }) {
             <span className="text-sm text-gray-600">{user?.email}</span>
             <Link
               to="/settings"
-              className="text-sm text-gray-600 hover:text-gray-900"
+              className={`text-sm hover:text-gray-900 ${pathname === '/settings' ? 'text-blue-600 font-semibold' : 'text-gray-600'}`}
             >
               Settings
             </Link>

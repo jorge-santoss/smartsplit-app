@@ -1,42 +1,5 @@
 const pool = require("../config/db");
 
-const create = async (
-  householdId,
-  title,
-  note,
-  amount,
-  expenseDate,
-  categoryId,
-  payerId,
-  splitType,
-  createdBy,
-) => {
-  const [result] = await pool.query(
-    `INSERT INTO expenses 
-     (household_id, title, note, amount, expense_date, category_id, payer_id, split_type, created_by) 
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    [
-      householdId,
-      title,
-      note,
-      amount,
-      expenseDate,
-      categoryId,
-      payerId,
-      splitType,
-      createdBy,
-    ],
-  );
-  return result.insertId;
-};
-
-const createSplit = async (expenseId, memberId, amount, percentage) => {
-  await pool.query(
-    "INSERT INTO expense_splits (expense_id, member_id, amount, percentage) VALUES (?, ?, ?, ?)",
-    [expenseId, memberId, amount, percentage],
-  );
-};
-
 const findById = async (id) => {
   const [rows] = await pool.query(
     `SELECT e.*, u.name AS payer_name, c.name AS category_name
@@ -77,29 +40,9 @@ const deleteById = async (id) => {
   await pool.query("DELETE FROM expenses WHERE id = ?", [id]);
 };
 
-
-const update = async (id, data) => {
-  const [result] = await pool.query(
-    `UPDATE expenses 
-     SET title = ?, note = ?, amount = ?, expense_date = ?, category_id = ?, payer_id = ?, split_type = ?
-     WHERE id = ?`,
-    [data.title, data.note || null, data.amount, data.expenseDate, data.categoryId || null, data.payerId, data.splitType, id],
-  );
-  return result.affectedRows > 0;
-};
-
-const deleteSplitsByExpenseId = async (expenseId) => {
-  await pool.query("DELETE FROM expense_splits WHERE expense_id = ?", [expenseId]);
-};
-
-
 module.exports = {
-  create,
-  createSplit,
   findById,
   findAllByHouseholdId,
   findSplitsByExpenseId,
   deleteById,
-  update,
-  deleteSplitsByExpenseId
 };

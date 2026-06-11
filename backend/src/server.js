@@ -18,11 +18,16 @@ const startServer = async () => {
 
 const shutdown = async (signal) => {
   console.log(`Received ${signal}. Shutting down gracefully...`);
-  server.close(async () => {
+  if (server) {
+    server.close(async () => {
+      await pool.end();
+      console.log('Server and DB pool closed');
+      process.exit(0);
+    });
+  } else {
     await pool.end();
-    console.log('Server and DB pool closed');
     process.exit(0);
-  });
+  }
 };
 
 process.on('SIGTERM', () => shutdown('SIGTERM'));

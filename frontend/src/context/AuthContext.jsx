@@ -19,18 +19,18 @@ export function AuthProvider({ children }) {
 
   const login = useCallback(async (email, password) => {
     const response = await authApi.login(email, password);
-    const { userId, token: newToken } = response.data;
+    const { userId, token: newToken, name } = response.data;
     localStorage.setItem('token', newToken);
-    localStorage.setItem('user', JSON.stringify({ id: userId, email }));
+    localStorage.setItem('user', JSON.stringify({ id: userId, email, name }));
     setToken(newToken);
-    setUser({ id: userId, email });
+    setUser({ id: userId, email, name });
   }, []);
 
   const register = useCallback(async (name, email, password) => {
     const response = await authApi.register(name, email, password);
     const { userId, token: newToken } = response.data;
     localStorage.setItem('token', newToken);
-    localStorage.setItem('user', JSON.stringify({ id: userId, email }));
+    localStorage.setItem('user', JSON.stringify({ id: userId, email, name }));
     setToken(newToken);
     setUser({ id: userId, email, name });
   }, []);

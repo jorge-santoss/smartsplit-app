@@ -169,6 +169,10 @@ const update = async (expenseId, data, userId) => {
   const members = await householdRepository.findMembersByHouseholdId(expense.household_id);
   const memberIds = members.map((m) => m.id);
 
+  if (data.payerId && !memberIds.includes(data.payerId)) {
+    throw new ValidationError("Payer must be a household member");
+  }
+
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
@@ -263,7 +267,6 @@ const remove = async (expenseId, userId) => {
     throw new ForbiddenError("Only the payer can delete this expense");
   }
 
-  await expenseRepository.deleteSplitsByExpenseId(expenseId);
   await expenseRepository.deleteById(expenseId);
 };
 

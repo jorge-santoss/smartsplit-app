@@ -1,4 +1,4 @@
-const settlementRepository = require('../repositories/settlementRepository');
+const pool = require('../config/db');
 const householdRepository = require('../repositories/householdRepository');
 const { NotFoundError, ForbiddenError, ValidationError } = require('../utils/errors');
 
@@ -27,17 +27,25 @@ const create = async (householdId, data, userId) => {
     throw new ValidationError('Amount must be a positive number');
   }
 
-  const settlementId = await settlementRepository.create(
-    householdId,
-    data.fromUserId,
-    data.toUserId,
-    data.amount,
-    data.settlementDate,
-    data.note || null,
-    userId,
-  );
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
 
-  return settlementId;
+    const [result] = await conn.query(
+      `INSERT INTO settlements 
+       (household_id, from_user_id, to_user_id, amount, settlement_date, note, created_by) 
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [householdId, data.fromUserId, data.toUserId, data.amount, data.settlementDate, data.note || null, userId]
+    );
+
+    await conn.commit();
+    return result.insertId;
+  } catch (error) {
+    await conn.rollback();
+    throw error;
+  } finally {
+    conn.release();
+  }
 };
 
 const listByHousehold = async (householdId, userId) => {

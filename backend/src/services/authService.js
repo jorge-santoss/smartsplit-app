@@ -19,7 +19,7 @@ const register = async (name, email, password) => {
         expiresIn: env.jwt.expireIn,
     });
 
-    return { userId, token };
+    return { userId, token, name };
 };
 
 const login = async (email, password) => {
@@ -39,7 +39,7 @@ const login = async (email, password) => {
         { expiresIn: env.jwt.expireIn }
     );
 
-    return { userId: user.id, token };
+    return { userId: user.id, token, name: user.name };
 };
 
 const getProfile = async (userId) => {
@@ -83,4 +83,8 @@ const changePassword = async (userId, currentPassword, newPassword) => {
   await userRepository.updatePassword(userId, passwordHash);
 };
 
-module.exports = { register, login, getProfile, updateProfile, changePassword };
+const deleteAccount = async (userId) => {
+  await userRepository.deleteById(userId);
+};
+
+module.exports = { register, login, getProfile, updateProfile, changePassword, deleteAccount };

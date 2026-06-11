@@ -9,6 +9,7 @@ import * as balanceApi from "../api/balanceApi";
 import * as categoryApi from "../api/categoryApi";
 import Skeleton, { SkeletonCard } from "../components/Skeleton";
 import { useToast } from "../components/Toast";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 export default function HouseholdPage() {
   const { id } = useParams();
@@ -31,6 +32,7 @@ export default function HouseholdPage() {
   const [settleTo, setSettleTo] = useState("");
   const [settleAmount, setSettleAmount] = useState("");
   const [settleDate, setSettleDate] = useState("");
+  const [confirmDialog, setConfirmDialog] = useState({ open: false, type: null, id: null });
 
   const { data: household, isLoading } = useQuery({
     queryKey: ["household", householdId],
@@ -449,11 +451,10 @@ export default function HouseholdPage() {
                         </span>
                         <button
                           type="button"
-                                                    onClick={(e) => {
+                          onClick={(e) => {
                             e.stopPropagation();
-                            deleteExpenseMutation.mutate(exp.id);
+                            setConfirmDialog({ open: true, type: 'expense', id: exp.id });
                           }}
-                          disabled={deleteExpenseMutation.isPending}
                           className="text-red-500 hover:text-red-700 text-sm"
                         >
                           &times;
@@ -565,7 +566,7 @@ export default function HouseholdPage() {
                           ${parseFloat(s.amount).toFixed(2)}
                         </span>
                         <button
-                          onClick={() => deleteSettlementMutation.mutate(s.id)}
+                          onClick={() => setConfirmDialog({ open: true, type: 'settlement', id: s.id })}
                           className="text-red-500 hover:text-red-700 text-sm"
                         >
                           Delete
@@ -648,6 +649,24 @@ export default function HouseholdPage() {
           </div>
         </div>
       </div>
+      <ConfirmDialog
+        open={confirmDialog.open}
+        title={confirmDialog.type === 'expense' ? 'Delete Expense' : 'Delete Settlement'}
+        message={
+          confirmDialog.type === 'expense'
+            ? 'Are you sure you want to delete this expense?'
+            : 'Are you sure you want to delete this settlement?'
+        }
+        onConfirm={() => {
+          if (confirmDialog.type === 'expense') {
+            deleteExpenseMutation.mutate(confirmDialog.id);
+          } else if (confirmDialog.type === 'settlement') {
+            deleteSettlementMutation.mutate(confirmDialog.id);
+          }
+          setConfirmDialog({ open: false, type: null, id: null });
+        }}
+        onCancel={() => setConfirmDialog({ open: false, type: null, id: null })}
+      />
     </AppLayout>
   );
 }

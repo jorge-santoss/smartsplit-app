@@ -4,7 +4,9 @@ const ToastContext = createContext(null);
 let nextId = 0;
 
 export function useToast() {
-  return useContext(ToastContext);
+  const ctx = useContext(ToastContext);
+  if (!ctx) throw new Error('useToast must be used within a ToastProvider');
+  return ctx;
 }
 
 export function ToastProvider({ children }) {

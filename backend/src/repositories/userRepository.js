@@ -42,4 +42,8 @@ const updatePassword = async (id, passwordHash) => {
   );
 };
 
-module.exports = { create, findByEmail, findById, findByIdWithPassword, updateProfile, updatePassword };
+const deleteById = async (id) => {
+  await pool.query("DELETE FROM users WHERE id = ?", [id]);
+};
+
+module.exports = { create, findByEmail, findById, findByIdWithPassword, updateProfile, updatePassword, deleteById };

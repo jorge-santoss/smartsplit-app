@@ -24,7 +24,8 @@ const findById = async (id) => {
 
 const findAllByUserId = async (userId) => {
   const [rows] = await pool.query(
-    `SELECT h.* FROM households h
+    `SELECT h.*, (SELECT COUNT(*) FROM household_members WHERE household_id = h.id) AS member_count
+     FROM households h
      JOIN household_members hm ON h.id = hm.household_id
      WHERE hm.user_id = ?
      ORDER BY h.created_at DESC`,

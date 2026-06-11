@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import AppLayout from '../layouts/AppLayout';
 import { SkeletonCard } from '../components/Skeleton';
 import { useToast } from '../components/Toast';
+import ConfirmDialog from '../components/ConfirmDialog';
 import * as householdApi from '../api/householdApi';
 import * as balanceApi from '../api/balanceApi';
 import * as activityApi from '../api/activityApi';
@@ -14,6 +15,7 @@ export default function DashboardPage() {
   const toast = useToast();
   const [newName, setNewName] = useState('');
   const [newDesc, setNewDesc] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(null);
 
   const { data: households, isLoading } = useQuery({
     queryKey: ['households'],
@@ -25,7 +27,7 @@ export default function DashboardPage() {
     queryFn: () => balanceApi.getSummary().then((r) => r.data),
   });
 
-  const { data: feed } = useQuery({
+  const { data: feed, isLoading: feedLoading, isError: feedError } = useQuery({
     queryKey: ['activityFeed'],
     queryFn: () => activityApi.getFeed().then((r) => r.data),
   });
@@ -135,9 +137,7 @@ export default function DashboardPage() {
                       type="button"
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (window.confirm(`Delete "${h.name}" and all its data?`)) {
-                          deleteMutation.mutate(h.id);
-                        }
+                        setConfirmDelete(h);
                       }}
                       disabled={deleteMutation.isPending}
                       className="text-red-500 hover:text-red-700 text-sm"
@@ -153,11 +153,13 @@ export default function DashboardPage() {
 
         <div className="bg-white p-6 rounded-lg shadow-sm border">
           <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
-          {!feed ? (
+          {feedLoading ? (
             <div className="space-y-3">
               <SkeletonCard />
               <SkeletonCard />
             </div>
+          ) : feedError ? (
+            <p className="text-red-500">Failed to load activity feed.</p>
           ) : feed.length === 0 ? (
             <p className="text-gray-500">No activity yet.</p>
           ) : (
@@ -184,6 +186,16 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+      <ConfirmDialog
+        open={!!confirmDelete}
+        title="Delete Household"
+        message={`Delete "${confirmDelete?.name}" and all its data?`}
+        onConfirm={() => {
+          if (confirmDelete) deleteMutation.mutate(confirmDelete.id);
+          setConfirmDelete(null);
+        }}
+        onCancel={() => setConfirmDelete(null)}
+      />
     </AppLayout>
   );
 }

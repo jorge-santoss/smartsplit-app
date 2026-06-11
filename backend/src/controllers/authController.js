@@ -49,4 +49,13 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getProfile, updateProfile, changePassword };
+const deleteAccount = async (req, res, next) => {
+  try {
+    await authService.deleteAccount(req.user.id);
+    res.status(200).json({ message: 'Account deleted' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, getProfile, updateProfile, changePassword, deleteAccount };

@@ -6,6 +6,6 @@ const router = Router();
 router.use(authMiddleware);
 
 router.get('/balances/summary', balanceController.getSummary);
-router.get('/:householdId/balances', balanceController.getBalances);
+router.get('/households/:householdId/balances', balanceController.getBalances);
 
 module.exports = router;

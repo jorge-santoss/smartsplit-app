@@ -1,13 +1,13 @@
 const { ValidationError } = require('../utils/errors');
 
-const validateRegister = (req, res, next) => {
+const validateRegister = async (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (!name || typeof name !== 'string' || name.trim().length === 0) {
     throw new ValidationError('Name is required');
   }
 
-  if (!email || typeof email !== 'string' || !email.includes('@')) {
+  if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     throw new ValidationError('Valid email is required');
   }
 
@@ -18,7 +18,7 @@ const validateRegister = (req, res, next) => {
   next();
 };
 
-const validateLogin = (req, res, next) => {
+const validateLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || typeof email !== 'string') {

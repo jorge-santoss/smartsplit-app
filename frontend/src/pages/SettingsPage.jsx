@@ -21,16 +21,19 @@ export default function SettingsPage() {
         setProfile({ name: res.data.name, email: res.data.email });
         setLoading(false);
       })
-      .catch(() => {
-        navigate('/login');
+      .catch((err) => {
+        if (err.response?.status === 401) {
+          navigate('/login');
+        }
+        setLoading(false);
       });
   }, [navigate]);
 
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
-    setSaving(true);
     setMessage(null);
     setError(null);
+    setSaving(true);
     try {
       await updateProfile(profile.name, profile.email);
       updateUser({ name: profile.name, email: profile.email });
@@ -44,6 +47,8 @@ export default function SettingsPage() {
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
+    setMessage(null);
+    setError(null);
     if (password.newPassword !== password.confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -53,8 +58,6 @@ export default function SettingsPage() {
       return;
     }
     setChangingPw(true);
-    setMessage(null);
-    setError(null);
     try {
       await changePassword(password.currentPassword, password.newPassword);
       setMessage('Password changed');

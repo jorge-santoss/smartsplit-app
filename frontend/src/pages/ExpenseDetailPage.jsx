@@ -38,6 +38,14 @@ export default function ExpenseDetailPage() {
     );
   }
 
+  if (householdQuery.error) {
+    return (
+      <AppLayout>
+        <p className="text-red-500">Failed to load household details</p>
+      </AppLayout>
+    );
+  }
+
   const expense = expenseQuery.data;
   const splits = expense.splits || [];
 
@@ -59,7 +67,7 @@ export default function ExpenseDetailPage() {
         </p>
 
         <div className="text-3xl font-bold text-blue-700 mb-6">
-          ${parseFloat(expense.amount).toFixed(2)}
+          ${parseFloat(expense.amount || 0).toFixed(2)}
         </div>
 
         {expense.note && (
@@ -73,14 +81,14 @@ export default function ExpenseDetailPage() {
 
         <h2 className="text-lg font-semibold mb-3 border-t pt-4">Splits</h2>
         <div className="space-y-2">
-          {splits.map((split) => (
+          {splits.map((split, i) => (
             <div
-              key={split.member_id || split.memberId}
+              key={split.id ?? i}
               className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
             >
               <span className="font-medium">{split.member_name || split.memberName}</span>
               <span className="text-gray-700">
-                ${parseFloat(split.amount).toFixed(2)} ({parseFloat(split.percentage).toFixed(1)}%)
+                ${parseFloat(split.amount || 0).toFixed(2)} ({parseFloat(split.percentage || 0).toFixed(1)}%)
               </span>
             </div>
           ))}
