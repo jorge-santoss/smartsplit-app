@@ -55,7 +55,7 @@ const isMember = async (householdId, userId) => {
 
 const update = async (id, name, description) => {
   const [result] = await pool.query(
-    "UPDATE households SET name = ?, description = ? WHERE id = ?",
+    "UPDATE households SET name = ?, description = ?, updated_at = NOW() WHERE id = ?",
     [name, description, id],
   );
   return result.affectedRows > 0;

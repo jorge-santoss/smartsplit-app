@@ -22,7 +22,7 @@ const findById = async (id) => {
 };
 
 const update = async (id, name) => {
-  await pool.query("UPDATE categories SET name = ? WHERE id = ?", [name, id]);
+  await pool.query("UPDATE categories SET name = ?, updated_at = NOW() WHERE id = ?", [name, id]);
 };
 
 const deleteById = async (id) => {
