@@ -1,21 +1,21 @@
-import { useParams, useNavigate } from 'react-router';
-import { useQuery } from '@tanstack/react-query';
-import * as expenseApi from '../api/expenseApi';
-import * as householdApi from '../api/householdApi';
-import AppLayout from '../layouts/AppLayout';
-import { SkeletonCard } from '../components/Skeleton';
+import { useParams, useNavigate } from "react-router";
+import { useQuery } from "@tanstack/react-query";
+import * as expenseApi from "../api/expenseApi";
+import * as householdApi from "../api/householdApi";
+import AppLayout from "../layouts/AppLayout";
+import { SkeletonCard } from "../components/Skeleton";
 
 export default function ExpenseDetailPage() {
   const { expenseId, householdId } = useParams();
   const navigate = useNavigate();
 
   const expenseQuery = useQuery({
-    queryKey: ['expense', expenseId],
+    queryKey: ["expense", expenseId],
     queryFn: () => expenseApi.getById(expenseId).then((r) => r.data),
   });
 
   const householdQuery = useQuery({
-    queryKey: ['household', householdId],
+    queryKey: ["household", householdId],
     queryFn: () => householdApi.getById(householdId).then((r) => r.data),
   });
 
@@ -62,7 +62,9 @@ export default function ExpenseDetailPage() {
         <h1 className="text-2xl font-bold mb-2">{expense.title}</h1>
         <p className="text-gray-500 text-sm mb-4">
           {new Date(expense.expense_date).toLocaleDateString()}
-          {expense.category_name && <span> &middot; {expense.category_name}</span>}
+          {expense.category_name && (
+            <span> &middot; {expense.category_name}</span>
+          )}
           &middot; Split: {expense.split_type}
         </p>
 
@@ -86,9 +88,10 @@ export default function ExpenseDetailPage() {
               key={split.id ?? i}
               className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
             >
-              <span className="font-medium">{split.member_name || split.memberName}</span>
+              <span className="font-medium">{split.member_name}</span>
               <span className="text-gray-700">
-                ${parseFloat(split.amount || 0).toFixed(2)} ({parseFloat(split.percentage || 0).toFixed(1)}%)
+                ${parseFloat(split.amount || 0).toFixed(2)} (
+                {parseFloat(split.percentage || 0).toFixed(1)}%)
               </span>
             </div>
           ))}

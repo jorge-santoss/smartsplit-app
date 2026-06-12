@@ -1,21 +1,21 @@
-import { createContext, useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
+import { AuthContext } from './AuthContext';
 import * as authApi from '../api/authApi';
-
-export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
-    const stored = localStorage.getItem('user');
-    return stored ? JSON.parse(stored) : null;
+    try {
+      const stored = localStorage.getItem('user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      localStorage.removeItem('user');
+      return null;
+    }
   });
   const [token, setToken] = useState(() => {
     return localStorage.getItem('token') || null;
   });
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  const [loading] = useState(false);
 
   const login = useCallback(async (email, password) => {
     const response = await authApi.login(email, password);
@@ -43,11 +43,11 @@ export function AuthProvider({ children }) {
   }, []);
 
   const updateUser = useCallback((userData) => {
-  const stored = JSON.parse(localStorage.getItem('user') || '{}');
-  const updated = { ...stored, ...userData };
-  localStorage.setItem('user', JSON.stringify(updated));
-  setUser(updated);
-}, []);
+    const stored = JSON.parse(localStorage.getItem('user') || '{}');
+    const updated = { ...stored, ...userData };
+    localStorage.setItem('user', JSON.stringify(updated));
+    setUser(updated);
+  }, []);
 
   const value = { user, token, loading, login, register, logout, updateUser };
 

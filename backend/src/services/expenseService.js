@@ -22,6 +22,10 @@ const create = async (householdId, data, userId) => {
     await householdRepository.findMembersByHouseholdId(householdId);
   const memberIds = members.map((m) => m.id);
 
+  if (memberIds.length === 0) {
+    throw new ValidationError("Household has no members");
+  }
+
   if (!memberIds.includes(data.payerId)) {
     throw new ValidationError("Payer must be a household member");
   }
@@ -166,8 +170,20 @@ const update = async (expenseId, data, userId) => {
     throw new ForbiddenError("Only the payer can edit this expense");
   }
 
+  if (!data.title || !data.amount || !data.expenseDate || !data.splitType || !data.payerId) {
+    throw new ValidationError("Title, amount, date, split type, and payer are required");
+  }
+
+  if (data.amount <= 0) {
+    throw new ValidationError("Amount must be greater than zero");
+  }
+
   const members = await householdRepository.findMembersByHouseholdId(expense.household_id);
   const memberIds = members.map((m) => m.id);
+
+  if (memberIds.length === 0) {
+    throw new ValidationError("Household has no members");
+  }
 
   if (data.payerId && !memberIds.includes(data.payerId)) {
     throw new ValidationError("Payer must be a household member");

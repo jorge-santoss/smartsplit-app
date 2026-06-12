@@ -1,95 +1,76 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { getProfile, updateProfile, changePassword } from '../api/userApi';
 import AppLayout from '../layouts/AppLayout';
 import { useAuth } from '../hooks/useAuth';
+import { useToast } from '../context/ToastContext';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState({ name: '', email: '' });
-  const [password, setPassword] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [changingPw, setChangingPw] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [error, setError] = useState(null);
+  const toast = useToast();
   const { updateUser } = useAuth();
 
-  useEffect(() => {
-    getProfile()
-      .then((res) => {
-        setProfile({ name: res.data.name, email: res.data.email });
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (err.response?.status === 401) {
-          navigate('/login');
-        }
-        setLoading(false);
-      });
-  }, [navigate]);
+  const [profile, setProfile] = useState({ name: '', email: '' });
+  const [password, setPassword] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
+  const [changingPw, setChangingPw] = useState(false);
 
-  const handleProfileSubmit = async (e) => {
-    e.preventDefault();
-    setMessage(null);
-    setError(null);
-    setSaving(true);
-    try {
-      await updateProfile(profile.name, profile.email);
+  useQuery({
+    queryKey: ['profile'],
+    queryFn: () => getProfile().then((r) => r.data),
+    onSuccess: (data) => {
+      setProfile({ name: data.name, email: data.email });
+    },
+    onError: (err) => {
+      if (err.response?.status === 401) {
+        navigate('/login');
+      }
+    },
+    retry: false,
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: () => updateProfile(profile.name, profile.email),
+    onSuccess: () => {
       updateUser({ name: profile.name, email: profile.email });
-      setMessage('Profile updated');
-    } catch (err) {
-      setError(err.response?.data?.error || 'Failed to update profile');
-    } finally {
-      setSaving(false);
-    }
+      toast('Profile updated', 'success');
+    },
+    onError: (err) => {
+      toast(err.response?.data?.error || 'Failed to update profile', 'error');
+    },
+  });
+
+  const handleProfileSubmit = (e) => {
+    e.preventDefault();
+    updateMutation.mutate();
   };
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
-    setMessage(null);
-    setError(null);
     if (password.newPassword !== password.confirmPassword) {
-      setError('Passwords do not match');
+      toast('Passwords do not match', 'error');
       return;
     }
     if (password.newPassword.length < 6) {
-      setError('New password must be at least 6 characters');
+      toast('New password must be at least 6 characters', 'error');
       return;
     }
     setChangingPw(true);
     try {
       await changePassword(password.currentPassword, password.newPassword);
-      setMessage('Password changed');
+      toast('Password changed', 'success');
       setPassword({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to change password');
+      toast(err.response?.data?.error || 'Failed to change password', 'error');
     } finally {
       setChangingPw(false);
     }
   };
 
-  if (loading) {
-    return (
-      <AppLayout>
-        <div className="flex justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
-        </div>
-      </AppLayout>
-    );
-  }
-
   return (
     <AppLayout>
       <div className="max-w-2xl mx-auto space-y-8">
         <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
-
-        {message && (
-          <div className="bg-green-50 text-green-700 px-4 py-3 rounded-md text-sm">{message}</div>
-        )}
-        {error && (
-          <div className="bg-red-50 text-red-700 px-4 py-3 rounded-md text-sm">{error}</div>
-        )}
 
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile</h3>
@@ -116,10 +97,10 @@ export default function SettingsPage() {
             </div>
             <button
               type="submit"
-              disabled={saving}
+              disabled={updateMutation.isPending}
               className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
             >
-              {saving ? 'Saving...' : 'Save'}
+              {updateMutation.isPending ? 'Saving...' : 'Save'}
             </button>
           </form>
         </div>

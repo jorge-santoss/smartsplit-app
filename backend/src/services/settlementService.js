@@ -1,6 +1,7 @@
 const pool = require('../config/db');
 const householdRepository = require('../repositories/householdRepository');
 const { NotFoundError, ForbiddenError, ValidationError } = require('../utils/errors');
+const settlementRepository = require('../repositories/settlementRepository');
 
 const create = async (householdId, data, userId) => {
   const household = await householdRepository.findById(householdId);

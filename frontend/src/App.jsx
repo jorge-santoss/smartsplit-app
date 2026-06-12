@@ -7,6 +7,7 @@ import DashboardPage from "./pages/DashboardPage";
 import HouseholdPage from "./pages/HouseholdPage";
 import ExpenseDetailPage from "./pages/ExpenseDetailPage";
 import SettingsPage from "./pages/SettingsPage";
+import LandingPage from "./pages/LandingPage";
 
 function ProtectedRoute({ children }) {
   const { token, loading } = useAuth();
@@ -36,6 +37,14 @@ export default function App() {
     <BrowserRouter>
       <ErrorBoundary>
         <Routes>
+          <Route
+            path="/"
+            element={
+              <PublicRoute>
+                <LandingPage />
+              </PublicRoute>
+            }
+          />
           <Route
             path="/login"
             element={
@@ -84,7 +93,6 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route
             path="*"
             element={
