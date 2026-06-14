@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router';
-import { useAuth } from '../hooks/useAuth';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     try {
       await login(email, password);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(err.response?.data?.error || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -36,6 +36,12 @@ export default function LoginPage() {
         {error && (
           <p className="text-red-500 text-sm text-center mb-4">{error}</p>
         )}
+        <Link
+          to="/"
+          className="text-sm text-blue-600 hover:underline block text-center mb-4"
+        >
+          &larr; Back to Home
+        </Link>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
@@ -58,11 +64,11 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <p className="text-sm text-center text-gray-500 mt-4">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link to="/register" className="text-blue-600 hover:underline">
             Register
           </Link>

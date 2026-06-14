@@ -1,25 +1,25 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router';
-import { useAuth } from '../hooks/useAuth';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 export default function RegisterPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     try {
       await register(name, email, password);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.error || 'Registration failed');
+      setError(err.response?.data?.error || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -37,6 +37,12 @@ export default function RegisterPage() {
         {error && (
           <p className="text-red-500 text-sm text-center mb-4">{error}</p>
         )}
+        <Link
+          to="/"
+          className="text-sm text-blue-600 hover:underline block text-center mb-4"
+        >
+          &larr; Back to Home
+        </Link>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
@@ -67,11 +73,11 @@ export default function RegisterPage() {
             disabled={loading}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Registering...' : 'Register'}
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
         <p className="text-sm text-center text-gray-500 mt-4">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link to="/login" className="text-blue-600 hover:underline">
             Login
           </Link>
