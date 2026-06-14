@@ -1,24 +1,24 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams, useNavigate, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import AppLayout from "../layouts/AppLayout";
 import * as householdApi from "../api/householdApi";
 import { SkeletonCard } from "../components/Skeleton";
 import { useAuth } from "../hooks/useAuth";
-import HouseholdOverview from "./household/HouseholdOverview";
 import HouseholdExpenses from "./household/HouseholdExpenses";
 import HouseholdBalances from "./household/HouseholdBalances";
 import HouseholdMembers from "./household/HouseholdMembers";
 import HouseholdSettlements from "./household/HouseholdSettlements";
 
-const TABS = ["Overview", "Expenses", "Balances", "Members", "Settlements"];
+const TABS = ["Expenses", "Balances", "Members", "Settlements"];
 
 export default function HouseholdPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
   const householdId = parseInt(id, 10);
-  const [activeTab, setActiveTab] = useState("Overview");
+  const [searchParams] = useSearchParams();
+const [activeTab, setActiveTab] = useState(searchParams.get("tab") || "Expenses");
 
   const { data: household, isLoading } = useQuery({
     queryKey: ["household", householdId],
@@ -62,16 +62,16 @@ export default function HouseholdPage() {
         </div>
       </div>
 
-      <div className="border-b border-gray-200 mb-6">
-        <nav className="flex gap-6">
+                <div className="sticky top-16 z-40 -mx-4 px-4 sm:mx-0 sm:px-0 mb-6 flex justify-center">
+        <nav className="bg-white/80 backdrop-blur-md border border-[#c3c6d7] rounded-3xl shadow-sm p-1.5 flex gap-1 overflow-x-auto">
           {TABS.map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`pb-3 text-sm font-medium border-b-2 transition-colors ${
+              className={`px-5 py-2.5 rounded-2xl text-sm font-medium transition-all whitespace-nowrap flex-1 sm:flex-none ${
                 activeTab === tab
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? 'bg-[#004ac6] text-white shadow-md'
+                  : 'text-[#434655] hover:bg-[#eff4ff]'
               }`}
             >
               {tab}
@@ -80,13 +80,7 @@ export default function HouseholdPage() {
         </nav>
       </div>
 
-      {activeTab === "Overview" && (
-        <HouseholdOverview
-          household={household}
-          householdId={householdId}
-          onTabChange={setActiveTab}
-        />
-      )}
+      
       {activeTab === "Expenses" && (
         <HouseholdExpenses household={household} householdId={householdId} />
       )}
