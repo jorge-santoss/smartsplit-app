@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as expenseApi from "../../api/expenseApi";
 import * as categoryApi from "../../api/categoryApi";
-import Skeleton, { SkeletonCard } from "../../components/Skeleton";
+import { SkeletonCard } from "../../components/Skeleton";
 import { useToast } from "../../context/ToastContext";
 import ConfirmDialog from "../../components/ConfirmDialog";
 

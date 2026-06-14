@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import AppLayout from "../layouts/AppLayout";
 import * as householdApi from "../api/householdApi";
-import Skeleton, { SkeletonCard } from "../components/Skeleton";
+import { SkeletonCard } from "../components/Skeleton";
 import { useAuth } from "../hooks/useAuth";
 import HouseholdOverview from "./household/HouseholdOverview";
 import HouseholdExpenses from "./household/HouseholdExpenses";

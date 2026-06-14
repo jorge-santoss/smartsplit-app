@@ -1,160 +1,155 @@
 import { Link } from 'react-router';
 import { useAuth } from '../hooks/useAuth';
-import heroBanner from '../assets/smartsplit-landscape-banner.png';
+import heroImg from '../assets/smartsplit-landscape-banner.png';
 
 export default function LandingPage() {
   const { token } = useAuth();
 
   return (
-    <div className="min-h-screen bg-white">
-      <header className="border-b border-gray-100">
+    <div className="min-h-screen bg-[#F5F7F8]">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: '#3FE0C5' }}>S</div>
             <span className="text-xl font-bold text-gray-900">SmartSplit</span>
           </div>
-          <nav className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-8 text-sm text-gray-500">
+            <span className="text-gray-900 font-medium">Home</span>
+            <a href="#features" className="hover:text-gray-900">Features</a>
+            <a href="#how-it-works" className="hover:text-gray-900">How It Works</a>
+          </div>
+          <div className="flex items-center gap-3">
             {token ? (
-              <Link
-                to="/dashboard"
-                className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-              >
-                Dashboard
-              </Link>
+              <Link to="/dashboard" className="px-5 py-2 rounded-lg text-sm font-medium text-white" style={{ backgroundColor: '#3FE0C5' }}>Dashboard</Link>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/register"
-                  className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                >
-                  Get started
-                </Link>
+                <Link to="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900">Log In</Link>
+                <Link to="/register" className="px-5 py-2 rounded-lg text-sm font-medium text-white" style={{ backgroundColor: '#3FE0C5' }}>Sign Up</Link>
               </>
             )}
-          </nav>
+          </div>
         </div>
       </header>
 
       <main>
-             <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-16 text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight max-w-3xl mx-auto">
-          Split expenses with the people you live with
-        </h1>
-        <p className="mt-4 text-lg text-gray-500 max-w-xl mx-auto">
-          SmartSplit keeps track of who paid what, calculates balances automatically, and makes settling up simple.
-        </p>
-        <div className="mt-8 flex items-center justify-center gap-4">
-          {token ? (
-            <Link
-              to="/dashboard"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg text-base font-medium hover:bg-blue-700 transition-colors"
-            >
-              Go to Dashboard
-            </Link>
-          ) : (
-            <Link
-              to="/register"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg text-base font-medium hover:bg-blue-700 transition-colors shadow-sm"
-            >
-              Start splitting — it's free
-            </Link>
-          )}
-        </div>
-        <div className="mt-12">
-          <img
-            src={heroBanner}
-            alt="SmartSplit dashboard preview"
-            className="w-full max-w-4xl mx-auto rounded-xl shadow-lg border border-gray-200"
-          />
-        </div>
-      </section>
-
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: 'Track shared expenses', description: 'Record rent, groceries, utilities, and anything else you share with your household.', icon: 'M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z' },
-              { title: 'Split your way', description: 'Choose equal splits, exact amounts, or percentages — whatever works for your group.', icon: 'M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z' },
-              { title: 'Auto-calculated balances', description: 'See exactly who owes what at a glance. No more spreadsheets or mental math.', icon: 'M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z' },
-            ].map((feature) => (
-              <div key={feature.title} className="bg-white p-6 rounded-xl border border-gray-200">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                  <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={feature.icon} /></svg>
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-1.5">{feature.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
+        {/* Hero */}
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-20 flex flex-col lg:flex-row items-center gap-10">
+          <div className="flex-1 text-center lg:text-left">
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">Manage Shared Household Expenses Without the Headaches</h1>
+            <p className="mt-4 text-lg text-gray-500 max-w-xl">Track expenses, split bills fairly, monitor balances, and settle debts with roommates, couples, or family members.</p>
+            <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+              <Link to={token ? "/dashboard" : "/register"} className="px-8 py-3 rounded-lg text-base font-medium text-white shadow-lg" style={{ backgroundColor: '#3FE0C5' }}>
+                {token ? "Go to Dashboard" : "Get Started Free"}
+              </Link>
+              <a href="#how-it-works" className="px-8 py-3 rounded-lg text-base font-medium text-gray-700 bg-white/60 backdrop-blur-sm border border-white/40 hover:bg-white/80">
+                See How It Works
+              </a>
+            </div>
+          </div>
+          <div className="flex-1 w-full max-w-lg">
+            <img src={heroImg} alt="SmartSplit preview" className="w-full rounded-2xl shadow-xl" />
           </div>
         </section>
 
-        <section className="bg-gray-50 py-16">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <h2 className="text-2xl font-bold text-gray-900 text-center mb-12">How it works</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-              {[
-                { step: '1', title: 'Create a household', description: 'Set up a shared space for your roommates, family, or group.' },
-                { step: '2', title: 'Add expenses', description: 'Log who paid and how to split it — equal, exact, or by percentage.' },
-                { step: '3', title: 'Settle up', description: 'Record repayments and keep everyone\'s balance up to date.' },
-              ].map((item) => (
-                <div key={item.step} className="text-center">
-                  <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-lg font-bold mx-auto mb-4">
-                    {item.step}
+        {/* Dashboard Preview Card */}
+        <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-16">
+          <div className="backdrop-blur-xl bg-white/40 rounded-2xl p-8 shadow-xl border border-white/50 max-w-2xl mx-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold text-gray-900">Apartment 4A</h3>
+              <div className="flex gap-2">
+                {['Sarah','Alex','John'].map(m => (
+                  <span key={m} className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium text-white" style={{ backgroundColor: '#3FE0C5' }}>{m[0]}</span>
+                ))}
+              </div>
+            </div>
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              {[['Sarah','+$120','text-green-600'],['Alex','-$70','text-red-500'],['John','-$50','text-red-500']].map(([n,b,c]) => (
+                <div key={n} className="text-center">
+                  <p className="text-sm text-gray-500">{n}</p>
+                  <p className={`text-lg font-bold ${c}`}>{b}</p>
+                </div>
+              ))}
+            </div>
+            <div className="space-y-2">
+              {[['Rent','$1,200','Sarah','Equal'],['Groceries','$150','Alex','Percentage'],['Internet','$60','John','Exact']].map(([t,a,p,s]) => (
+                <div key={t} className="flex items-center justify-between py-2 border-b border-white/30 last:border-0">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{t}</p>
+                    <p className="text-xs text-gray-400">Paid by {p} · {s}</p>
                   </div>
-                  <h3 className="font-semibold text-gray-900 mb-1.5">{item.title}</h3>
-                  <p className="text-sm text-gray-500 leading-relaxed">{item.description}</p>
+                  <span className="text-sm font-semibold text-gray-900">${a}</span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
+        {/* Features */}
+        <section id="features" className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Core Features</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              ['Household Management','Create households and invite members.'],
+              ['Flexible Expense Splitting','Split expenses equally, by exact amounts, or by percentages.'],
+              ['Automatic Balance Tracking','Always know who owes whom.'],
+              ['Settlement Recording','Record repayments and keep balances accurate.'],
+              ['Expense Categories','Organize expenses by groceries, rent, utilities, and more.'],
+              ['Expense History','Review all transactions and settlements.'],
+            ].map(([t,d]) => (
+              <div key={t} className="backdrop-blur-xl bg-white/40 rounded-2xl p-8 shadow-lg border border-white/50">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">{t}</h3>
+                <p className="text-sm text-gray-500">{d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* How It Works */}
+        <section id="how-it-works" className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">How SmartSplit Works</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              [1,'Create a Household','Set up your household and invite members.'],
+              [2,'Add Shared Expenses','Record expenses and choose how to split them.'],
+              [3,'Track Balances','See who owes money and who should be reimbursed.'],
+              [4,'Settle Up','Record repayments and keep everything balanced.'],
+            ].map(([n,t,d]) => (
+              <div key={n} className="text-center">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-4 text-white shadow-lg" style={{ backgroundColor: '#3FE0C5' }}>{n}</div>
+                <h3 className="font-semibold text-gray-900 mb-1.5">{t}</h3>
+                <p className="text-sm text-gray-500">{d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* CTA */}
         <section className="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">Ready to simplify shared expenses?</h2>
-          <p className="text-gray-500 mb-8">Join SmartSplit and stop chasing your roommates for money.</p>
-          {token ? (
-            <Link
-              to="/dashboard"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg text-base font-medium hover:bg-blue-700 transition-colors"
-            >
-              Go to Dashboard
-            </Link>
-          ) : (
-            <Link
-              to="/register"
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg text-base font-medium hover:bg-blue-700 transition-colors"
-            >
-              Get started
-            </Link>
-          )}
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Ready to split smarter?</h2>
+          <Link to={token ? "/dashboard" : "/register"} className="inline-block mt-6 px-8 py-3 rounded-lg text-base font-medium text-white shadow-lg" style={{ backgroundColor: '#3FE0C5' }}>
+            {token ? "Go to Dashboard" : "Get Started Free"}
+          </Link>
         </section>
       </main>
 
-      <footer className="border-t border-gray-100 py-8">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-sm text-gray-400">
-            <div className="w-5 h-5 bg-blue-600 rounded flex items-center justify-center">
-              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            </div>
-            SmartSplit
+      <footer className="backdrop-blur-xl bg-white/40 border-t border-white/30 py-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+            {[
+              ['Product',['Features','How It Works','Pricing']],
+              ['Company',['About Us','Careers','Contact']],
+              ['Legal',['Terms','Privacy Policy']],
+              ['Social',['Twitter','Facebook','Instagram']],
+            ].map(([t,links]) => (
+              <div key={t}>
+                <h4 className="text-sm font-semibold text-gray-900 mb-4">{t}</h4>
+                <ul className="space-y-2">
+                  {links.map(l => <li key={l} className="text-sm text-gray-500 hover:text-gray-700 cursor-pointer">{l}</li>)}
+                </ul>
+              </div>
+            ))}
           </div>
-          <div className="flex items-center gap-6 text-sm text-gray-400">
-            {token ? (
-              <Link to="/dashboard" className="hover:text-gray-600 transition-colors">Dashboard</Link>
-            ) : (
-              <>
-                <Link to="/login" className="hover:text-gray-600 transition-colors">Log in</Link>
-                <Link to="/register" className="hover:text-gray-600 transition-colors">Register</Link>
-              </>
-            )}
-          </div>
+          <div className="border-t border-white/30 pt-6 text-center text-sm text-gray-400">© 2024 SmartSplit. All rights reserved.</div>
         </div>
       </footer>
     </div>
