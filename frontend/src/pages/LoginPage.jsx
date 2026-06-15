@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import bannerImg from "../assets/smartsplit-landscape-banner.png";
 
+
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

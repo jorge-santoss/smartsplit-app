@@ -40,12 +40,12 @@ export default function LandingPage() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/25" />
           {/* Content */}
           <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6">
             <div className="max-w-6xl mx-auto w-full">
               <div className="max-w-2xl text-center lg:text-left">
-                <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-md">
+                <h1 className="text-4xl sm:text-6xl font-bold text-white leading-tight drop-shadow-md">
                   What if every shared bill split itself fairly, every time? That’s SmartSplit.
                 </h1>
                 <p className="mt-4 text-lg text-gray-100 drop-shadow">
@@ -135,7 +135,7 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          <div className="border-t border-white/30 pt-6 text-center text-sm text-gray-400">© 2024 SmartSplit. All rights reserved.</div>
+          <div className="border-t border-white/30 pt-6 text-center text-sm text-gray-400">© 2026 SmartSplit. All rights reserved.</div>
         </div>
       </footer>
     </div>
