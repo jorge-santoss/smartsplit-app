@@ -28,7 +28,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F5F7F8] p-4">
-      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row">
+      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row">
         <div className="lg:w-1/2 bg-linear-to-br from-[#F8FAFE] to-[#F0F3F8] flex items-center justify-center">
           <img src={bannerImg} alt="SmartSplit" className="w-full max-w-full md:max-w-full h-auto object-contain" />
         </div>
