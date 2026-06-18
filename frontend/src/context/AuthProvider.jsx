@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { AuthContext } from './AuthContext';
 import * as authApi from '../api/authApi';
+import * as userApi from '../api/userApi';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
@@ -15,7 +16,28 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => {
     return localStorage.getItem('token') || null;
   });
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    userApi
+      .getProfile()
+      .then((res) => {
+        setUser(res.data);
+        localStorage.setItem('user', JSON.stringify(res.data));
+        setLoading(false);
+      })
+      .catch(() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setToken(null);
+        setUser(null);
+        setLoading(false);
+      });
+  }, []);
 
   const login = useCallback(async (email, password) => {
     const response = await authApi.login(email, password);

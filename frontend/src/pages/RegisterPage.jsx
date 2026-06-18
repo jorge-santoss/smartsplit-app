@@ -51,7 +51,7 @@ export default function RegisterPage() {
                 placeholder="Full name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#c3c6d7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004ac6] focus:border-transparent bg-white text-sm"
+                className="w-full px-4 py-2.5 border border-[#c3c6d7] rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
                 required
               />
               <input
@@ -59,7 +59,7 @@ export default function RegisterPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#c3c6d7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004ac6] focus:border-transparent bg-white text-sm"
+                className="w-full px-4 py-2.5 border border-[#c3c6d7] rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
                 required
               />
               <input
@@ -67,13 +67,13 @@ export default function RegisterPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#c3c6d7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#004ac6] focus:border-transparent bg-white text-sm"
+                className="w-full px-4 py-2.5 border border-[#c3c6d7] rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
                 required
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-[#004ac6] text-white py-2.5 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity text-sm"
+                className="w-full bg-teal-500 text-white py-2.5 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity text-sm"
               >
                 {loading ? "Creating account..." : "Create Account"}
               </button>
@@ -81,7 +81,7 @@ export default function RegisterPage() {
 
             <p className="text-xs text-center text-gray-500 mt-5">
               Already have an account?{" "}
-              <Link to="/login" className="text-[#004ac6] font-medium hover:underline">Click here</Link>
+              <Link to="/login" className="text-teal-500 font-medium hover:underline">Click here</Link>
             </p>
           </div>
         </div>

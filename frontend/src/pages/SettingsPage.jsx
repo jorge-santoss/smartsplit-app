@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getProfile, updateProfile, changePassword } from '../api/userApi';
 import AppLayout from '../layouts/AppLayout';
@@ -7,7 +6,6 @@ import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../context/ToastContext';
 
 export default function SettingsPage() {
-  const navigate = useNavigate();
   const toast = useToast();
   const { updateUser } = useAuth();
 
@@ -15,19 +13,17 @@ export default function SettingsPage() {
   const [password, setPassword] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
   const [changingPw, setChangingPw] = useState(false);
 
-  useQuery({
+    const { data: profileData } = useQuery({
     queryKey: ['profile'],
     queryFn: () => getProfile().then((r) => r.data),
-    onSuccess: (data) => {
-      setProfile({ name: data.name, email: data.email });
-    },
-    onError: (err) => {
-      if (err.response?.status === 401) {
-        navigate('/login');
-      }
-    },
     retry: false,
   });
+
+  useEffect(() => {
+    if (profileData) {
+      setProfile({ name: profileData.name, email: profileData.email });
+    }
+  }, [profileData]);
 
   const updateMutation = useMutation({
     mutationFn: () => updateProfile(profile.name, profile.email),
@@ -81,7 +77,7 @@ export default function SettingsPage() {
                 type="text"
                 value={profile.name}
                 onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
                 required
               />
             </div>
@@ -91,14 +87,14 @@ export default function SettingsPage() {
                 type="email"
                 value={profile.email}
                 onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={updateMutation.isPending}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
+              className="bg-teal-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-teal-600 disabled:opacity-50"
             >
               {updateMutation.isPending ? 'Saving...' : 'Save'}
             </button>
@@ -114,7 +110,7 @@ export default function SettingsPage() {
                 type="password"
                 value={password.currentPassword}
                 onChange={(e) => setPassword({ ...password, currentPassword: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
                 required
               />
             </div>
@@ -124,7 +120,7 @@ export default function SettingsPage() {
                 type="password"
                 value={password.newPassword}
                 onChange={(e) => setPassword({ ...password, newPassword: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
                 required
               />
             </div>
@@ -134,14 +130,14 @@ export default function SettingsPage() {
                 type="password"
                 value={password.confirmPassword}
                 onChange={(e) => setPassword({ ...password, confirmPassword: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={changingPw}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
+              className="bg-teal-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-teal-600 disabled:opacity-50"
             >
               {changingPw ? 'Changing...' : 'Change Password'}
             </button>

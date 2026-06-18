@@ -10,16 +10,21 @@ import * as expenseApi from '../api/expenseApi';
 import * as settlementApi from '../api/settlementApi';
 import * as balanceApi from '../api/balanceApi';
 import * as activityApi from '../api/activityApi';
+import { useAuth } from '../hooks/useAuth';
+import Avatar from '../components/Avatar';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const toast = useToast();
+  const { user } = useAuth();
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState('');
   const [newDesc, setNewDesc] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [editName, setEditName] = useState('');
 
   const { data: households, isLoading } = useQuery({
     queryKey: ['households'],
@@ -100,11 +105,40 @@ export default function DashboardPage() {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: ({ id, name }) => householdApi.update(id, { name }),
+    onSuccess: () => {
+      toast('Household renamed!', 'success');
+      queryClient.invalidateQueries({ queryKey: ['households'] });
+      setEditingId(null);
+      setEditName('');
+    },
+    onError: (err) => {
+      toast(err.response?.data?.error || 'Failed to rename household', 'error');
+    },
+  });
+
   const handleCreate = (e) => {
     e.preventDefault();
     if (newName.trim()) {
       createMutation.mutate({ name: newName, description: newDesc });
     }
+  };
+
+  const handleStartEdit = (h) => {
+    setEditingId(h.id);
+    setEditName(h.name);
+  };
+
+  const handleSaveEdit = (id) => {
+    if (editName.trim()) {
+      updateMutation.mutate({ id, name: editName.trim() });
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+    setEditName('');
   };
 
   return (
@@ -113,12 +147,12 @@ export default function DashboardPage() {
         {/* Header */}
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-[#0b1c30] leading-10 tracking-tight">Welcome back</h1>
+            <h1 className="text-4xl font-bold text-[#0b1c30] leading-10 tracking-tight">Welcome back <span className="text-teal-500">{user?.name || "User"}</span></h1>
             <p className="text-base text-[#434655]">Here is an overview of your shared finances.</p>
           </div>
           <button
             onClick={() => setShowCreate(true)}
-            className="bg-[#2563eb] text-white text-sm font-semibold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2 self-start md:self-auto shadow-md"
+            className="bg-teal-500 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2 self-start md:self-auto shadow-md"
           >
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" /></svg>
             Create New Household
@@ -139,11 +173,11 @@ export default function DashboardPage() {
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 <span className="text-xs font-semibold uppercase tracking-wider">Total Owed to You</span>
               </div>
-              <span className="text-4xl font-bold tracking-tight text-[#004ac6]">
+              <span className="text-4xl font-bold tracking-tight text-teal-500">
                 ${(summary?.totalOwedToMe || 0).toFixed(2)}
               </span>
               <div className="w-full bg-[#e5eeff] h-2 rounded-full overflow-hidden">
-                <div className="bg-[#004ac6] h-full rounded-full" style={{ width: `${owedPct}%` }} />
+                <div className="bg-teal-500 h-full rounded-full" style={{ width: `${owedPct}%` }} />
               </div>
             </div>
 
@@ -171,7 +205,7 @@ export default function DashboardPage() {
                     onClick={() => setSelectedId(h.id)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       selectedId === h.id
-                        ? 'bg-[#004ac6] text-white'
+                        ? 'bg-teal-500 text-white'
                         : 'bg-white border border-[#c3c6d7] text-[#434655] hover:bg-[#eff4ff]'
                     }`}
                   >
@@ -204,23 +238,48 @@ export default function DashboardPage() {
               <h2 className="text-xl font-semibold text-[#0b1c30] mb-4">My Households</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {households?.map((h) => (
-                  <div
-                    key={h.id}
-                    onClick={() => navigate(`/households/${h.id}`)}
-                    className="border border-[#c3c6d7] rounded-xl p-4 hover:bg-[#eff4ff] transition-colors cursor-pointer flex flex-col gap-2"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-[#dbe1ff] flex items-center justify-center text-[#00174b]">
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                  <div key={h.id} className="border border-[#c3c6d7] rounded-xl p-4 flex flex-col gap-2">
+                    {editingId === h.id ? (
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                          className="flex-1 px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                          autoFocus
+                        />
+                        <button onClick={() => handleSaveEdit(h.id)} disabled={updateMutation.isPending}
+                          className="text-xs bg-teal-500 text-white px-2 py-1.5 rounded-lg hover:opacity-90 disabled:opacity-50">Save</button>
+                        <button onClick={handleCancelEdit}
+                          className="text-xs bg-gray-100 text-gray-600 px-2 py-1.5 rounded-lg hover:bg-gray-200">Cancel</button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        <div
+                          onClick={() => navigate(`/households/${h.id}`)}
+                          className="flex items-center gap-3 cursor-pointer flex-1 min-w-0"
+                        >
+                          <div className="w-10 h-10 rounded-full bg-[#dbe1ff] flex items-center justify-center text-[#00174b] shrink-0">
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+                          </div>
+                          <div className="min-w-0">
+                            <h3 className="text-sm font-semibold text-[#0b1c30] truncate">{h.name}</h3>
+                            <p className="text-sm text-[#434655]">{h.member_count || '—'} Members</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="text-sm font-semibold text-[#0b1c30]">{h.name}</h3>
-                          <p className="text-sm text-[#434655]">{h.member_count || '—'} Members</p>
+                        <div className="flex items-center gap-1 shrink-0 ml-2">
+                          {h.owner_id === user?.id && (
+                            <>
+                              <button onClick={() => handleStartEdit(h)}
+                                className="text-xs text-gray-400 hover:text-teal-600 px-1.5 py-1 transition-colors">Edit</button>
+                              <button onClick={() => setConfirmDelete(h)}
+                                className="text-xs text-gray-400 hover:text-red-600 px-1.5 py-1 transition-colors">Delete</button>
+                            </>
+                          )}
+                          <svg className="w-5 h-5 text-[#c3c6d7]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                         </div>
                       </div>
-                      <svg className="w-5 h-5 text-[#c3c6d7]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -233,14 +292,22 @@ export default function DashboardPage() {
                 <h2 className="text-lg font-semibold text-[#0b1c30] mb-4">Balances</h2>
                 {balances ? (
                   <div className="space-y-3">
-                    {balances.map((b) => (
-                      <div key={b.userId} className="flex items-center justify-between py-2">
-                        <span className="text-sm font-medium text-gray-700">{b.name}</span>
-                        <span className={`text-sm font-bold ${b.balance > 0 ? 'text-green-600' : b.balance < 0 ? 'text-red-600' : 'text-gray-400'}`}>
-                          {b.balance > 0 ? '+' : ''}${Math.abs(b.balance).toFixed(2)}
-                        </span>
+                    {balances.debts?.length > 0 && (
+                      <div className="bg-red-50 rounded-lg px-3 py-2 mb-3">
+                        <p className="text-xs font-medium text-red-700">
+                          {balances.debts.length} debt{balances.debts.length > 1 ? 's' : ''} to settle
+                        </p>
                       </div>
-                    ))}
+                    )}
+                    {balances.balances.map((b) => (
+  <div key={b.id} className="flex items-center gap-2 py-2">
+    <Avatar name={b.name} size="sm" className="bg-teal-100 text-teal-700" />
+    <span className="text-sm font-medium text-gray-700 flex-1">{b.name}</span>
+    <span className={`text-sm font-bold ${b.net_balance > 0 ? 'text-teal-600' : b.net_balance < 0 ? 'text-red-600' : 'text-gray-400'}`}>
+      {b.net_balance > 0 ? '+' : ''}${Math.abs(b.net_balance).toFixed(2)}
+    </span>
+  </div>
+))}
                   </div>
                 ) : (
                   <SkeletonCard />
@@ -251,7 +318,7 @@ export default function DashboardPage() {
               <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-[#0b1c30]">Recent Expenses</h2>
-                  <button onClick={() => navigate(`/households/${selectedId}?tab=Expenses`)} className="text-sm text-blue-600 hover:underline">View all</button>
+                  <button onClick={() => navigate(`/households/${selectedId}?tab=Expenses`)} className="text-sm text-teal-600 hover:underline">View all</button>
                 </div>
                 {!expenses ? (
                   <SkeletonCard />
@@ -279,7 +346,7 @@ export default function DashboardPage() {
               <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-[#0b1c30]">Settlements</h2>
-                  <button onClick={() => navigate(`/households/${selectedId}?tab=Settlements`)}className="text-sm text-blue-600 hover:underline">View all</button>
+                  <button onClick={() => navigate(`/households/${selectedId}?tab=Settlements`)} className="text-sm text-teal-600 hover:underline">View all</button>
                 </div>
                 {!settlements ? (
                   <SkeletonCard />
@@ -293,7 +360,7 @@ export default function DashboardPage() {
                           <p className="text-sm font-medium text-gray-900">{s.from_user_name} paid {s.to_user_name}</p>
                           <p className="text-xs text-gray-500">{new Date(s.settlement_date).toLocaleDateString()}</p>
                         </div>
-                        <span className="text-sm font-bold text-green-600">${parseFloat(s.amount).toFixed(2)}</span>
+                        <span className="text-sm font-bold text-teal-600">${parseFloat(s.amount).toFixed(2)}</span>
                       </div>
                     ))}
                   </div>
@@ -304,13 +371,13 @@ export default function DashboardPage() {
               <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold text-[#0b1c30]">Members</h2>
-                  <button onClick={() => navigate(`/households/${selectedId}?tab=Members`)} className="text-sm text-blue-600 hover:underline">Manage</button>
+                  <button onClick={() => navigate(`/households/${selectedId}?tab=Members`)} className="text-sm text-teal-600 hover:underline">Manage</button>
                 </div>
                 <div className="divide-y divide-gray-100">
                   {householdDetail?.members?.map((m) => (
                     <div key={m.id} className="py-3 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-xs">
+                        <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center text-teal-700 font-bold text-xs">
                           {m.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
@@ -318,7 +385,7 @@ export default function DashboardPage() {
                           <p className="text-xs text-gray-500">{m.email}</p>
                         </div>
                       </div>
-                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">{m.role}</span>
+                      <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full">{m.role}</span>
                     </div>
                   ))}
                 </div>
@@ -341,7 +408,7 @@ export default function DashboardPage() {
               ) : (
                 <div className="flex flex-col gap-2">
                   {feed?.map((item) => (
-                    <div key={`${item.type}-${item.item_id}`} className="flex items-center justify-between p-4 border border-[#c3c6d7] rounded-xl hover:bg-[#eff4ff] transition-colors">
+                    <div key={`${item.type}-${item.item_id}-${item.household_name}`} className="flex items-center justify-between p-4 border border-[#c3c6d7] rounded-xl hover:bg-[#eff4ff] transition-colors">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-[#e5eeff] flex items-center justify-center text-[#434655]">
                           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -393,7 +460,7 @@ export default function DashboardPage() {
               <input type="text" placeholder="Description (optional)" value={newDesc} onChange={(e) => setNewDesc(e.target.value)} className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
               <div className="flex gap-2 justify-end">
                 <button type="button" onClick={() => setShowCreate(false)} className="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancel</button>
-                <button type="submit" disabled={createMutation.isPending} className="bg-[#2563eb] text-white px-4 py-2 rounded-lg hover:opacity-90 disabled:opacity-50">
+                <button type="submit" disabled={createMutation.isPending} className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:opacity-90 disabled:opacity-50">
                   {createMutation.isPending ? 'Creating...' : 'Create'}
                 </button>
               </div>

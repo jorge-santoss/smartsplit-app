@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as householdApi from "../../api/householdApi";
 import { useToast } from "../../context/ToastContext";
 import ConfirmDialog from "../../components/ConfirmDialog";
+import Avatar from "../../components/Avatar";
 
 export default function HouseholdMembers({ household, householdId, user }) {
   const queryClient = useQueryClient();
@@ -58,13 +59,13 @@ export default function HouseholdMembers({ household, householdId, user }) {
             placeholder="Email to invite"
             value={addEmail}
             onChange={(e) => setAddEmail(e.target.value)}
-            className="w-full sm:flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:flex-1 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
             required
           />
           <button
             type="submit"
             disabled={addMemberMutation.isPending}
-            className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="w-full sm:w-auto bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 disabled:opacity-50"
           >
             {addMemberMutation.isPending ? "Adding..." : "Add"}
           </button>
@@ -80,15 +81,13 @@ export default function HouseholdMembers({ household, householdId, user }) {
           </div>
           <div className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 font-bold text-sm">
-                {owner.name.charAt(0).toUpperCase()}
-              </div>
+             <Avatar name={owner.name} size="md" className="bg-amber-100 text-amber-700" />
               <div>
                 <p className="font-medium text-gray-900">{owner.name}</p>
                 <p className="text-xs text-gray-500">{owner.email}</p>
               </div>
             </div>
-            <span className="text-xs bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full font-medium">
+            <span className="text-xs bg-teal-100 text-teal-700 px-2.5 py-1 rounded-full font-medium">
               owner
             </span>
           </div>
@@ -113,16 +112,14 @@ export default function HouseholdMembers({ household, householdId, user }) {
                 className="p-4 flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-bold text-sm">
-                    {m.name.charAt(0).toUpperCase()}
-                  </div>
+                  <Avatar name={m.name} size="md" className="bg-blue-100 text-blue-700" />
                   <div>
                     <p className="font-medium text-gray-900">{m.name}</p>
                     <p className="text-xs text-gray-500">{m.email}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full font-medium">
+                  <span className="text-xs bg-teal-100 text-teal-700 px-2.5 py-1 rounded-full font-medium">
                     {m.role}
                   </span>
                   {household.owner_id === user.id && (
