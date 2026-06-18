@@ -8,6 +8,7 @@ import HouseholdPage from "./pages/HouseholdPage";
 import ExpenseDetailPage from "./pages/ExpenseDetailPage";
 import SettingsPage from "./pages/SettingsPage";
 import LandingPage from "./pages/LandingPage";
+import { AuthProvider } from "./context/AuthProvider";
 
 function ProtectedRoute({ children }) {
   const { token, loading } = useAuth();
@@ -35,67 +36,69 @@ function PublicRoute({ children }) {
 export default function App() {
   return (
     <BrowserRouter>
-      <ErrorBoundary>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <PublicRoute>
-                <LandingPage />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <LoginPage />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <PublicRoute>
-                <RegisterPage />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/households/:id"
-            element={
-              <ProtectedRoute>
-                <HouseholdPage />
-              </ProtectedRoute>
-            }
-          />
-         
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="*"
-            element={
-              <div className="min-h-screen flex items-center justify-center bg-gray-50">
-                <p className="text-xl text-gray-500">Page not found</p>
-              </div>
-            }
-          />
-        </Routes>
-      </ErrorBoundary>
+      <AuthProvider>
+        <ErrorBoundary>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <PublicRoute>
+                  <LandingPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <LoginPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <PublicRoute>
+                  <RegisterPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/households/:id"
+              element={
+                <ProtectedRoute>
+                  <HouseholdPage />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/settings"
+              element={
+                <ProtectedRoute>
+                  <SettingsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="*"
+              element={
+                <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                  <p className="text-xl text-gray-500">Page not found</p>
+                </div>
+              }
+            />
+          </Routes>
+        </ErrorBoundary>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
