@@ -49,7 +49,7 @@ const create = async (householdId, data, userId) => {
   }
 };
 
-const listByHousehold = async (householdId, userId) => {
+const listByHousehold = async (householdId, userId, page = 1, limit = 10) => {
   const household = await householdRepository.findById(householdId);
   if (!household) {
     throw new NotFoundError('Household not found');
@@ -60,7 +60,10 @@ const listByHousehold = async (householdId, userId) => {
     throw new ForbiddenError('You are not a member of this household');
   }
 
-  return settlementRepository.findAllByHouseholdId(householdId);
+  const total = await settlementRepository.countByHouseholdId(householdId);
+  const settlements = await settlementRepository.findAllByHouseholdIdPaginated(householdId, page, limit);
+
+  return { data: settlements, total, page, totalPages: Math.ceil(total / limit) };
 };
 
 const remove = async (settlementId, userId) => {

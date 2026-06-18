@@ -7,6 +7,7 @@ import Avatar from "../../components/Avatar";
 import { useToast } from "../../context/ToastContext";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import { useAuth } from "../../hooks/useAuth";
+import Pagination from "../../components/Pagination";
 
 const inputCls =
   "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500";
@@ -28,11 +29,15 @@ export default function HouseholdSettlements({ household, householdId }) {
     amount: "",
     date: new Date().toISOString().split("T")[0],
   });
+  const [page, setPage] = useState(1);
+const limit = 5;
 
-  const { data: settlements, isLoading: settLoading } = useQuery({
-    queryKey: ["settlements", householdId],
-    queryFn: () => settlementApi.listByHousehold(householdId).then((r) => r.data),
-  });
+  const { data: settlementsData, isLoading: settLoading } = useQuery({
+  queryKey: ["settlements", householdId, page],
+  queryFn: () => settlementApi.listByHousehold(householdId, page, limit).then((r) => r.data),
+});
+
+const settlements = settlementsData?.data;
 
   const { data: balanceData } = useQuery({
     queryKey: ["balances", householdId],
@@ -44,6 +49,7 @@ export default function HouseholdSettlements({ household, householdId }) {
     onSuccess: () => {
       toast("Settlement recorded!", "success");
       queryClient.invalidateQueries({ queryKey: ["settlements", householdId] });
+      setPage(1);
       queryClient.invalidateQueries({ queryKey: ["balances", householdId] });
       setSettleForm({
         from: "",
@@ -63,6 +69,7 @@ export default function HouseholdSettlements({ household, householdId }) {
     onSuccess: () => {
       toast("Settlement deleted", "success");
       queryClient.invalidateQueries({ queryKey: ["settlements", householdId] });
+      setPage(1);
       queryClient.invalidateQueries({ queryKey: ["balances", householdId] });
     },
     onError: (err) => {
@@ -255,6 +262,9 @@ export default function HouseholdSettlements({ household, householdId }) {
         )}
       </div>
 
+{settlementsData && (
+  <Pagination page={page} totalPages={settlementsData.totalPages} onPageChange={setPage} />
+)}
       <ConfirmDialog
         open={!!confirmDelete}
         title="Delete Settlement"
