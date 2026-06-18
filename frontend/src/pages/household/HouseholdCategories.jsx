@@ -3,16 +3,24 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as categoryApi from "../../api/categoryApi";
 import { SkeletonCard } from "../../components/Skeleton";
 import { useToast } from "../../context/ToastContext";
+import { Pencil, Trash2, Check, X } from "lucide-react";
+import { Utensils, ShoppingCart, Home, Zap, Car, Clapperboard, ShoppingBag, Pill, Plane, Tag } from "lucide-react";
 
 const inputCls =
   "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
 
 const categoryIcons = {
-  Food: "🍽️", Groceries: "🛒", Rent: "🏠", Utilities: "⚡",
-  Transport: "🚗", Entertainment: "🎬", Shopping: "🛍️", Health: "💊",
-  Travel: "✈️",
+  Food: <Utensils className="w-4 h-4 inline text-teal-500" />,
+  Groceries: <ShoppingCart className="w-4 h-4 inline text-teal-500" />,
+  Rent: <Home className="w-4 h-4 inline text-teal-500" />,
+  Utilities: <Zap className="w-4 h-4 inline text-teal-500" />,
+  Transport: <Car className="w-4 h-4 inline text-teal-500" />,
+  Entertainment: <Clapperboard className="w-4 h-4 inline text-teal-500" />,
+  Shopping: <ShoppingBag className="w-4 h-4 inline text-teal-500" />,
+  Health: <Pill className="w-4 h-4 inline text-teal-500" />,
+  Travel: <Plane className="w-4 h-4 inline text-teal-500" />,
 };
-const getCategoryIcon = (name) => categoryIcons[name] || "🏷️";
+const getCategoryIcon = (name) => categoryIcons[name] || <Tag className="w-4 h-4 inline text-teal-500" />;
 
 const SUGGESTED = ["Groceries", "Rent", "Utilities", "Transport", "Entertainment", "Shopping", "Health", "Travel", "Food", "Education"];
 
@@ -111,12 +119,12 @@ export default function HouseholdCategories({ household, householdId, user }) {
                       autoFocus required
                     />
                     <button type="submit" disabled={updateCategoryMutation.isPending}
-                      className="bg-blue-500 text-white text-xs px-2 rounded-lg disabled:opacity-50">
-                      {updateCategoryMutation.isPending ? "..." : "✓"}
+                      className="bg-teal-500 text-white text-xs px-2 rounded-lg disabled:opacity-50">
+                      {updateCategoryMutation.isPending ? "..." : <Check className="w-4 h-4" />}
                     </button>
-                    <button type="button" onClick={() => setEditingCategory(null)}
-                      className="bg-gray-100 text-gray-600 text-xs px-2 rounded-lg">✕</button>
-                  </form>
+                      <button type="button" onClick={() => setEditingCategory(null)}
+                         className="bg-gray-100 text-gray-600 text-xs px-2 rounded-lg"><X className="w-4 h-4" /></button>
+                    </form>
                 ) : (
                   <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                     <span className="text-sm text-gray-700">
@@ -124,10 +132,10 @@ export default function HouseholdCategories({ household, householdId, user }) {
                     </span>
                     <div className="flex items-center gap-2">
                       <button onClick={() => setEditingCategory({ id: c.id, name: c.name })}
-                        className="text-xs text-blue-400 hover:text-blue-600 transition-colors">Edit</button>
+                        className="text-teal-400 hover:text-teal-600 transition-colors"><Pencil className="w-4 h-4" /></button>
                       {isOwner && (
                         <button onClick={() => deleteCategoryMutation.mutate(c.id)}
-                          className="text-xs text-red-400 hover:text-red-600 transition-colors">Remove</button>
+                          className="text-red-400 hover:text-red-600 transition-colors"><Trash2 className="w-4 h-4" /></button>
                       )}
                     </div>
                   </div>

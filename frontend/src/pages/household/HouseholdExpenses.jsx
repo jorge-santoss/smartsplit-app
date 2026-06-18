@@ -7,6 +7,7 @@ import Avatar from "../../components/Avatar";
 import { useToast } from "../../context/ToastContext";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import Pagination from "../../components/Pagination";
+import { Trash2 } from "lucide-react";
 
 const inputCls =
   "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
@@ -536,7 +537,7 @@ export default function HouseholdExpenses({ household, householdId }) {
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-gray-900">
+                    <span className="text-sm font-bold text-gray-900">
                       ${parseFloat(exp.amount).toFixed(2)}
                     </span>
                     <button
@@ -547,19 +548,7 @@ export default function HouseholdExpenses({ household, householdId }) {
                       }}
                       className="text-gray-400 hover:text-red-500 transition-colors"
                     >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
+                      <Trash2 className="w-4 h-4 text-red-400 hover:text-red-500" />
                     </button>
                   </div>
                 </div>

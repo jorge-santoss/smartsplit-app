@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useToast } from '../context/ToastContext';
 import { exportHousehold } from '../api/exportApi';
+import { Download, ChevronDown } from "lucide-react";
 
 export default function ExportButton({ householdId }) {
   const toast = useToast();
@@ -34,15 +35,9 @@ export default function ExportButton({ householdId }) {
           </>
         ) : (
           <>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
+            <Download className="w-5 h-5" />
             Export
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9"/>
-            </svg>
+            <ChevronDown className="w-5 h-5" />
           </>
         )}
       </button>

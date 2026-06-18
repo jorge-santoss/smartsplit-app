@@ -13,7 +13,7 @@ import * as activityApi from "../api/activityApi";
 import { useAuth } from "../hooks/useAuth";
 import Avatar from "../components/Avatar";
 import Pagination from "../components/Pagination";
-
+import { Plus, CircleDollarSign, CreditCard, Home, ChevronRight, UserPlus, ArrowLeftRight, Pencil, Trash2 } from "lucide-react";
 export default function DashboardPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -183,19 +183,7 @@ const settlements = settlementsData?.data;
             onClick={() => setShowCreate(true)}
             className="bg-teal-500 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2 self-start md:self-auto shadow-md"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
+            <Plus className="w-5 h-5" />
             Create New Household
           </button>
         </header>
@@ -214,19 +202,7 @@ const settlements = settlementsData?.data;
             {/* Row 1: Total Owed to You */}
             <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6 flex flex-col gap-4">
               <div className="flex items-center gap-2 text-[#434655]">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+               <CircleDollarSign className="w-5 h-5 text-teal-500" />
                 <span className="text-xs font-semibold uppercase tracking-wider">
                   Total Owed to You
                 </span>
@@ -245,19 +221,7 @@ const settlements = settlementsData?.data;
             {/* Row 1: Total You Owe */}
             <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6 flex flex-col gap-4">
               <div className="flex items-center gap-2 text-[#434655]">
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                  />
-                </svg>
+               <CreditCard className="w-5 h-5 text-teal-500" />
                 <span className="text-xs font-semibold uppercase tracking-wider">
                   Total You Owe
                 </span>
@@ -365,20 +329,8 @@ const settlements = settlementsData?.data;
                           onClick={() => navigate(`/households/${h.id}`)}
                           className="flex items-center gap-3 cursor-pointer flex-1 min-w-0"
                         >
-                          <div className="w-10 h-10 rounded-full bg-[#dbe1ff] flex items-center justify-center text-[#00174b] shrink-0">
-                            <svg
-                              className="w-5 h-5"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                              />
-                            </svg>
+                          <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center shrink-0">
+                           <Home className="w-5 h-5 text-teal-500" />
                           </div>
                           <div className="min-w-0">
                             <h3 className="text-sm font-semibold text-[#0b1c30] truncate">
@@ -390,35 +342,19 @@ const settlements = settlementsData?.data;
                           </div>
                         </div>
                         <div className="flex items-center gap-1 shrink-0 ml-2">
-                          {h.owner_id === user?.id && (
+                                                   {h.owner_id === user?.id && (
                             <>
-                              <button
-                                onClick={() => handleStartEdit(h)}
-                                className="text-xs text-gray-400 hover:text-teal-600 px-1.5 py-1 transition-colors"
-                              >
-                                Edit
+                              <button onClick={() => handleStartEdit(h)}
+                                className="text-gray-400 hover:text-teal-600 px-1 py-1 transition-colors">
+                                <Pencil className="w-4 h-4" />
                               </button>
-                              <button
-                                onClick={() => setConfirmDelete(h)}
-                                className="text-xs text-gray-400 hover:text-red-600 px-1.5 py-1 transition-colors"
-                              >
-                                Delete
+                              <button onClick={() => setConfirmDelete(h)}
+                                className="text-gray-400 hover:text-red-600 px-1 py-1 transition-colors">
+                                <Trash2 className="w-4 h-4" />
                               </button>
                             </>
                           )}
-                          <svg
-                            className="w-5 h-5 text-[#c3c6d7]"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5l7 7-7 7"
-                            />
-                          </svg>
+                          <ChevronRight className="w-5 h-5 text-teal-500" />
                         </div>
                       </div>
                     )}
@@ -624,39 +560,17 @@ const settlements = settlementsData?.data;
                   {feed?.map((item) => (
                     <div
                       key={`${item.type}-${item.item_id}-${item.household_name}`}
-                      className="flex items-center justify-between p-4 border border-[#c3c6d7] rounded-xl hover:bg-[#eff4ff] transition-colors"
+                      className="flex items-center justify-between p-4 border border-[#c3c6d7] rounded-xl hover:bg-teal-50 transition-colors"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-[#e5eeff] flex items-center justify-center text-[#434655]">
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            {item.type === "expense" ? (
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                              />
+                        <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center">
+                                                    {item.type === "expense" ? (
+                              <CreditCard className="w-5 h-5 text-teal-500" />
                             ) : item.type === "member" ? (
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                              />
+                              <UserPlus className="w-5 h-5 text-teal-500" />
                             ) : (
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2z"
-                              />
+                              <ArrowLeftRight className="w-5 h-5 text-teal-500" />
                             )}
-                          </svg>
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-[#0b1c30]">
