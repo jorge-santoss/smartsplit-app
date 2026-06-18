@@ -7,6 +7,7 @@ import { SkeletonCard } from "../../components/Skeleton";
 import Avatar from "../../components/Avatar";
 import { useToast } from "../../context/ToastContext";
 import ConfirmDialog from "../../components/ConfirmDialog";
+import Pagination from "../../components/Pagination";
 
 const inputCls =
   "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
@@ -30,9 +31,13 @@ export default function HouseholdExpenses({ household, householdId }) {
   const [filterCategory, setFilterCategory] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(null);
 
-  const { data: expenses, isLoading: expLoading } = useQuery({
-    queryKey: ["expenses", householdId],
-    queryFn: () => expenseApi.listByHousehold(householdId).then((r) => r.data),
+  const [page, setPage] = useState(1);
+  const limit = 5;
+
+  const { data: expensesData, isLoading: expLoading } = useQuery({
+    queryKey: ["expenses", householdId, page],
+    queryFn: () =>
+      expenseApi.listByHousehold(householdId, page, limit).then((r) => r.data),
   });
 
   const { data: categories } = useQuery({
@@ -45,6 +50,7 @@ export default function HouseholdExpenses({ household, householdId }) {
     onSuccess: () => {
       toast("Expense added!", "success");
       queryClient.invalidateQueries({ queryKey: ["expenses", householdId] });
+      setPage(1);
       queryClient.invalidateQueries({ queryKey: ["balances", householdId] });
       setExpForm({
         title: "",
@@ -68,6 +74,7 @@ export default function HouseholdExpenses({ household, householdId }) {
       toast("Expense deleted", "success");
       queryClient.invalidateQueries({ queryKey: ["expenses", householdId] });
       queryClient.invalidateQueries({ queryKey: ["balances", householdId] });
+      setPage(1);
     },
     onError: (err) => {
       toast(err.response?.data?.error || "Failed to delete expense", "error");
@@ -150,8 +157,10 @@ export default function HouseholdExpenses({ household, householdId }) {
   };
 
   const filteredExpenses = filterCategory
-    ? expenses?.filter((e) => String(e.category_id) === filterCategory)
-    : expenses;
+    ? expensesData?.data?.filter(
+        (e) => String(e.category_id) === filterCategory,
+      )
+    : expensesData?.data;
 
   return (
     <div className="space-y-6">
@@ -287,7 +296,11 @@ export default function HouseholdExpenses({ household, householdId }) {
               <div className="flex flex-col gap-2">
                 {customSplits.map((sp, i) => (
                   <div key={sp.memberId} className="flex items-center gap-2">
-                    <Avatar name={sp.name} size="sm" className="bg-teal-100 text-teal-700" />
+                    <Avatar
+                      name={sp.name}
+                      size="sm"
+                      className="bg-teal-100 text-teal-700"
+                    />
                     <span className="text-sm text-gray-700 flex-1">
                       {sp.name}
                     </span>
@@ -466,7 +479,10 @@ export default function HouseholdExpenses({ household, householdId }) {
             {[{ id: "", name: "All" }, ...categories].map((c) => (
               <button
                 key={c.id}
-                onClick={() => setFilterCategory(String(c.id))}
+                onClick={() => {
+                  setFilterCategory(String(c.id));
+                  setPage(1);
+                }}
                 className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                   filterCategory === String(c.id)
                     ? "bg-teal-500 text-white border-teal-500"
@@ -550,6 +566,15 @@ export default function HouseholdExpenses({ household, householdId }) {
         )}
       </div>
 
+      {/* Pagination */}
+      {expensesData && (
+        <Pagination
+          page={page}
+          totalPages={expensesData.totalPages}
+          onPageChange={setPage}
+        />
+      )}
+      
       <ConfirmDialog
         open={!!confirmDelete}
         title="Delete Expense"

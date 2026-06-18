@@ -53,11 +53,12 @@ export default function DashboardPage() {
     enabled: !!selectedId,
   });
 
-  const { data: expenses } = useQuery({
+  const { data: expensesData } = useQuery({
     queryKey: ['expenses', selectedId],
     queryFn: () => expenseApi.listByHousehold(selectedId).then((r) => r.data),
     enabled: !!selectedId,
   });
+  const expenses = expensesData?.data;
 
   const { data: settlements } = useQuery({
     queryKey: ['settlements', selectedId],

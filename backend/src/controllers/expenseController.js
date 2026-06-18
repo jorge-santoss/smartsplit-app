@@ -13,8 +13,10 @@ const create = async (req, res, next) => {
 const listByHousehold = async (req, res, next) => {
   try {
     const householdId = parseInt(req.params.householdId, 10);
-    const expenses = await expenseService.listByHousehold(householdId, req.user.id);
-    res.status(200).json(expenses);
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const result = await expenseService.listByHousehold(householdId, req.user.id, page, limit);
+    res.status(200).json(result);
   } catch (error) {
     next(error);
   }

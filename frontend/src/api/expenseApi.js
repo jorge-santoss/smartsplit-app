@@ -4,8 +4,8 @@ export const create = (householdId, data) => {
   return client.post(`/api/households/${householdId}/expenses`, data);
 };
 
-export const listByHousehold = (householdId) => {
-  return client.get(`/api/households/${householdId}/expenses`);
+export const listByHousehold = (householdId, page = 1, limit = 10) => {
+  return client.get(`/api/households/${householdId}/expenses?page=${page}&limit=${limit}`);
 };
 
 export const getById = (expenseId) => {

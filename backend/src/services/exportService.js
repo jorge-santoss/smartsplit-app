@@ -30,7 +30,7 @@ const generateCSV = (data) => {
 
   for (const exp of data.expenses) {
     const date = exp.expense_date ? exp.expense_date.toISOString().split('T')[0] : '';
-    const desc = `"${(exp.description || '').replace(/"/g, '""')}"`;
+    const desc = `"${(exp.title || '').replace(/"/g, '""')}"`;
     const amount = parseFloat(exp.amount).toFixed(2);
     const category = `"${(exp.category_name || 'Uncategorized').replace(/"/g, '""')}"`;
     const payer = `"${(exp.payer_name || '').replace(/"/g, '""')}"`;
@@ -162,7 +162,7 @@ const generatePDF = (expenses, settlements, household, members) =>
       if (i % 2 === 0) doc.rect(50, rowY - 2, PAGE_W, 18).fill(LIGHT);
       doc.fillColor(BLACK).fontSize(8).font('Helvetica');
       doc.text(new Date(exp.expense_date).toLocaleDateString('en-US'), expCols[0].x + 4, rowY, { width: expCols[0].w - 8 });
-      doc.text(exp.description || '', expCols[1].x + 4, rowY, { width: expCols[1].w - 8 });
+      doc.text(exp.title || '', expCols[1].x + 4, rowY, { width: expCols[1].w - 8 });
       doc.text(exp.category_name || '—', expCols[2].x + 4, rowY, { width: expCols[2].w - 8 });
       doc.text(exp.payer_name || '', expCols[3].x + 4, rowY, { width: expCols[3].w - 8 });
       doc.text(`$${parseFloat(exp.amount).toFixed(2)}`, expCols[4].x + 4, rowY, { width: expCols[4].w - 8, align: 'right' });

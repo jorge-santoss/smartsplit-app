@@ -36,10 +36,10 @@ export default function HouseholdPage() {
   const deleteHousehold = useMutation({
     mutationFn: () => householdApi.remove(householdId),
     onSuccess: () => {
-      toast.addToast("Household deleted");
+      toast("Household deleted");
       navigate("/dashboard");
     },
-    onError: () => toast.addToast("Failed to delete household", "error"),
+    onError: () => toast("Failed to delete household", "error"),
   });
 
   if (isLoading) {
@@ -86,7 +86,7 @@ export default function HouseholdPage() {
       </div>
 
       <div className="sticky top-16 z-40 -mx-4 px-4 sm:mx-0 sm:px-0 mb-6 flex justify-center">
-        <nav className="bg-white/70 backdrop-blur-md border b  border-white/20 rounded-3xl shadow-sm p-1.5 flex gap-1 overflow-x-auto">
+        <nav className="bg-white/70 backdrop-blur-md border border-white/20 rounded-3xl shadow-sm p-1.5 flex gap-1 overflow-x-auto">
           {TABS.map((tab) => (
             <button
               key={tab}
