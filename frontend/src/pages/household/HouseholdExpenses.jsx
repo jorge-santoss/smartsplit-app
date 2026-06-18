@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as expenseApi from "../../api/expenseApi";
 import * as categoryApi from "../../api/categoryApi";
@@ -13,7 +12,6 @@ const inputCls =
   "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
 
 export default function HouseholdExpenses({ household, householdId }) {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -29,6 +27,7 @@ export default function HouseholdExpenses({ household, householdId }) {
   const [newCatName, setNewCatName] = useState("");
   const [expenseError, setExpenseError] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
+  const [detailExpenseId, setDetailExpenseId] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
 
   const [page, setPage] = useState(1);
@@ -43,6 +42,12 @@ export default function HouseholdExpenses({ household, householdId }) {
   const { data: categories } = useQuery({
     queryKey: ["categories", householdId],
     queryFn: () => categoryApi.listByHousehold(householdId).then((r) => r.data),
+  });
+
+  const { data: expenseDetail, isLoading: detailLoading } = useQuery({
+    queryKey: ["expense", detailExpenseId],
+    queryFn: () => expenseApi.getById(detailExpenseId).then((r) => r.data),
+    enabled: !!detailExpenseId,
   });
 
   const createExpenseMutation = useMutation({
@@ -513,9 +518,7 @@ export default function HouseholdExpenses({ household, householdId }) {
             {filteredExpenses?.map((exp) => (
               <div
                 key={exp.id}
-                onClick={() =>
-                  navigate(`/households/${householdId}/expenses/${exp.id}`)
-                }
+                onClick={() => setDetailExpenseId(exp.id)}
                 className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
               >
                 <div className="flex justify-between items-start">
@@ -574,7 +577,77 @@ export default function HouseholdExpenses({ household, householdId }) {
           onPageChange={setPage}
         />
       )}
-      
+
+      {detailExpenseId && expenseDetail && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+          onClick={() => setDetailExpenseId(null)}
+        >
+          <div
+            className="bg-white rounded-xl p-6 max-w-lg w-full mx-4 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex justify-between items-start mb-4">
+              <h2 className="text-xl font-bold text-gray-900">
+                {expenseDetail.title}
+              </h2>
+              <button
+                onClick={() => setDetailExpenseId(null)}
+                className="text-gray-400 hover:text-gray-600 text-xl leading-none"
+              >
+                &times;
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 mb-4">
+              {new Date(expenseDetail.expense_date).toLocaleDateString()}
+              {expenseDetail.category_name && (
+                <> · {expenseDetail.category_name}</>
+              )}
+              {expenseDetail.split_type && (
+                <> · Split: {expenseDetail.split_type}</>
+              )}
+            </p>
+            <div className="text-3xl font-bold text-teal-600 mb-4">
+              ${parseFloat(expenseDetail.amount || 0).toFixed(2)}
+            </div>
+            {expenseDetail.note && (
+              <p className="text-gray-600 text-sm italic mb-4">
+                {expenseDetail.note}
+              </p>
+            )}
+            <p className="text-sm text-gray-700 mb-4">
+              Paid by{" "}
+              <span className="font-semibold">{expenseDetail.payer_name}</span>
+            </p>
+            {(expenseDetail.splits || []).length > 0 && (
+              <>
+                <h3 className="text-sm font-semibold text-gray-900 mb-2 border-t pt-4">
+                  Splits
+                </h3>
+                <div className="space-y-2">
+                  {(expenseDetail.splits || []).map((split, i) => (
+                    <div
+                      key={split.id ?? i}
+                      className="flex justify-between p-3 bg-gray-50 rounded-lg text-sm"
+                    >
+                      <span className="font-medium text-gray-700">
+                        {split.member_name}
+                      </span>
+                      <span className="text-gray-600">
+                        ${parseFloat(split.amount || 0).toFixed(2)}
+                        {split.percentage && (
+                          <> ({parseFloat(split.percentage).toFixed(1)}%)</>
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       <ConfirmDialog
         open={!!confirmDelete}
         title="Delete Expense"

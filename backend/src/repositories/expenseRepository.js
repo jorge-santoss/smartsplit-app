@@ -25,7 +25,7 @@ const findAllByHouseholdId = async (householdId) => {
   return rows;
 };
 
-{/* Pagination*/}
+// Pagination
 
 const countByHouseholdId = async (householdId) => {
   const [rows] = await pool.query(

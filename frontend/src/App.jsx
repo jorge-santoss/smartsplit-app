@@ -77,14 +77,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/households/:householdId/expenses/:expenseId"
-            element={
-              <ProtectedRoute>
-                <ExpenseDetailPage />
-              </ProtectedRoute>
-            }
-          />
+         
           <Route
             path="/settings"
             element={
