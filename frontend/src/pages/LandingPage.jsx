@@ -53,7 +53,7 @@ export default function LandingPage() {
                 </Link>
                 <Link
                   to="/register"
-                  className="px-5 py-2 rounded-lg text-sm font-medium text-white bg-[#154535] hover:bg-[#1b5c48] transition-colors shadow-sm"
+                  className="px-5 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-b from-[#0b1e15] to-[#2e6c46] hover:brightness-110 transition-all shadow-sm"
                 >
                   Sign Up
                 </Link>
@@ -190,7 +190,7 @@ export default function LandingPage() {
           </h2>
           <Link
             to={token ? "/dashboard" : "/register"}
-            className="inline-block mt-6 px-8 py-3 rounded-lg text-base font-medium text-white shadow-[0_4px_12px_-4px_rgba(21,69,53,0.3)] bg-[#154535] hover:bg-[#1b5c48] transition"
+            className="inline-block mt-6 px-8 py-3 rounded-lg text-base font-medium text-white shadow-[0_4px_12px_-4px_rgba(21,69,53,0.3)] bg-gradient-to-b from-[#0b1e15] to-[#2e6c46] hover:brightness-110 transition"
           >
             {token ? "Go to Dashboard" : "Get Started Free"}
           </Link>

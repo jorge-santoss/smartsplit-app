@@ -200,7 +200,7 @@ export default function DashboardPage() {
             </div>
             <button
               onClick={() => setShowCreate(true)}
-              className="bg-[#154535] text-white text-sm font-semibold px-8 py-3.5 rounded-xl hover:bg-[#1b5c48] transition-colors shadow-sm flex items-center gap-2 self-start md:self-auto"
+              className="bg-gradient-to-b from-[#0b1e15] to-[#2e6c46] text-white text-sm font-semibold px-8 py-3.5 rounded-xl hover:brightness-110 transition-colors shadow-sm flex items-center gap-2 self-start md:self-auto"
             >
               <Plus className="w-5 h-5" />
               Create New Household
