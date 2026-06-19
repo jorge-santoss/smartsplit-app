@@ -1,40 +1,41 @@
 import { useAuth } from "../hooks/useAuth";
 import { Link, useLocation } from "react-router";
-import logoImg from "../assets/smartsplit-isotipo.png";
+import logoImg from "../assets/SmartSplit-logo-app.png";
 import Avatar from "../components/Avatar";
+import {Settings} from "lucide-react";
 
 export default function AppLayout({ children }) {
   const { user, logout } = useAuth();
   const { pathname } = useLocation();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20">
+    <div className="min-h-screen bg-[#E1EEE8]">
+      <nav className="sticky top-0 z-50 backdrop-blur-xl bg-white/60 border-b border-white/80 shadow-[0_4px_20px_-8px_rgba(21,69,53,0.05)]">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link to="/dashboard" className="text-xl font-bold text-teal-500">
+          <Link to="/dashboard" className="flex items-center text-xl font-bold text-[#154535]">
             <img src={logoImg} alt="SmartSplit" className="h-8 w-auto inline-block mr-2" />
             SmartSplit
           </Link>
           <div className="flex items-center gap-4">
-            <Avatar name={user?.name} size="sm" className="bg-teal-100 text-teal-700" />
-            <span className="text-sm text-gray-600">{user?.name}</span>
-                       {pathname !== '/dashboard' && (
+            <Avatar name={user?.name} size="sm" className="bg-[#E1EEE8] text-[#154535]" />
+            <span className="text-sm font-medium text-[#4A6B5D]">{user?.name}</span>
+            {pathname !== '/dashboard' && (
               <Link
                 to="/dashboard"
-                className="text-sm text-gray-600 hover:text-teal-500 transition-colors"
+                className="text-sm font-medium text-[#4A6B5D] hover:text-[#154535] transition-colors"
               >
                 Dashboard
               </Link>
             )}
-            <Link
-              to="/settings"
-              className={`text-sm hover:text-gray-900 ${pathname === '/settings' ? 'text-teal-500 font-semibold' : 'text-gray-600'}`}
-            >
-              Settings
-            </Link>
+           <Link
+  to="/settings"
+  className={`text-sm font-medium transition-colors ${pathname === '/settings' ? 'text-[#154535] font-semibold' : 'text-[#4A6B5D] hover:text-[#154535]'}`}
+>
+  <Settings className="w-5 h-5" title="Settings" />
+</Link>
             <button
               onClick={logout}
-              className="text-sm text-red-500 hover:text-red-700"
+              className="text-sm font-medium text-[#D94A4A] hover:text-red-700 transition-colors"
             >
               Logout
             </button>

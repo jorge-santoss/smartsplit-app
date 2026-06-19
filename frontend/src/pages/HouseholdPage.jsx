@@ -45,9 +45,11 @@ export default function HouseholdPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="space-y-4">
-          <SkeletonCard />
-          <SkeletonCard />
+        <div className="min-h-screen bg-[#E1EEE8] p-4 sm:p-6 lg:p-8">
+          <div className="space-y-4">
+            <SkeletonCard />
+            <SkeletonCard />
+          </div>
         </div>
       </AppLayout>
     );
@@ -56,7 +58,11 @@ export default function HouseholdPage() {
   if (!household) {
     return (
       <AppLayout>
-        <p className="text-gray-500">Household not found</p>
+        <div className="min-h-screen bg-[#E1EEE8] p-4 sm:p-6 lg:p-8">
+          <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-white/80 shadow-sm p-6">
+            <p className="text-[#4A6B5D]">Household not found</p>
+          </div>
+        </div>
       </AppLayout>
     );
   }
@@ -65,78 +71,90 @@ export default function HouseholdPage() {
 
   return (
     <AppLayout>
-      <div className="flex items-start justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">{household.name}</h1>
-          {household.description && (
-            <p className="text-gray-500 mt-1">{household.description}</p>
-          )}
+      {/* Mint Green Page Wrapper */}
+      <div className="min-h-screen bg-[#E1EEE8] p-4 sm:p-6 lg:p-8">
+        
+        {/* Header */}
+        <div className="flex items-start justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-[#154535] tracking-tight">
+              {household.name}
+            </h1>
+            {household.description && (
+              <p className="text-[#4A6B5D] mt-1 font-medium">
+                {household.description}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <ExportButton householdId={householdId} />
+            {isOwner && (
+              <button
+                onClick={() => setShowDeleteHousehold(true)}
+                className="text-sm text-[#D94A4A] border border-[#D94A4A]/30 rounded-lg px-3 py-2 hover:bg-[#D94A4A]/10 transition-colors"
+              >
+                Delete household
+              </button>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <ExportButton householdId={householdId} />
-          {isOwner && (
-            <button
-              onClick={() => setShowDeleteHousehold(true)}
-              className="text-sm text-red-500 border border-red-200 rounded-lg px-3 py-2 hover:bg-red-50 transition-colors"
-            >
-              Delete household
-            </button>
-          )}
+
+ {/* Glassmorphism Tab Navigation */}
+        <div className="sticky top-16 z-40 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 flex justify-center">
+          <nav className="bg-white/60 backdrop-blur-xl border border-white/80 rounded-full shadow-[0_8px_30px_-6px_rgba(21,69,53,0.08)] p-1.5 flex gap-1 overflow-x-auto w-full sm:w-auto">
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-6 py-3 rounded-full text-sm font-semibold transition-all whitespace-nowrap flex-1 sm:flex-none ${
+                  activeTab === tab
+                    ? "bg-[#154535] text-white shadow-sm"
+                    : "text-[#4A6B5D] hover:bg-white/60 hover:text-[#154535]"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </nav>
         </div>
-      </div>
 
-      <div className="sticky top-16 z-40 -mx-4 px-4 sm:mx-0 sm:px-0 mb-6 flex justify-center">
-        <nav className="bg-white/70 backdrop-blur-md border border-white/20 rounded-3xl shadow-sm p-1.5 flex gap-1 overflow-x-auto">
-          {TABS.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-5 py-2.5 rounded-2xl text-sm font-medium transition-all whitespace-nowrap flex-1 sm:flex-none ${
-                activeTab === tab
-                  ? "bg-teal-500 text-white shadow-md"
-                  : "text-gray-600 hover:bg-teal-50 hover:text-teal-600"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-      </div>
 
-      {activeTab === "Expenses" && (
-        <HouseholdExpenses household={household} householdId={householdId} />
-      )}
-      {activeTab === "Balances" && (
-        <HouseholdBalances householdId={householdId} />
-      )}
-      {activeTab === "Members" && (
-        <HouseholdMembers
-          household={household}
-          householdId={householdId}
-          user={user}
+        {/* Tab Content Area */}
+        {activeTab === "Expenses" && (
+          <HouseholdExpenses household={household} householdId={householdId} />
+        )}
+        {activeTab === "Balances" && (
+          <HouseholdBalances householdId={householdId} />
+        )}
+        {activeTab === "Members" && (
+          <HouseholdMembers
+            household={household}
+            householdId={householdId}
+            user={user}
+          />
+        )}
+        {activeTab === "Settlements" && (
+          <HouseholdSettlements household={household} householdId={householdId} />
+        )}
+        {activeTab === "Categories" && (
+          <HouseholdCategories
+            household={household}
+            householdId={householdId}
+            user={user}
+          />
+        )}
+
+        <ConfirmDialog
+          open={showDeleteHousehold}
+          title="Delete household"
+          message="Are you sure you want to delete this household? All expenses, settlements, and member data will be permanently removed."
+          onConfirm={() => {
+            deleteHousehold.mutate();
+            setShowDeleteHousehold(false);
+          }}
+          onCancel={() => setShowDeleteHousehold(false)}
         />
-      )}
-      {activeTab === "Settlements" && (
-        <HouseholdSettlements household={household} householdId={householdId} />
-      )}
-      {activeTab === "Categories" && (
-        <HouseholdCategories
-          household={household}
-          householdId={householdId}
-          user={user}
-        />
-      )}
-
-      <ConfirmDialog
-        open={showDeleteHousehold}
-        title="Delete household"
-        message="Are you sure you want to delete this household? All expenses, settlements, and member data will be permanently removed."
-        onConfirm={() => {
-          deleteHousehold.mutate();
-          setShowDeleteHousehold(false);
-        }}
-        onCancel={() => setShowDeleteHousehold(false)}
-      />
+      </div>
     </AppLayout>
   );
 }

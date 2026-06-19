@@ -17,13 +17,13 @@ export default class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="min-h-screen flex items-center justify-center bg-[#E1EEE8]">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">Something went wrong</h1>
-            <p className="text-gray-500 mb-4">{this.state.error?.message}</p>
+            <h1 className="text-2xl font-bold text-[#154535] mb-2">Something went wrong</h1>
+            <p className="text-[#4A6B5D] mb-4">{this.state.error?.message}</p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              className="bg-[#154535] text-white px-4 py-2 rounded-lg hover:bg-[#1b5c48] shadow-sm transition-colors"
             >
               Reload page
             </button>

@@ -65,79 +65,79 @@ export default function SettingsPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-2xl mx-auto space-y-8">
-        <h2 className="text-2xl font-bold text-gray-900">Settings</h2>
+      <div className="max-w-2xl mx-auto space-y-8 p-4 sm:p-6 lg:p-0">
+        <h2 className="text-2xl font-bold text-[#154535]">Settings</h2>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Profile</h3>
+        <div className="bg-white rounded-xl border border-white/80 shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-[#154535] mb-4">Profile</h3>
           <form onSubmit={handleProfileSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Name</label>
+              <label className="block text-sm font-medium text-[#4A6B5D]">Name</label>
               <input
                 type="text"
                 value={profile.name}
                 onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="mt-1 block w-full rounded-lg border border-[#E1EEE8] bg-[#F8FCFA] px-3 py-2 text-sm text-[#154535] placeholder:text-[#4A6B5D]/60 focus:outline-none focus:ring-2 focus:ring-[#154535]"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-[#4A6B5D]">Email</label>
               <input
                 type="email"
                 value={profile.email}
                 onChange={(e) => setProfile({ ...profile, email: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="mt-1 block w-full rounded-lg border border-[#E1EEE8] bg-[#F8FCFA] px-3 py-2 text-sm text-[#154535] placeholder:text-[#4A6B5D]/60 focus:outline-none focus:ring-2 focus:ring-[#154535]"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={updateMutation.isPending}
-              className="bg-teal-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-teal-600 disabled:opacity-50"
+              className="bg-[#154535] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1b5c48] disabled:opacity-50 transition-colors shadow-sm"
             >
               {updateMutation.isPending ? 'Saving...' : 'Save'}
             </button>
           </form>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Change Password</h3>
+        <div className="bg-white rounded-xl border border-white/80 shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-[#154535] mb-4">Change Password</h3>
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Current Password</label>
+              <label className="block text-sm font-medium text-[#4A6B5D]">Current Password</label>
               <input
                 type="password"
                 value={password.currentPassword}
                 onChange={(e) => setPassword({ ...password, currentPassword: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="mt-1 block w-full rounded-lg border border-[#E1EEE8] bg-[#F8FCFA] px-3 py-2 text-sm text-[#154535] placeholder:text-[#4A6B5D]/60 focus:outline-none focus:ring-2 focus:ring-[#154535]"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">New Password</label>
+              <label className="block text-sm font-medium text-[#4A6B5D]">New Password</label>
               <input
                 type="password"
                 value={password.newPassword}
                 onChange={(e) => setPassword({ ...password, newPassword: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="mt-1 block w-full rounded-lg border border-[#E1EEE8] bg-[#F8FCFA] px-3 py-2 text-sm text-[#154535] placeholder:text-[#4A6B5D]/60 focus:outline-none focus:ring-2 focus:ring-[#154535]"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Confirm New Password</label>
+              <label className="block text-sm font-medium text-[#4A6B5D]">Confirm New Password</label>
               <input
                 type="password"
                 value={password.confirmPassword}
                 onChange={(e) => setPassword({ ...password, confirmPassword: e.target.value })}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500"
+                className="mt-1 block w-full rounded-lg border border-[#E1EEE8] bg-[#F8FCFA] px-3 py-2 text-sm text-[#154535] placeholder:text-[#4A6B5D]/60 focus:outline-none focus:ring-2 focus:ring-[#154535]"
                 required
               />
             </div>
             <button
               type="submit"
               disabled={changingPw}
-              className="bg-teal-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-teal-600 disabled:opacity-50"
+              className="bg-[#154535] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#1b5c48] disabled:opacity-50 transition-colors shadow-sm"
             >
               {changingPw ? 'Changing...' : 'Change Password'}
             </button>

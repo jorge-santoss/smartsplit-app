@@ -1,37 +1,37 @@
 import { Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import heroImg from "../assets/Hero-landscape-smartsplit.png";
-import logoImg from "../assets/SmartSplit-isotipo.png";
-import footerLogo from "../assets/SmartSplit-isotipo.png";
+import logoImg from "../assets/SmartSplit-logo-app.png";
+import footerLogo from "../assets/SmartSplit-logo-app.png";
 
 export default function LandingPage() {
   const { token } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20">
+    <div className="min-h-screen bg-[#E1EEE8]">
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/60 border-b border-[#E1EEE8] shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <img src={logoImg} alt="SmartSplit" className="h-12 w-auto" />
-            <span className="text-2xl font-bold text-teal-500 font-[Michroma]">
+            <span className="text-2xl font-bold text-[#154535] font-[Michroma]">
               SmartSplit
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-gray-500">
+          <div className="hidden md:flex items-center gap-8 text-sm text-[#4A6B5D]">
             <a
               href="#"
               onClick={(e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="text-gray-900 font-medium hover:text-gray-900"
+              className="text-[#154535] font-medium hover:text-[#154535]"
             >
               Home
             </a>
-            <a href="#features" className="hover:text-gray-900">
+            <a href="#features" className="hover:text-[#154535]">
               Features
             </a>
-            <a href="#how-it-works" className="hover:text-gray-900">
+            <a href="#how-it-works" className="hover:text-[#154535]">
               How It Works
             </a>
           </div>
@@ -39,7 +39,7 @@ export default function LandingPage() {
             {token ? (
               <Link
                 to="/dashboard"
-                className="px-5 py-2 rounded-lg text-sm font-medium text-white bg-teal-500"
+                className="px-5 py-2 rounded-lg text-sm font-medium text-white bg-[#154535] hover:bg-[#1b5c48] transition-colors shadow-sm"
               >
                 Dashboard
               </Link>
@@ -47,13 +47,13 @@ export default function LandingPage() {
               <>
                 <Link
                   to="/login"
-                  className="text-sm font-medium text-gray-600 hover:text-gray-900"
+                  className="text-sm font-medium text-[#4A6B5D] hover:text-[#154535] transition-colors"
                 >
                   Log In
                 </Link>
                 <Link
                   to="/register"
-                  className="px-5 py-2 rounded-lg text-sm font-medium text-white bg-teal-500"
+                  className="px-5 py-2 rounded-lg text-sm font-medium text-white bg-[#154535] hover:bg-[#1b5c48] transition-colors shadow-sm"
                 >
                   Sign Up
                 </Link>
@@ -71,7 +71,7 @@ export default function LandingPage() {
             alt="SmartSplit hero"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/25" />
+          <div className="absolute inset-0 bg-black/20" />
           <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6">
             <div className="max-w-6xl mx-auto w-full">
               <div className="max-w-2xl text-center lg:text-left">
@@ -86,7 +86,7 @@ export default function LandingPage() {
                 <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
                   <Link
                     to={token ? "/dashboard" : "/register"}
-                    className="px-8 py-3 rounded-lg text-base font-medium text-white shadow-lg bg-teal-500 hover:bg-teal-600 transition"
+                    className="px-8 py-3 rounded-lg text-base font-medium text-white shadow-[0_4px_12px_-4px_rgba(21,69,53,0.3)] bg-[#154535] hover:bg-[#1b5c48] transition"
                   >
                     {token ? "Go to Dashboard" : "Get Started Free"}
                   </Link>
@@ -107,7 +107,7 @@ export default function LandingPage() {
           id="features"
           className="scroll-mt-18 max-w-6xl mx-auto px-4 sm:px-6 py-16"
         >
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-3xl font-bold text-center text-[#154535] mb-12">
             Core Features
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -130,12 +130,12 @@ export default function LandingPage() {
             ].map(([t, d]) => (
               <div
                 key={t}
-                className="backdrop-blur-xl bg-white/40 rounded-2xl p-8 shadow-lg border border-white/50"
+                className="backdrop-blur-xl bg-white/60 rounded-xl p-8 shadow-[0_4px_16px_-8px_rgba(21,69,53,0.08)] border border-white/80"
               >
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                <h3 className="text-lg font-semibold text-[#154535] mb-3">
                   {t}
                 </h3>
-                <p className="text-sm text-gray-500">{d}</p>
+                <p className="text-sm text-[#4A6B5D]">{d}</p>
               </div>
             ))}
           </div>
@@ -146,7 +146,7 @@ export default function LandingPage() {
           id="how-it-works"
           className="scroll-mt-20 max-w-4xl mx-auto px-4 sm:px-6 py-16"
         >
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
+          <h2 className="text-3xl font-bold text-center text-[#154535] mb-12">
             How SmartSplit Works
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -173,11 +173,11 @@ export default function LandingPage() {
               ],
             ].map(([n, t, d]) => (
               <div key={n} className="text-center">
-                <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-4 text-white shadow-lg bg-teal-500">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold mx-auto mb-4 text-white shadow-sm bg-[#154535]">
                   {n}
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-1.5">{t}</h3>
-                <p className="text-sm text-gray-500">{d}</p>
+                <h3 className="font-semibold text-[#154535] mb-1.5">{t}</h3>
+                <p className="text-sm text-[#4A6B5D]">{d}</p>
               </div>
             ))}
           </div>
@@ -185,12 +185,12 @@ export default function LandingPage() {
 
         {/* CTA */}
         <section className="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">
+          <h2 className="text-3xl font-bold text-[#154535] mb-3">
             Ready to split smarter?
           </h2>
           <Link
             to={token ? "/dashboard" : "/register"}
-            className="inline-block mt-6 px-8 py-3 rounded-lg text-base font-medium text-white shadow-lg bg-teal-500 hover:bg-teal-600 transition"
+            className="inline-block mt-6 px-8 py-3 rounded-lg text-base font-medium text-white shadow-[0_4px_12px_-4px_rgba(21,69,53,0.3)] bg-[#154535] hover:bg-[#1b5c48] transition"
           >
             {token ? "Go to Dashboard" : "Get Started Free"}
           </Link>
@@ -198,7 +198,7 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200">
+      <footer className="bg-white/80 backdrop-blur-sm border-t border-[#E1EEE8]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Logo and description column */}
@@ -210,21 +210,21 @@ export default function LandingPage() {
                   className="h-36 w-auto"
                 />
               </div>
-              <p className="text-sm text-teal-500 font-extrabold leading-relaxed font-[Michroma] text-center">
+              <p className="text-sm text-[#154535] font-extrabold leading-relaxed font-[Michroma] text-center">
                 SPLIT SMART, LIVE EASY
               </p>
             </div>
 
             {/* Links columns */}
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+              <h4 className="text-sm font-semibold text-[#154535] uppercase tracking-wider mb-4">
                 Product
               </h4>
               <ul className="space-y-2">
                 <li>
                   <a
                     href="#features"
-                    className="text-sm text-gray-500 hover:text-teal-600 transition"
+                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
                   >
                     Features
                   </a>
@@ -232,7 +232,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#how-it-works"
-                    className="text-sm text-gray-500 hover:text-teal-600 transition"
+                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
                   >
                     How It Works
                   </a>
@@ -240,7 +240,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-500 hover:text-teal-600 transition"
+                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
                   >
                     Pricing
                   </a>
@@ -248,14 +248,14 @@ export default function LandingPage() {
               </ul>
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+              <h4 className="text-sm font-semibold text-[#154535] uppercase tracking-wider mb-4">
                 Company
               </h4>
               <ul className="space-y-2">
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-500 hover:text-teal-600 transition"
+                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
                   >
                     About Us
                   </a>
@@ -263,7 +263,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-500 hover:text-teal-600 transition"
+                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
                   >
                     Careers
                   </a>
@@ -271,7 +271,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-500 hover:text-teal-600 transition"
+                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
                   >
                     Contact
                   </a>
@@ -279,14 +279,14 @@ export default function LandingPage() {
               </ul>
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+              <h4 className="text-sm font-semibold text-[#154535] uppercase tracking-wider mb-4">
                 Legal
               </h4>
               <ul className="space-y-2">
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-500 hover:text-teal-600 transition"
+                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
                   >
                     Terms
                   </a>
@@ -294,7 +294,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-500 hover:text-teal-600 transition"
+                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
                   >
                     Privacy Policy
                   </a>
@@ -304,26 +304,26 @@ export default function LandingPage() {
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-200 my-8"></div>
+          <div className="border-t border-[#E1EEE8] my-8"></div>
 
-          <div className="text-8xl sm:text-9xl font-black tracking-wider text-teal-500 text-center py-5 font-[Michroma]">
+          <div className="text-8xl sm:text-9xl font-black tracking-wider text-[#154535] text-center py-5 font-[Michroma]">
             SmartSplit
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-200 my-8"></div>
+          <div className="border-t border-[#E1EEE8] my-8"></div>
 
           {/* Copyright row */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-400">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-[#4A6B5D]/60">
             <p>© {new Date().getFullYear()} SmartSplit. All rights reserved.</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-teal-600 transition">
+              <a href="#" className="hover:text-[#154535] transition">
                 Twitter
               </a>
-              <a href="#" className="hover:text-teal-600 transition">
+              <a href="#" className="hover:text-[#154535] transition">
                 Facebook
               </a>
-              <a href="#" className="hover:text-teal-600 transition">
+              <a href="#" className="hover:text-[#154535] transition">
                 Instagram
               </a>
             </div>

@@ -21,8 +21,8 @@ export function ToastProvider({ children }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`px-4 py-3 rounded-lg shadow-lg text-white text-sm transition-all ${
-              toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'
+            className={`px-4 py-3 rounded-lg shadow-[0_4px_12px_-4px_rgba(21,69,53,0.15)] text-white text-sm transition-all border border-white/10 ${
+              toast.type === 'success' ? 'bg-[#154535]' : 'bg-[#D94A4A]'
             }`}
           >
             {toast.message}

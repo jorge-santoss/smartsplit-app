@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import bannerImg from "../assets/smartsplit-landscape-banner.png";
 
-
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,45 +26,45 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#E1EEE8] p-4">
       {/* Single compact card */}
-      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row">
-        {/* Left - Image (smaller padding) */}
-        <div className="lg:w-1/2 bg-linear-to-br from-blue-50 to-gray-100 flex items-center justify-center">
+      <div className="w-full max-w-5xl bg-white rounded-xl shadow-[0_8px_24px_-8px_rgba(21,69,53,0.12)] border border-white/80 overflow-hidden flex flex-col lg:flex-row">
+        {/* Left - Image (Fills the entire left half with the image) */}
+        <div className="lg:w-1/2 bg-[#E1EEE8] flex items-center justify-center overflow-hidden">
           <img
             src={bannerImg}
             alt="SmartSplit"
-            className="w-full max-w-full md:max-w-full h-auto object-contain"
+            className="w-full h-full object-cover"
           />
         </div>
 
-        {/* Right - Form (reduced vertical spacing) */}
-        <div className="lg:w-1/2 flex items-center justify-center p-6 md:p-8">
+        {/* Right - Form */}
+        <div className="lg:w-1/2 flex items-center justify-center p-8 md:p-12">
           <div className="w-full max-w-sm">
             <Link
               to="/"
-              className="text-sm text-gray-500 hover:text-gray-700 inline-flex items-center gap-1 mb-4"
+              className="text-sm text-[#4A6B5D] hover:text-[#154535] inline-flex items-center gap-1 mb-4 transition-colors"
             >
               ← Back to Home
             </Link>
-            <h1 className="text-2xl font-bold text-slate-900 mb-1">Welcome back</h1>
-            <p className="text-gray-600 text-sm mb-5">
+            <h1 className="text-2xl font-bold text-[#154535] mb-1">Welcome back</h1>
+            <p className="text-[#4A6B5D] text-sm mb-6">
                Sign in to manage your shared expenses.
             </p>
 
             {error && (
-              <p className="text-red-500 text-sm text-center mb-3 bg-red-50 rounded-lg px-3 py-1.5">
+              <p className="text-[#D94A4A] text-sm text-center mb-4 bg-red-50/80 border border-red-100/50 rounded-lg px-3 py-2">
                 {error}
               </p>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="email"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
+                className="w-full px-4 py-2.5 border border-[#E1EEE8] bg-[#F8FCFA] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#154535] focus:border-transparent text-sm text-[#154535] placeholder:text-[#4A6B5D]/60"
                 required
               />
               <input
@@ -73,23 +72,23 @@ export default function LoginPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
+                className="w-full px-4 py-2.5 border border-[#E1EEE8] bg-[#F8FCFA] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#154535] focus:border-transparent text-sm text-[#154535] placeholder:text-[#4A6B5D]/60"
                 required
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-teal-500 text-white py-2.5 rounded-lg font-medium hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity text-sm"
+                className="w-full bg-[#154535] text-white py-2.5 rounded-lg font-medium hover:bg-[#1b5c48] disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm shadow-sm"
               >
                 {loading ? "Signing in..." : "Sign In"}
               </button>
             </form>
 
-            <p className="text-xs text-center text-gray-500 mt-5">
+            <p className="text-xs text-center text-[#4A6B5D] mt-5">
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="text-teal-500 font-medium hover:underline"
+                className="text-[#154535] font-medium hover:underline"
               >
                 Click here
               </Link>

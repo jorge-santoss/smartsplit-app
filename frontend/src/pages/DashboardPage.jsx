@@ -29,6 +29,7 @@ import {
   Bell,
   Tag,
 } from "lucide-react";
+
 export default function DashboardPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -182,555 +183,552 @@ export default function DashboardPage() {
 
   return (
     <AppLayout>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-slate-900 leading-10 tracking-tight">
-              Welcome back{" "}
-              <span className="text-teal-500">{user?.name || "User"}</span>
-            </h1>
-            <p className="text-base text-gray-600">
-              Here is an overview of your shared finances.
-            </p>
-          </div>
-          <button
-            onClick={() => setShowCreate(true)}
-            className="bg-teal-500 text-white text-sm font-semibold px-6 py-3 rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2 self-start md:self-auto shadow-md"
-          >
-            <Plus className="w-5 h-5" />
-            Create New Household
-          </button>
-        </header>
+      {/* Mint Green Page Wrapper */}
+      <div className="min-h-screen bg-[#E1EEE8] p-4 sm:p-6 lg:p-8">
+        <div className="max-w-7xl mx-auto">
+          
+          {/* Header */}
+          <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div>
+              <h1 className="text-4xl font-bold text-[#154535] tracking-tight">
+                Welcome back{" "}
+                <span className="text-[#154535]">{user?.name || "User"}</span>
+              </h1>
+              <p className="text-base text-[#4A6B5D] font-medium mt-1">
+                Here is an overview of your shared finances.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowCreate(true)}
+              className="bg-[#154535] text-white text-sm font-semibold px-8 py-3.5 rounded-xl hover:bg-[#1b5c48] transition-colors shadow-sm flex items-center gap-2 self-start md:self-auto"
+            >
+              <Plus className="w-5 h-5" />
+              Create New Household
+            </button>
+          </header>
 
-        {isLoading ? (
-          <div className="space-y-4">
-            <SkeletonCard />
-            <SkeletonCard />
-          </div>
-        ) : !households?.length ? (
-          <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300">
-            <Home className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-500">No households yet. Create one!</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Row 1: Total Owed to You */}
-            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6 flex flex-col gap-4">
-              <div className="flex items-center gap-2 text-gray-600">
-                <CircleDollarSign className="w-5 h-5 text-teal-500" />
-                <span className="text-xs font-semibold uppercase tracking-wider">
-                  Total Owed to You
+          {isLoading ? (
+            <div className="space-y-4">
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          ) : !households?.length ? (
+            <div className="text-center py-20 bg-white/90 backdrop-blur-sm rounded-2xl border border-white/80 shadow-sm">
+              <Home className="w-12 h-12 text-[#154535]/40 mx-auto mb-3" />
+              <p className="text-[#4A6B5D] font-medium">No households yet. Create one!</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              
+              {/* Row 1: Total Owed to You */}
+              <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-2 text-[#4A6B5D]">
+                  <CircleDollarSign className="w-5 h-5 text-[#154535]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider">
+                    Total Owed to You
+                  </span>
+                </div>
+                <span className="text-4xl font-bold tracking-tight text-[#154535]">
+                  ${(summary?.totalOwedToMe || 0).toFixed(2)}
                 </span>
-              </div>
-              <span className="text-4xl font-bold tracking-tight text-teal-500">
-                ${(summary?.totalOwedToMe || 0).toFixed(2)}
-              </span>
-              <div className="w-full bg-blue-50 h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-teal-500 h-full rounded-full"
-                  style={{ width: `${owedPct}%` }}
-                />
-              </div>
-            </div>
-
-            {/* Row 1: Total You Owe */}
-            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6 flex flex-col gap-4">
-              <div className="flex items-center gap-2 text-gray-600">
-                <CreditCard className="w-5 h-5 text-teal-500" />
-                <span className="text-xs font-semibold uppercase tracking-wider">
-                  Total You Owe
-                </span>
-              </div>
-              <span className="text-4xl font-bold tracking-tight text-red-700">
-                ${(summary?.totalIOwe || 0).toFixed(2)}
-              </span>
-              <div className="w-full bg-red-100 h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-red-700 h-full rounded-full"
-                  style={{ width: `${owePct}%` }}
-                />
-              </div>
-            </div>
-
-            {/* Row 1: Household Switcher */}
-            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6 flex flex-col gap-4">
-              <label className="text-sm font-medium text-gray-600">
-                Current Household
-              </label>
-              {/* Desktop pills */}
-              <div className="hidden md:flex flex-wrap gap-2">
-                {households.map((h) => (
-                  <button
-                    key={h.id}
-                    onClick={() => setSelectedId(h.id)}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      selectedId === h.id
-                        ? "bg-teal-500 text-white"
-                        : "bg-white border border-gray-300 text-gray-600 hover:bg-blue-50"
-                    }`}
-                  >
-                    {h.name}
-                  </button>
-                ))}
-              </div>
-              {/* Mobile dropdown */}
-              <select
-                value={selectedId || ""}
-                onChange={(e) => setSelectedId(Number(e.target.value))}
-                className="md:hidden w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
-              >
-                {households.map((h) => (
-                  <option key={h.id} value={h.id}>
-                    {h.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Row 2: Members Count */}
-            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
-              <p className="text-xs font-semibold uppercase tracking-wider text-gray-600">
-                Members
-              </p>
-              <p className="text-4xl font-bold tracking-tight text-slate-900">
-                {householdDetail?.members?.length || 0}
-              </p>
-            </div>
-
-            {/* Row 2: Expenses Count */}
-            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
-              <p className="text-xs font-semibold uppercase tracking-wider text-gray-600">
-                Expenses
-              </p>
-              <p className="text-4xl font-bold tracking-tight text-slate-900">
-                {expenses?.length || 0}
-              </p>
-            </div>
-
-            {/* Row 2: Total Spent */}
-            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
-              <p className="text-xs font-semibold uppercase tracking-wider text-gray-600">
-                Total Spent
-              </p>
-              <p className="text-4xl font-bold tracking-tight text-slate-900">
-                ${totalSpent.toFixed(2)}
-              </p>
-            </div>
-
-            {/* Row 3: My Households (full width) */}
-            <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-300 shadow-sm p-6 md:p-8">
-              <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                My Households
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {households?.map((h) => (
+                <div className="w-full bg-[#E1EEE8] h-2 rounded-full overflow-hidden">
                   <div
-                    key={h.id}
-                    className="border border-gray-300 rounded-xl p-4 flex flex-col gap-2"
-                  >
-                    {editingId === h.id ? (
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="text"
-                          value={editName}
-                          onChange={(e) => setEditName(e.target.value)}
-                          className="flex-1 px-3 py-1.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-                          autoFocus
-                        />
-                        <button
-                          onClick={() => handleSaveEdit(h.id)}
-                          disabled={updateMutation.isPending}
-                          className="text-xs bg-teal-500 text-white px-2 py-1.5 rounded-lg hover:opacity-90 disabled:opacity-50"
-                        >
-                          Save
-                        </button>
-                        <button
-                          onClick={handleCancelEdit}
-                          className="text-xs bg-gray-100 text-gray-600 px-2 py-1.5 rounded-lg hover:bg-gray-200"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-between">
-                        <div
-                          onClick={() => navigate(`/households/${h.id}`)}
-                          className="flex items-center gap-3 cursor-pointer flex-1 min-w-0"
-                        >
-                          <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center shrink-0">
-                            <Home className="w-5 h-5 text-teal-500" />
+                    className="bg-[#154535] h-full rounded-full"
+                    style={{ width: `${owedPct}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Row 1: Total You Owe */}
+              <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6 flex flex-col gap-4">
+                <div className="flex items-center gap-2 text-[#4A6B5D]">
+                  <CreditCard className="w-5 h-5 text-[#154535]" />
+                  <span className="text-xs font-semibold uppercase tracking-wider">
+                    Total You Owe
+                  </span>
+                </div>
+                <span className="text-4xl font-bold tracking-tight text-[#D94A4A]">
+                  ${(summary?.totalIOwe || 0).toFixed(2)}
+                </span>
+                <div className="w-full bg-[#FDE8E8] h-2 rounded-full overflow-hidden">
+                  <div
+                    className="bg-[#D94A4A] h-full rounded-full"
+                    style={{ width: `${owePct}%` }}
+                  />
+                </div>
+              </div>
+
+              {/* Row 1: Household Switcher */}
+              <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6 flex flex-col gap-4">
+                <label className="text-sm font-medium text-[#154535]">
+                  Current Household
+                </label>
+                {/* Desktop pills */}
+                <div className="hidden md:flex flex-wrap gap-2">
+                  {households.map((h) => (
+                    <button
+                      key={h.id}
+                      onClick={() => setSelectedId(h.id)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors border ${
+                        selectedId === h.id
+                          ? "bg-[#154535] border-[#154535] text-white shadow-sm"
+                          : "bg-white/40 border-transparent text-[#4A6B5D] hover:bg-[#E1EEE8]/50 hover:border-[#154535]/20"
+                      }`}
+                    >
+                      {h.name}
+                    </button>
+                  ))}
+                </div>
+                {/* Mobile dropdown */}
+                <select
+                  value={selectedId || ""}
+                  onChange={(e) => setSelectedId(Number(e.target.value))}
+                  className="md:hidden w-full bg-white/40 border-[#E1EEE8] rounded-xl px-4 py-2.5 text-sm text-[#154535] focus:outline-none focus:ring-2 focus:ring-[#154535]/50 border"
+                >
+                  {households.map((h) => (
+                    <option key={h.id} value={h.id}>
+                      {h.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Row 2: Members Count */}
+              <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#4A6B5D]">
+                  Members
+                </p>
+                <p className="text-4xl font-bold tracking-tight text-[#154535] mt-1">
+                  {householdDetail?.members?.length || 0}
+                </p>
+              </div>
+
+              {/* Row 2: Expenses Count */}
+              <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#4A6B5D]">
+                  Expenses
+                </p>
+                <p className="text-4xl font-bold tracking-tight text-[#154535] mt-1">
+                  {expenses?.length || 0}
+                </p>
+              </div>
+
+              {/* Row 2: Total Spent */}
+              <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#4A6B5D]">
+                  Total Spent
+                </p>
+                <p className="text-4xl font-bold tracking-tight text-[#154535] mt-1">
+                  ${totalSpent.toFixed(2)}
+                </p>
+              </div>
+
+              {/* Row 3: My Households (full width) */}
+              <div className="lg:col-span-3 bg-white rounded-2xl border border-white/80 shadow-sm p-6 md:p-8">
+                <h2 className="text-xl font-semibold text-[#154535] mb-4">
+                  My Households
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {households?.map((h) => (
+                    <div
+                      key={h.id}
+                      className="bg-[#F8FCFA] border border-[#E1EEE8] rounded-xl p-4 flex flex-col gap-2"
+                    >
+                      {editingId === h.id ? (
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={editName}
+                            onChange={(e) => setEditName(e.target.value)}
+                            className="flex-1 px-4 py-1.5 bg-white border-[#E1EEE8] rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#154535]"
+                            autoFocus
+                          />
+                          <button
+                            onClick={() => handleSaveEdit(h.id)}
+                            disabled={updateMutation.isPending}
+                            className="text-xs bg-[#154535] text-white px-4 py-1.5 rounded-full hover:opacity-90 disabled:opacity-50"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={handleCancelEdit}
+                            className="text-xs bg-white border border-[#E1EEE8] text-[#4A6B5D] px-4 py-1.5 rounded-full hover:bg-[#E1EEE8]"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between">
+                          <div
+                            onClick={() => navigate(`/households/${h.id}`)}
+                            className="flex items-center gap-3 cursor-pointer flex-1 min-w-0"
+                          >
+                            <div className="w-10 h-10 rounded-full bg-[#E1EEE8] flex items-center justify-center shrink-0">
+                              <Home className="w-5 h-5 text-[#154535]" />
+                            </div>
+                            <div className="min-w-0">
+                              <h3 className="text-sm font-semibold text-[#154535] truncate">
+                                {h.name}
+                              </h3>
+                              <p className="text-sm text-[#4A6B5D]">
+                                {h.member_count || "—"} Members
+                              </p>
+                            </div>
                           </div>
-                          <div className="min-w-0">
-                            <h3 className="text-sm font-semibold text-slate-900 truncate">
-                              {h.name}
-                            </h3>
-                            <p className="text-sm text-gray-600">
-                              {h.member_count || "—"} Members
+                          <div className="flex items-center gap-1 shrink-0 ml-2">
+                            {h.owner_id === user?.id && (
+                              <>
+                                <button
+                                  onClick={() => handleStartEdit(h)}
+                                  className="text-[#4A6B5D] hover:text-[#154535] p-1 transition-colors"
+                                >
+                                  <Pencil className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => setConfirmDelete(h)}
+                                  className="text-[#4A6B5D] hover:text-[#D94A4A] p-1 transition-colors"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </>
+                            )}
+                            <ChevronRight className="w-5 h-5 text-[#154535]" />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="lg:col-span-3">
+                <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6">
+                  <h2 className="text-lg font-semibold text-[#154535] mb-4">
+                    Quick Actions
+                  </h2>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <button
+                      onClick={() =>
+                        navigate(`/households/${selectedId}?tab=Expenses`)
+                      }
+                      className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#E1EEE8]/40 hover:bg-[#154535]/5 border border-transparent hover:border-[#154535]/20 transition-all text-[#4A6B5D] hover:text-[#154535]"
+                    >
+                      <Receipt className="w-6 h-6 text-[#154535]" />
+                      <span className="text-xs font-medium">Add Expense</span>
+                    </button>
+                    <button
+                      onClick={() =>
+                        navigate(`/households/${selectedId}?tab=Settlements`)
+                      }
+                      className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#E1EEE8]/40 hover:bg-[#154535]/5 border border-transparent hover:border-[#154535]/20 transition-all text-[#4A6B5D] hover:text-[#154535]"
+                    >
+                      <Banknote className="w-6 h-6 text-[#154535]" />
+                      <span className="text-xs font-medium">Settle Up</span>
+                    </button>
+                    <button
+                      onClick={() =>
+                        navigate(`/households/${selectedId}?tab=Members`)
+                      }
+                      className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#E1EEE8]/40 hover:bg-[#154535]/5 border border-transparent hover:border-[#154535]/20 transition-all text-[#4A6B5D] hover:text-[#154535]"
+                    >
+                      <UserPlus className="w-6 h-6 text-[#154535]" />
+                      <span className="text-xs font-medium">Invite</span>
+                    </button>
+                    <button
+                      onClick={() =>
+                        navigate(`/households/${selectedId}?tab=Categories`)
+                      }
+                      className="flex flex-col items-center gap-2 p-4 rounded-xl bg-[#E1EEE8]/40 hover:bg-[#154535]/5 border border-transparent hover:border-[#154535]/20 transition-all text-[#4A6B5D] hover:text-[#154535]"
+                    >
+                      <Tag className="w-6 h-6 text-[#154535]" />
+                      <span className="text-xs font-medium">Categories</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 4: Balances & Recent Expenses (2-col grid inside 3-col parent) */}
+              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Balances Card */}
+                <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6">
+                  <h2 className="text-lg font-semibold text-[#154535] mb-4">
+                    Balances
+                  </h2>
+                  {balances ? (
+                    <div className="space-y-3">
+                      {balances.debts?.length > 0 && (
+                        <div className="bg-red-50/70 rounded-lg px-3 py-2 mb-3 border border-red-100/50">
+                          <p className="text-xs font-medium text-[#D94A4A]">
+                            {balances.debts.length} debt
+                            {balances.debts.length > 1 ? "s" : ""} to settle
+                          </p>
+                        </div>
+                      )}
+                      {balances.balances.map((b) => (
+                        <div key={b.id} className="flex items-center gap-2 py-2">
+                          <Avatar
+                            name={b.name}
+                            size="sm"
+                            className="bg-[#E1EEE8] text-[#154535]"
+                          />
+                          <span className="text-sm font-medium text-[#4A6B5D] flex-1">
+                            {b.name}
+                          </span>
+                          <span
+                            className={`text-sm font-bold ${b.net_balance > 0 ? "text-[#154535]" : b.net_balance < 0 ? "text-[#D94A4A]" : "text-[#4A6B5D]"}`}
+                          >
+                            {b.net_balance > 0 ? "+" : ""}$
+                            {Math.abs(b.net_balance).toFixed(2)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <SkeletonCard />
+                  )}
+                </div>
+
+                {/* Recent Expenses Card */}
+                <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-[#154535]">
+                      Recent Expenses
+                    </h2>
+                    <button
+                      onClick={() =>
+                        navigate(`/households/${selectedId}?tab=Expenses`)
+                      }
+                      className="text-sm text-[#4A6B5D] hover:text-[#154535] transition-colors"
+                    >
+                      View all
+                    </button>
+                  </div>
+                  {!expenses ? (
+                    <SkeletonCard />
+                  ) : expenses.length === 0 ? (
+                    <p className="text-sm text-[#4A6B5D] text-center py-8 flex flex-col items-center gap-2">
+                      <Receipt className="w-8 h-8 text-[#4A6B5D] opacity-40" />
+                      No expenses yet.
+                    </p>
+                  ) : (
+                    <div className="divide-y divide-[#E1EEE8]">
+                      {expenses.slice(0, 5).map((exp) => (
+                        <div
+                          key={exp.id}
+                          className="py-3 flex items-center justify-between"
+                        >
+                          <div>
+                            <p className="text-sm font-medium text-[#154535]">
+                              {exp.title}
+                            </p>
+                            <p className="text-xs text-[#4A6B5D]">
+                              {exp.payer_name} ·{" "}
+                              {new Date(exp.expense_date).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <span className="text-sm font-bold text-[#154535]">
+                            ${parseFloat(exp.amount).toFixed(2)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Row 5: Settlements & Members (2-col grid) */}
+              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Settlements Card */}
+                <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-[#154535]">
+                      Settlements
+                    </h2>
+                    <button
+                      onClick={() =>
+                        navigate(`/households/${selectedId}?tab=Settlements`)
+                      }
+                      className="text-sm text-[#4A6B5D] hover:text-[#154535] transition-colors"
+                    >
+                      View all
+                    </button>
+                  </div>
+                  {!settlements ? (
+                    <SkeletonCard />
+                  ) : settlements.length === 0 ? (
+                    <p className="text-sm text-[#4A6B5D] text-center py-8 flex flex-col items-center gap-2">
+                      <Banknote className="w-8 h-8 text-[#4A6B5D] opacity-40" />
+                      No settlements yet.
+                    </p>
+                  ) : (
+                    <div className="divide-y divide-[#E1EEE8]">
+                      {settlements.slice(0, 5).map((s) => (
+                        <div
+                          key={s.id}
+                          className="py-3 flex items-center justify-between"
+                        >
+                          <div>
+                            <p className="text-sm font-medium text-[#154535]">
+                              {s.from_user_name} paid {s.to_user_name}
+                            </p>
+                            <p className="text-xs text-[#4A6B5D]">
+                              {new Date(s.settlement_date).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <span className="text-sm font-bold text-[#154535]">
+                            ${parseFloat(s.amount).toFixed(2)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Members Card */}
+                <div className="bg-white rounded-2xl border border-white/80 shadow-sm p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold text-[#154535]">
+                      Members
+                    </h2>
+                    <button
+                      onClick={() =>
+                        navigate(`/households/${selectedId}?tab=Members`)
+                      }
+                      className="text-sm text-[#4A6B5D] hover:text-[#154535] transition-colors"
+                    >
+                      Manage
+                    </button>
+                  </div>
+                  <div className="divide-y divide-[#E1EEE8]">
+                    {householdDetail?.members?.map((m) => (
+                      <div
+                        key={m.id}
+                        className="py-3 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Avatar
+                            name={m.name}
+                            size="sm"
+                            className="bg-[#E1EEE8] text-[#154535]"
+                          />
+                          <div>
+                            <p className="text-sm font-medium text-[#154535]">
+                              {m.name}
+                            </p>
+                            <p className="text-xs text-[#4A6B5D]">{m.email}</p>
+                          </div>
+                        </div>
+                        <span className="text-xs bg-[#E1EEE8] text-[#154535] px-2 py-0.5 rounded-full font-medium">
+                          {m.role}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 6: Recent Activity (full width) */}
+              <div className="lg:col-span-3 bg-white rounded-2xl border border-white/80 shadow-sm p-6 md:p-8">
+                <h2 className="text-xl font-semibold text-[#154535] mb-4">
+                  Recent Activity
+                </h2>
+                {feedLoading ? (
+                  <div className="space-y-3">
+                    <SkeletonCard />
+                    <SkeletonCard />
+                  </div>
+                ) : feedError ? (
+                  <p className="text-[#D94A4A]">Failed to load activity feed.</p>
+                ) : feed?.length === 0 ? (
+                  <div className="text-center py-12 bg-[#F8FCFA] rounded-xl border border-[#E1EEE8]">
+                    <Bell className="w-10 h-10 text-[#4A6B5D] opacity-40 mx-auto mb-2" />
+                    <p className="text-[#4A6B5D]">No activity yet.</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-3">
+                    {feed?.map((item) => (
+                      <div
+                        key={`${item.type}-${item.item_id}-${item.household_name}`}
+                        className="flex items-center justify-between p-4 bg-[#F8FCFA] border border-[#E1EEE8] rounded-xl hover:bg-white hover:shadow-sm transition-all"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 rounded-full bg-[#E1EEE8] flex items-center justify-center">
+                            {item.type === "expense" ? (
+                              <CreditCard className="w-5 h-5 text-[#154535]" />
+                            ) : item.type === "member" ? (
+                              <UserPlus className="w-5 h-5 text-[#154535]" />
+                            ) : (
+                              <ArrowLeftRight className="w-5 h-5 text-[#154535]" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-[#154535]">
+                              {item.type === "expense" && <>{item.label}</>}
+                              {item.type === "member" && <>{item.label} joined</>}
+                              {item.type === "settlement" && (
+                                <>Settlement: {item.label}</>
+                              )}
+                            </p>
+                            <p className="text-sm text-[#4A6B5D]">
+                              {item.type === "expense" && (
+                                <>Added by {item.label}</>
+                              )}
+                              {item.household_name && (
+                                <>
+                                  {" "}
+                                  in{" "}
+                                  <span className="font-medium">
+                                    {item.household_name}
+                                  </span>
+                                </>
+                              )}
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-1 shrink-0 ml-2">
-                          {h.owner_id === user?.id && (
-                            <>
-                              <button
-                                onClick={() => handleStartEdit(h)}
-                                className="text-gray-400 hover:text-teal-600 px-1 py-1 transition-colors"
-                              >
-                                <Pencil className="w-4 h-4" />
-                              </button>
-                              <button
-                                onClick={() => setConfirmDelete(h)}
-                                className="text-gray-400 hover:text-red-600 px-1 py-1 transition-colors"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </button>
-                            </>
-                          )}
-                          <ChevronRight className="w-5 h-5 text-teal-500" />
+                        <div className="text-right">
+                          <div className="text-sm font-semibold text-[#154535]">
+                            {item.amount !== null &&
+                              `$${parseFloat(item.amount).toFixed(2)}`}
+                          </div>
+                          <div className="text-sm text-[#4A6B5D]">
+                            {new Date(item.created_at).toLocaleDateString()}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="lg:col-span-3">
-              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                  Quick Actions
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  <button
-                    onClick={() =>
-                      navigate(`/households/${selectedId}?tab=Expenses`)
-                    }
-                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-300 hover:bg-teal-50 hover:border-teal-300 transition-colors"
-                  >
-                    <Receipt className="w-6 h-6 text-teal-500" />
-                    <span className="text-xs font-medium text-gray-600">
-                      Add Expense
-                    </span>
-                  </button>
-                  <button
-                    onClick={() =>
-                      navigate(`/households/${selectedId}?tab=Settlements`)
-                    }
-                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-300 hover:bg-teal-50 hover:border-teal-300 transition-colors"
-                  >
-                    <Banknote className="w-6 h-6 text-teal-500" />
-                    <span className="text-xs font-medium text-gray-600">
-                      Settle Up
-                    </span>
-                  </button>
-                  <button
-                    onClick={() =>
-                      navigate(`/households/${selectedId}?tab=Members`)
-                    }
-                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-300 hover:bg-teal-50 hover:border-teal-300 transition-colors"
-                  >
-                    <UserPlus className="w-6 h-6 text-teal-500" />
-                    <span className="text-xs font-medium text-gray-600">
-                      Invite
-                    </span>
-                  </button>
-                  <button
-                    onClick={() =>
-                      navigate(`/households/${selectedId}?tab=Categories`)
-                    }
-                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-300 hover:bg-teal-50 hover:border-teal-300 transition-colors"
-                  >
-                    <Tag className="w-6 h-6 text-teal-500" />
-                    <span className="text-xs font-medium text-gray-600">
-                      Categories
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Row 4: Balances & Recent Expenses (2-col grid inside 3-col parent) */}
-            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Balances Card */}
-              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
-                <h2 className="text-lg font-semibold text-slate-900 mb-4">
-                  Balances
-                </h2>
-                {balances ? (
-                  <div className="space-y-3">
-                    {balances.debts?.length > 0 && (
-                      <div className="bg-red-50 rounded-lg px-3 py-2 mb-3">
-                        <p className="text-xs font-medium text-red-700">
-                          {balances.debts.length} debt
-                          {balances.debts.length > 1 ? "s" : ""} to settle
-                        </p>
-                      </div>
-                    )}
-                    {balances.balances.map((b) => (
-                      <div key={b.id} className="flex items-center gap-2 py-2">
-                        <Avatar
-                          name={b.name}
-                          size="sm"
-                          className="bg-teal-100 text-teal-700"
-                        />
-                        <span className="text-sm font-medium text-gray-700 flex-1">
-                          {b.name}
-                        </span>
-                        <span
-                          className={`text-sm font-bold ${b.net_balance > 0 ? "text-teal-600" : b.net_balance < 0 ? "text-red-600" : "text-gray-400"}`}
-                        >
-                          {b.net_balance > 0 ? "+" : ""}$
-                          {Math.abs(b.net_balance).toFixed(2)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <SkeletonCard />
-                )}
-              </div>
-
-              {/* Recent Expenses Card */}
-              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-slate-900">
-                    Recent Expenses
-                  </h2>
-                  <button
-                    onClick={() =>
-                      navigate(`/households/${selectedId}?tab=Expenses`)
-                    }
-                    className="text-sm text-teal-600 hover:underline"
-                  >
-                    View all
-                  </button>
-                </div>
-                {!expenses ? (
-                  <SkeletonCard />
-                ) : expenses.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8 flex flex-col items-center gap-2">
-                    <Receipt className="w-8 h-8 text-gray-300" />
-                    No expenses yet.
-                  </p>
-                ) : (
-                  <div className="divide-y divide-gray-100">
-                    {expenses.slice(0, 5).map((exp) => (
-                      <div
-                        key={exp.id}
-                        className="py-3 flex items-center justify-between"
-                      >
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
-                            {exp.title}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {exp.payer_name} ·{" "}
-                            {new Date(exp.expense_date).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <span className="text-sm font-bold">
-                          ${parseFloat(exp.amount).toFixed(2)}
-                        </span>
                       </div>
                     ))}
                   </div>
                 )}
-              </div>
-            </div>
-
-            {/* Row 5: Settlements & Members (2-col grid) */}
-            <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Settlements Card */}
-              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-slate-900">
-                    Settlements
-                  </h2>
-                  <button
-                    onClick={() =>
-                      navigate(`/households/${selectedId}?tab=Settlements`)
-                    }
-                    className="text-sm text-teal-600 hover:underline"
-                  >
-                    View all
-                  </button>
-                </div>
-                {!settlements ? (
-                  <SkeletonCard />
-                ) : settlements.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8 flex flex-col items-center gap-2">
-                    <Banknote className="w-8 h-8 text-gray-300" />
-                    No settlements yet.
-                  </p>
-                ) : (
-                  <div className="divide-y divide-gray-100">
-                    {settlements.slice(0, 5).map((s) => (
-                      <div
-                        key={s.id}
-                        className="py-3 flex items-center justify-between"
-                      >
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
-                            {s.from_user_name} paid {s.to_user_name}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {new Date(s.settlement_date).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <span className="text-sm font-bold text-teal-600">
-                          ${parseFloat(s.amount).toFixed(2)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                {feedData && (
+                  <Pagination
+                    page={feedPage}
+                    totalPages={feedData.totalPages}
+                    onPageChange={setFeedPage}
+                  />
                 )}
               </div>
-
-              {/* Members Card */}
-              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-slate-900">
-                    Members
-                  </h2>
-                  <button
-                    onClick={() =>
-                      navigate(`/households/${selectedId}?tab=Members`)
-                    }
-                    className="text-sm text-teal-600 hover:underline"
-                  >
-                    Manage
-                  </button>
-                </div>
-                <div className="divide-y divide-gray-100">
-                  {householdDetail?.members?.map((m) => (
-                    <div
-                      key={m.id}
-                      className="py-3 flex items-center justify-between"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Avatar
-                          name={m.name}
-                          size="sm"
-                          className="bg-teal-100 text-teal-700"
-                        />
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
-                            {m.name}
-                          </p>
-                          <p className="text-xs text-gray-500">{m.email}</p>
-                        </div>
-                      </div>
-                      <span className="text-xs bg-teal-100 text-teal-700 px-2 py-0.5 rounded-full">
-                        {m.role}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
-
-            {/* Row 6: Recent Activity (full width) */}
-            <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-300 shadow-sm p-6 md:p-8">
-              <h2 className="text-xl font-semibold text-slate-900 mb-4">
-                Recent Activity
-              </h2>
-              {feedLoading ? (
-                <div className="space-y-3">
-                  <SkeletonCard />
-                  <SkeletonCard />
-                </div>
-              ) : feedError ? (
-                <p className="text-red-500">Failed to load activity feed.</p>
-              ) : feed?.length === 0 ? (
-                <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
-                  <Bell className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                  <p className="text-gray-500">No activity yet.</p>
-                </div>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  {feed?.map((item) => (
-                    <div
-                      key={`${item.type}-${item.item_id}-${item.household_name}`}
-                      className="flex items-center justify-between p-4 border border-gray-300 rounded-xl hover:bg-teal-50 transition-colors"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center">
-                          {item.type === "expense" ? (
-                            <CreditCard className="w-5 h-5 text-teal-500" />
-                          ) : item.type === "member" ? (
-                            <UserPlus className="w-5 h-5 text-teal-500" />
-                          ) : (
-                            <ArrowLeftRight className="w-5 h-5 text-teal-500" />
-                          )}
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-slate-900">
-                            {item.type === "expense" && <>{item.label}</>}
-                            {item.type === "member" && <>{item.label} joined</>}
-                            {item.type === "settlement" && (
-                              <>Settlement: {item.label}</>
-                            )}
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            {item.type === "expense" && (
-                              <>Added by {item.label}</>
-                            )}
-                            {item.household_name && (
-                              <>
-                                {" "}
-                                in{" "}
-                                <span className="font-medium">
-                                  {item.household_name}
-                                </span>
-                              </>
-                            )}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm font-semibold">
-                          {item.amount !== null &&
-                            `$${parseFloat(item.amount).toFixed(2)}`}
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          {new Date(item.created_at).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {feedData && (
-                <Pagination
-                  page={feedPage}
-                  totalPages={feedData.totalPages}
-                  onPageChange={setFeedPage}
-                />
-              )}
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Create Household Modal */}
       {showCreate && (
         <div
-          className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50"
           onClick={() => setShowCreate(false)}
         >
           <div
-            className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl"
+            className="bg-white/90 backdrop-blur-xl rounded-2xl p-8 w-full max-w-md shadow-xl border border-white/80"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-lg font-semibold mb-4">Create Household</h2>
-            <form onSubmit={handleCreate} className="space-y-3">
+            <h2 className="text-lg font-semibold text-[#154535] mb-4">Create Household</h2>
+            <form onSubmit={handleCreate} className="space-y-4">
               <input
                 type="text"
                 placeholder="Household name"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-3 border-[#E1EEE8] bg-white/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#154535] border"
                 required
               />
               <input
@@ -738,20 +736,20 @@ export default function DashboardPage() {
                 placeholder="Description (optional)"
                 value={newDesc}
                 onChange={(e) => setNewDesc(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full px-4 py-3 border-[#E1EEE8] bg-white/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#154535] border"
               />
-              <div className="flex gap-2 justify-end">
+              <div className="flex gap-2 justify-end mt-2">
                 <button
                   type="button"
                   onClick={() => setShowCreate(false)}
-                  className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+                  className="px-6 py-2 bg-[#E1EEE8] text-[#4A6B5D] rounded-xl hover:bg-white border border-[#E1EEE8] transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={createMutation.isPending}
-                  className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:opacity-90 disabled:opacity-50"
+                  className="bg-[#154535] text-white px-6 py-2 rounded-xl hover:bg-[#1b5c48] transition-colors disabled:opacity-50"
                 >
                   {createMutation.isPending ? "Creating..." : "Create"}
                 </button>

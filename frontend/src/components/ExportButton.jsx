@@ -26,11 +26,11 @@ export default function ExportButton({ householdId }) {
       <button
         onClick={() => setOpen((o) => !o)}
         disabled={loading}
-        className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-50 disabled:opacity-50 transition-colors"
+        className="flex items-center gap-2 bg-white border border-[#E1EEE8] text-[#4A6B5D] hover:bg-[#154535] hover:text-[#ffffff] text-sm font-medium px-4 py-2 rounded-lg disabled:opacity-50 transition-colors"
       >
         {loading ? (
           <>
-            <span className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-[#E1EEE8] border-t-[#154535] rounded-full animate-spin" />
             Exporting...
           </>
         ) : (
@@ -46,18 +46,18 @@ export default function ExportButton({ householdId }) {
         <>
           {/* Click outside to close */}
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden w-45">
+          <div className="absolute right-0 mt-1 z-50 bg-white border border-[#E1EEE8] rounded-lg shadow-[0_4px_12px_-4px_rgba(21,69,53,0.08)] overflow-hidden w-45">
             <button
               onClick={() => handleExport('csv')}
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[#4A6B5D] hover:bg-[#E1EEE8] hover:text-[#154535] transition-colors"
             >
               <span className="text-base">📄</span>
               Download CSV
             </button>
-            <div className="border-t border-gray-100" />
+            <div className="border-t border-[#E1EEE8]" />
             <button
               onClick={() => handleExport('pdf')}
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[#4A6B5D] hover:bg-[#E1EEE8] hover:text-[#154535] transition-colors"
             >
               <span className="text-base">📑</span>
               Download PDF
