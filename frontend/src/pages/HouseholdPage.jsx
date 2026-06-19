@@ -94,7 +94,7 @@ export default function HouseholdPage() {
               className={`px-5 py-2.5 rounded-2xl text-sm font-medium transition-all whitespace-nowrap flex-1 sm:flex-none ${
                 activeTab === tab
                   ? "bg-teal-500 text-white shadow-md"
-                  : "text-[#434655] hover:bg-teal-50 hover:text-teal-600"
+                  : "text-gray-600 hover:bg-teal-50 hover:text-teal-600"
               }`}
             >
               {tab}

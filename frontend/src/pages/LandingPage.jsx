@@ -8,7 +8,7 @@ export default function LandingPage() {
   const { token } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#F5F7F8]">
+    <div className="min-h-screen bg-gray-100">
       <header className="sticky top-0 z-50 backdrop-blur-md bg-white/70 border-b border-white/20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">

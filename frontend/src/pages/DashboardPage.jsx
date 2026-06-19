@@ -13,7 +13,22 @@ import * as activityApi from "../api/activityApi";
 import { useAuth } from "../hooks/useAuth";
 import Avatar from "../components/Avatar";
 import Pagination from "../components/Pagination";
-import { Plus, CircleDollarSign, CreditCard, Home, ChevronRight, UserPlus, ArrowLeftRight, Pencil, Trash2 } from "lucide-react";
+import {
+  Plus,
+  CircleDollarSign,
+  CreditCard,
+  Home,
+  ChevronRight,
+  UserPlus,
+  ArrowLeftRight,
+  Pencil,
+  Trash2,
+  Receipt,
+  Handshake,
+  Banknote,
+  Bell,
+  Tag,
+} from "lucide-react";
 export default function DashboardPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -69,13 +84,13 @@ export default function DashboardPage() {
   });
   const expenses = expensesData?.data;
 
- const { data: settlementsData } = useQuery({
-  queryKey: ["settlements", selectedId],
-  queryFn: () =>
-    settlementApi.listByHousehold(selectedId).then((r) => r.data),
-  enabled: !!selectedId,
-});
-const settlements = settlementsData?.data;
+  const { data: settlementsData } = useQuery({
+    queryKey: ["settlements", selectedId],
+    queryFn: () =>
+      settlementApi.listByHousehold(selectedId).then((r) => r.data),
+    enabled: !!selectedId,
+  });
+  const settlements = settlementsData?.data;
 
   const { data: balances } = useQuery({
     queryKey: ["balances", selectedId],
@@ -171,11 +186,11 @@ const settlements = settlementsData?.data;
         {/* Header */}
         <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-[#0b1c30] leading-10 tracking-tight">
+            <h1 className="text-4xl font-bold text-slate-900 leading-10 tracking-tight">
               Welcome back{" "}
               <span className="text-teal-500">{user?.name || "User"}</span>
             </h1>
-            <p className="text-base text-[#434655]">
+            <p className="text-base text-gray-600">
               Here is an overview of your shared finances.
             </p>
           </div>
@@ -195,14 +210,15 @@ const settlements = settlementsData?.data;
           </div>
         ) : !households?.length ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300">
+            <Home className="w-12 h-12 text-gray-300 mx-auto mb-3" />
             <p className="text-gray-500">No households yet. Create one!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Row 1: Total Owed to You */}
-            <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6 flex flex-col gap-4">
-              <div className="flex items-center gap-2 text-[#434655]">
-               <CircleDollarSign className="w-5 h-5 text-teal-500" />
+            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6 flex flex-col gap-4">
+              <div className="flex items-center gap-2 text-gray-600">
+                <CircleDollarSign className="w-5 h-5 text-teal-500" />
                 <span className="text-xs font-semibold uppercase tracking-wider">
                   Total Owed to You
                 </span>
@@ -210,7 +226,7 @@ const settlements = settlementsData?.data;
               <span className="text-4xl font-bold tracking-tight text-teal-500">
                 ${(summary?.totalOwedToMe || 0).toFixed(2)}
               </span>
-              <div className="w-full bg-[#e5eeff] h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-blue-50 h-2 rounded-full overflow-hidden">
                 <div
                   className="bg-teal-500 h-full rounded-full"
                   style={{ width: `${owedPct}%` }}
@@ -219,30 +235,31 @@ const settlements = settlementsData?.data;
             </div>
 
             {/* Row 1: Total You Owe */}
-            <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6 flex flex-col gap-4">
-              <div className="flex items-center gap-2 text-[#434655]">
-               <CreditCard className="w-5 h-5 text-teal-500" />
+            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6 flex flex-col gap-4">
+              <div className="flex items-center gap-2 text-gray-600">
+                <CreditCard className="w-5 h-5 text-teal-500" />
                 <span className="text-xs font-semibold uppercase tracking-wider">
                   Total You Owe
                 </span>
               </div>
-              <span className="text-4xl font-bold tracking-tight text-[#ba1a1a]">
+              <span className="text-4xl font-bold tracking-tight text-red-700">
                 ${(summary?.totalIOwe || 0).toFixed(2)}
               </span>
-              <div className="w-full bg-[#ffdad6] h-2 rounded-full overflow-hidden">
+              <div className="w-full bg-red-100 h-2 rounded-full overflow-hidden">
                 <div
-                  className="bg-[#ba1a1a] h-full rounded-full"
+                  className="bg-red-700 h-full rounded-full"
                   style={{ width: `${owePct}%` }}
                 />
               </div>
             </div>
 
             {/* Row 1: Household Switcher */}
-            <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6 flex flex-col gap-4">
-              <label className="text-sm font-medium text-[#434655]">
+            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6 flex flex-col gap-4">
+              <label className="text-sm font-medium text-gray-600">
                 Current Household
               </label>
-              <div className="flex flex-wrap gap-2">
+              {/* Desktop pills */}
+              <div className="hidden md:flex flex-wrap gap-2">
                 {households.map((h) => (
                   <button
                     key={h.id}
@@ -250,55 +267,67 @@ const settlements = settlementsData?.data;
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                       selectedId === h.id
                         ? "bg-teal-500 text-white"
-                        : "bg-white border border-[#c3c6d7] text-[#434655] hover:bg-[#eff4ff]"
+                        : "bg-white border border-gray-300 text-gray-600 hover:bg-blue-50"
                     }`}
                   >
                     {h.name}
                   </button>
                 ))}
               </div>
+              {/* Mobile dropdown */}
+              <select
+                value={selectedId || ""}
+                onChange={(e) => setSelectedId(Number(e.target.value))}
+                className="md:hidden w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+              >
+                {households.map((h) => (
+                  <option key={h.id} value={h.id}>
+                    {h.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             {/* Row 2: Members Count */}
-            <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#434655]">
+            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-600">
                 Members
               </p>
-              <p className="text-4xl font-bold tracking-tight text-[#0b1c30]">
+              <p className="text-4xl font-bold tracking-tight text-slate-900">
                 {householdDetail?.members?.length || 0}
               </p>
             </div>
 
             {/* Row 2: Expenses Count */}
-            <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#434655]">
+            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-600">
                 Expenses
               </p>
-              <p className="text-4xl font-bold tracking-tight text-[#0b1c30]">
+              <p className="text-4xl font-bold tracking-tight text-slate-900">
                 {expenses?.length || 0}
               </p>
             </div>
 
             {/* Row 2: Total Spent */}
-            <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
-              <p className="text-xs font-semibold uppercase tracking-wider text-[#434655]">
+            <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
+              <p className="text-xs font-semibold uppercase tracking-wider text-gray-600">
                 Total Spent
               </p>
-              <p className="text-4xl font-bold tracking-tight text-[#0b1c30]">
+              <p className="text-4xl font-bold tracking-tight text-slate-900">
                 ${totalSpent.toFixed(2)}
               </p>
             </div>
 
             {/* Row 3: My Households (full width) */}
-            <div className="lg:col-span-3 bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6 md:p-8">
-              <h2 className="text-xl font-semibold text-[#0b1c30] mb-4">
+            <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-300 shadow-sm p-6 md:p-8">
+              <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 My Households
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {households?.map((h) => (
                   <div
                     key={h.id}
-                    className="border border-[#c3c6d7] rounded-xl p-4 flex flex-col gap-2"
+                    className="border border-gray-300 rounded-xl p-4 flex flex-col gap-2"
                   >
                     {editingId === h.id ? (
                       <div className="flex items-center gap-2">
@@ -330,26 +359,30 @@ const settlements = settlementsData?.data;
                           className="flex items-center gap-3 cursor-pointer flex-1 min-w-0"
                         >
                           <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center shrink-0">
-                           <Home className="w-5 h-5 text-teal-500" />
+                            <Home className="w-5 h-5 text-teal-500" />
                           </div>
                           <div className="min-w-0">
-                            <h3 className="text-sm font-semibold text-[#0b1c30] truncate">
+                            <h3 className="text-sm font-semibold text-slate-900 truncate">
                               {h.name}
                             </h3>
-                            <p className="text-sm text-[#434655]">
+                            <p className="text-sm text-gray-600">
                               {h.member_count || "—"} Members
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-1 shrink-0 ml-2">
-                                                   {h.owner_id === user?.id && (
+                          {h.owner_id === user?.id && (
                             <>
-                              <button onClick={() => handleStartEdit(h)}
-                                className="text-gray-400 hover:text-teal-600 px-1 py-1 transition-colors">
+                              <button
+                                onClick={() => handleStartEdit(h)}
+                                className="text-gray-400 hover:text-teal-600 px-1 py-1 transition-colors"
+                              >
                                 <Pencil className="w-4 h-4" />
                               </button>
-                              <button onClick={() => setConfirmDelete(h)}
-                                className="text-gray-400 hover:text-red-600 px-1 py-1 transition-colors">
+                              <button
+                                onClick={() => setConfirmDelete(h)}
+                                className="text-gray-400 hover:text-red-600 px-1 py-1 transition-colors"
+                              >
                                 <Trash2 className="w-4 h-4" />
                               </button>
                             </>
@@ -363,11 +396,65 @@ const settlements = settlementsData?.data;
               </div>
             </div>
 
+            <div className="lg:col-span-3">
+              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">
+                  Quick Actions
+                </h2>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <button
+                    onClick={() =>
+                      navigate(`/households/${selectedId}?tab=Expenses`)
+                    }
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-300 hover:bg-teal-50 hover:border-teal-300 transition-colors"
+                  >
+                    <Receipt className="w-6 h-6 text-teal-500" />
+                    <span className="text-xs font-medium text-gray-600">
+                      Add Expense
+                    </span>
+                  </button>
+                  <button
+                    onClick={() =>
+                      navigate(`/households/${selectedId}?tab=Settlements`)
+                    }
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-300 hover:bg-teal-50 hover:border-teal-300 transition-colors"
+                  >
+                    <Banknote className="w-6 h-6 text-teal-500" />
+                    <span className="text-xs font-medium text-gray-600">
+                      Settle Up
+                    </span>
+                  </button>
+                  <button
+                    onClick={() =>
+                      navigate(`/households/${selectedId}?tab=Members`)
+                    }
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-300 hover:bg-teal-50 hover:border-teal-300 transition-colors"
+                  >
+                    <UserPlus className="w-6 h-6 text-teal-500" />
+                    <span className="text-xs font-medium text-gray-600">
+                      Invite
+                    </span>
+                  </button>
+                  <button
+                    onClick={() =>
+                      navigate(`/households/${selectedId}?tab=Categories`)
+                    }
+                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-300 hover:bg-teal-50 hover:border-teal-300 transition-colors"
+                  >
+                    <Tag className="w-6 h-6 text-teal-500" />
+                    <span className="text-xs font-medium text-gray-600">
+                      Categories
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
             {/* Row 4: Balances & Recent Expenses (2-col grid inside 3-col parent) */}
             <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Balances Card */}
-              <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
-                <h2 className="text-lg font-semibold text-[#0b1c30] mb-4">
+              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
+                <h2 className="text-lg font-semibold text-slate-900 mb-4">
                   Balances
                 </h2>
                 {balances ? (
@@ -405,9 +492,9 @@ const settlements = settlementsData?.data;
               </div>
 
               {/* Recent Expenses Card */}
-              <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
+              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-[#0b1c30]">
+                  <h2 className="text-lg font-semibold text-slate-900">
                     Recent Expenses
                   </h2>
                   <button
@@ -422,7 +509,8 @@ const settlements = settlementsData?.data;
                 {!expenses ? (
                   <SkeletonCard />
                 ) : expenses.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8">
+                  <p className="text-sm text-gray-500 text-center py-8 flex flex-col items-center gap-2">
+                    <Receipt className="w-8 h-8 text-gray-300" />
                     No expenses yet.
                   </p>
                 ) : (
@@ -454,9 +542,9 @@ const settlements = settlementsData?.data;
             {/* Row 5: Settlements & Members (2-col grid) */}
             <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Settlements Card */}
-              <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
+              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-[#0b1c30]">
+                  <h2 className="text-lg font-semibold text-slate-900">
                     Settlements
                   </h2>
                   <button
@@ -471,7 +559,8 @@ const settlements = settlementsData?.data;
                 {!settlements ? (
                   <SkeletonCard />
                 ) : settlements.length === 0 ? (
-                  <p className="text-sm text-gray-500 text-center py-8">
+                  <p className="text-sm text-gray-500 text-center py-8 flex flex-col items-center gap-2">
+                    <Banknote className="w-8 h-8 text-gray-300" />
                     No settlements yet.
                   </p>
                 ) : (
@@ -499,9 +588,9 @@ const settlements = settlementsData?.data;
               </div>
 
               {/* Members Card */}
-              <div className="bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6">
+              <div className="bg-white rounded-2xl border border-gray-300 shadow-sm p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-[#0b1c30]">
+                  <h2 className="text-lg font-semibold text-slate-900">
                     Members
                   </h2>
                   <button
@@ -520,9 +609,11 @@ const settlements = settlementsData?.data;
                       className="py-3 flex items-center justify-between"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center text-teal-700 font-bold text-xs">
-                          {m.name.charAt(0).toUpperCase()}
-                        </div>
+                        <Avatar
+                          name={m.name}
+                          size="sm"
+                          className="bg-teal-100 text-teal-700"
+                        />
                         <div>
                           <p className="text-sm font-medium text-gray-900">
                             {m.name}
@@ -540,8 +631,8 @@ const settlements = settlementsData?.data;
             </div>
 
             {/* Row 6: Recent Activity (full width) */}
-            <div className="lg:col-span-3 bg-white rounded-2xl border border-[#c3c6d7] shadow-sm p-6 md:p-8">
-              <h2 className="text-xl font-semibold text-[#0b1c30] mb-4">
+            <div className="lg:col-span-3 bg-white rounded-2xl border border-gray-300 shadow-sm p-6 md:p-8">
+              <h2 className="text-xl font-semibold text-slate-900 mb-4">
                 Recent Activity
               </h2>
               {feedLoading ? (
@@ -553,6 +644,7 @@ const settlements = settlementsData?.data;
                 <p className="text-red-500">Failed to load activity feed.</p>
               ) : feed?.length === 0 ? (
                 <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-300">
+                  <Bell className="w-10 h-10 text-gray-300 mx-auto mb-2" />
                   <p className="text-gray-500">No activity yet.</p>
                 </div>
               ) : (
@@ -560,27 +652,27 @@ const settlements = settlementsData?.data;
                   {feed?.map((item) => (
                     <div
                       key={`${item.type}-${item.item_id}-${item.household_name}`}
-                      className="flex items-center justify-between p-4 border border-[#c3c6d7] rounded-xl hover:bg-teal-50 transition-colors"
+                      className="flex items-center justify-between p-4 border border-gray-300 rounded-xl hover:bg-teal-50 transition-colors"
                     >
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center">
-                                                    {item.type === "expense" ? (
-                              <CreditCard className="w-5 h-5 text-teal-500" />
-                            ) : item.type === "member" ? (
-                              <UserPlus className="w-5 h-5 text-teal-500" />
-                            ) : (
-                              <ArrowLeftRight className="w-5 h-5 text-teal-500" />
-                            )}
+                          {item.type === "expense" ? (
+                            <CreditCard className="w-5 h-5 text-teal-500" />
+                          ) : item.type === "member" ? (
+                            <UserPlus className="w-5 h-5 text-teal-500" />
+                          ) : (
+                            <ArrowLeftRight className="w-5 h-5 text-teal-500" />
+                          )}
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-[#0b1c30]">
+                          <p className="text-sm font-semibold text-slate-900">
                             {item.type === "expense" && <>{item.label}</>}
                             {item.type === "member" && <>{item.label} joined</>}
                             {item.type === "settlement" && (
                               <>Settlement: {item.label}</>
                             )}
                           </p>
-                          <p className="text-sm text-[#434655]">
+                          <p className="text-sm text-gray-600">
                             {item.type === "expense" && (
                               <>Added by {item.label}</>
                             )}
@@ -601,7 +693,7 @@ const settlements = settlementsData?.data;
                           {item.amount !== null &&
                             `$${parseFloat(item.amount).toFixed(2)}`}
                         </div>
-                        <div className="text-sm text-[#434655]">
+                        <div className="text-sm text-gray-600">
                           {new Date(item.created_at).toLocaleDateString()}
                         </div>
                       </div>
@@ -610,19 +702,16 @@ const settlements = settlementsData?.data;
                 </div>
               )}
               {feedData && (
-        <Pagination
-          page={feedPage}
-          totalPages={feedData.totalPages}
-          onPageChange={setFeedPage}
-        />
-      )}
+                <Pagination
+                  page={feedPage}
+                  totalPages={feedData.totalPages}
+                  onPageChange={setFeedPage}
+                />
+              )}
             </div>
-            
           </div>
         )}
       </div>
-
-      
 
       {/* Create Household Modal */}
       {showCreate && (
@@ -641,7 +730,7 @@ const settlements = settlementsData?.data;
                 placeholder="Household name"
                 value={newName}
                 onChange={(e) => setNewName(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
                 required
               />
               <input
@@ -649,7 +738,7 @@ const settlements = settlementsData?.data;
                 placeholder="Description (optional)"
                 value={newDesc}
                 onChange={(e) => setNewDesc(e.target.value)}
-                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               <div className="flex gap-2 justify-end">
                 <button

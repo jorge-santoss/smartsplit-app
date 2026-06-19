@@ -27,11 +27,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F5F7F8] p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       {/* Single compact card */}
       <div className="w-full max-w-5xl bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row">
         {/* Left - Image (smaller padding) */}
-        <div className="lg:w-1/2 bg-linear-to-br from-[#F8FAFE] to-[#F0F3F8] flex items-center justify-center">
+        <div className="lg:w-1/2 bg-linear-to-br from-blue-50 to-gray-100 flex items-center justify-center">
           <img
             src={bannerImg}
             alt="SmartSplit"
@@ -48,8 +48,8 @@ export default function LoginPage() {
             >
               ← Back to Home
             </Link>
-            <h1 className="text-2xl font-bold text-[#0b1c30] mb-1">Welcome back</h1>
-            <p className="text-[#434655] text-sm mb-5">
+            <h1 className="text-2xl font-bold text-slate-900 mb-1">Welcome back</h1>
+            <p className="text-gray-600 text-sm mb-5">
                Sign in to manage your shared expenses.
             </p>
 
@@ -65,7 +65,7 @@ export default function LoginPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#c3c6d7] rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
                 required
               />
               <input
@@ -73,7 +73,7 @@ export default function LoginPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#c3c6d7] rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent bg-white text-sm"
                 required
               />
               <button
