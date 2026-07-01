@@ -47,8 +47,8 @@ export default function HouseholdMembers({ household, householdId, user }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-6 rounded-xl border border-white/80 shadow-sm">
-        <h2 className="text-lg font-semibold text-[#154535] mb-4">
+      <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
+        <h2 className="text-lg font-semibold text-white mb-4">
           Add Member
         </h2>
         <form
@@ -60,13 +60,13 @@ export default function HouseholdMembers({ household, householdId, user }) {
             placeholder="Email to invite"
             value={addEmail}
             onChange={(e) => setAddEmail(e.target.value)}
-            className="w-full sm:flex-1 px-3 py-2 border border-[#E1EEE8] bg-[#F8FCFA] rounded-lg text-[#154535] placeholder:text-[#4A6B5D]/60 focus:outline-none focus:ring-2 focus:ring-[#154535]"
+            className="w-full sm:flex-1 px-3 py-2 border border-white/10 bg-white/5 rounded-lg text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] transition-all"
             required
           />
           <button
             type="submit"
             disabled={addMemberMutation.isPending}
-            className="w-full sm:w-auto bg-[#154535] text-white px-4 py-2 rounded-lg hover:bg-[#1b5c48] disabled:opacity-50 transition-colors shadow-sm"
+            className="w-full sm:w-auto bg-[#FCEA3C] text-[#121212] px-4 py-2 rounded-lg hover:brightness-105 disabled:opacity-50 transition-all shadow-lg shadow-yellow-500/20"
           >
             {addMemberMutation.isPending ? "Adding..." : "Add"}
           </button>
@@ -74,53 +74,53 @@ export default function HouseholdMembers({ household, householdId, user }) {
       </div>
 
       {owner && (
-        <div className="bg-white rounded-xl border border-white/80 shadow-sm">
-          <div className="p-4 border-b border-[#E1EEE8]">
-            <h2 className="text-sm font-semibold text-[#4A6B5D] uppercase tracking-wide">
+        <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-2xl">
+          <div className="p-4 border-b border-white/10">
+            <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
               Owner
             </h2>
           </div>
           <div className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Avatar name={owner.name} size="md" className="bg-[#154535] text-white" />
+              <Avatar name={owner.name} size="md" className="bg-[#FCEA3C] text-[#121212]" />
               <div>
-                <p className="font-medium text-[#154535]">{owner.name}</p>
-                <p className="text-xs text-[#4A6B5D]">{owner.email}</p>
+                <p className="font-medium text-white">{owner.name}</p>
+                <p className="text-xs text-gray-400">{owner.email}</p>
               </div>
             </div>
-            <span className="text-xs bg-[#E1EEE8] text-[#154535] px-3 py-1 rounded-full font-medium">
+            <span className="text-xs bg-white/10 text-[#FCEA3C] px-3 py-1 rounded-full font-medium border border-white/10">
               owner
             </span>
           </div>
         </div>
       )}
 
-      <div className="bg-white rounded-xl border border-white/80 shadow-sm">
-        <div className="p-4 border-b border-[#E1EEE8]">
-          <h2 className="text-sm font-semibold text-[#4A6B5D] uppercase tracking-wide">
+      <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-2xl">
+        <div className="p-4 border-b border-white/10">
+          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide">
             Members ({others.length})
           </h2>
         </div>
         {others.length === 0 ? (
-          <div className="p-6 text-center text-sm text-[#4A6B5D]">
+          <div className="p-6 text-center text-sm text-gray-400">
             No other members.
           </div>
         ) : (
-          <div className="divide-y divide-[#E1EEE8]">
+          <div className="divide-y divide-white/10">
             {others.map((m) => (
               <div
                 key={m.id}
                 className="p-4 flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <Avatar name={m.name} size="md" className="bg-[#E1EEE8] text-[#154535]" />
+                  <Avatar name={m.name} size="md" className="bg-white/10 text-[#FCEA3C]" />
                   <div>
-                    <p className="font-medium text-[#154535]">{m.name}</p>
-                    <p className="text-xs text-[#4A6B5D]">{m.email}</p>
+                    <p className="font-medium text-white">{m.name}</p>
+                    <p className="text-xs text-gray-400">{m.email}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs bg-[#E1EEE8] text-[#154535] px-3 py-1 rounded-full font-medium">
+                  <span className="text-xs bg-white/10 text-[#FCEA3C] px-3 py-1 rounded-full font-medium border border-white/10">
                     {m.role}
                   </span>
                   {household.owner_id === user.id && (
@@ -129,7 +129,7 @@ export default function HouseholdMembers({ household, householdId, user }) {
                       onClick={() =>
                         setConfirmRemove({ id: m.id, name: m.name })
                       }
-                      className="text-[#4A6B5D] hover:text-[#D94A4A] transition-colors"
+                      className="text-gray-400 hover:text-[#FF6B6B] transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

@@ -1,45 +1,61 @@
 import { Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import heroImg from "../assets/Hero-landscape-smartsplit.png";
-import logoImg from "../assets/SmartSplit-logo-app.png";
-import footerLogo from "../assets/SmartSplit-logo-app.png";
+import logoImg from "../assets/smartsplit_logo.png";
+import footerLogo from "../assets/smartsplit_logo.png";
 
 export default function LandingPage() {
   const { token } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#E1EEE8]">
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/60 border-b border-[#E1EEE8] shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <img src={logoImg} alt="SmartSplit" className="h-12 w-auto" />
-            <span className="text-2xl font-bold text-[#154535] font-[Michroma]">
+    <div className="min-h-screen bg-[#121212] text-white">
+      {/* HEADER - Glassmorphism Style */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#121212]/80 border-b border-white/10 shadow-sm">
+        <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-2 sm:py-3 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <img
+              src={logoImg}
+              alt="SmartSplit"
+              className="h-8 sm:h-10 lg:h-12 w-auto"
+            />
+            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-[#FCEA3C] font-[Michroma] tracking-tight">
               SmartSplit
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-8 text-sm text-[#4A6B5D]">
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center gap-4 lg:gap-8 text-sm text-white/70">
             <a
               href="#"
               onClick={(e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="text-[#154535] font-medium hover:text-[#154535]"
+              className="text-white font-medium hover:text-[#FCEA3C] transition-colors"
             >
               Home
             </a>
-            <a href="#features" className="hover:text-[#154535]">
+            <a
+              href="#features"
+              className="hover:text-[#FCEA3C] transition-colors"
+            >
               Features
             </a>
-            <a href="#how-it-works" className="hover:text-[#154535]">
+            <a
+              href="#how-it-works"
+              className="hover:text-[#FCEA3C] transition-colors"
+            >
               How It Works
             </a>
           </div>
-          <div className="flex items-center gap-3">
+
+          {/* Auth buttons */}
+          <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3">
             {token ? (
               <Link
                 to="/dashboard"
-                className="px-5 py-2 rounded-lg text-sm font-medium text-white bg-[#154535] hover:bg-[#1b5c48] transition-colors shadow-sm"
+                className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-[#121212] bg-[#FCEA3C] hover:brightness-105 transition-all shadow-lg shadow-yellow-500/20 whitespace-nowrap"
               >
                 Dashboard
               </Link>
@@ -47,13 +63,13 @@ export default function LandingPage() {
               <>
                 <Link
                   to="/login"
-                  className="text-sm font-medium text-[#4A6B5D] hover:text-[#154535] transition-colors"
+                  className="text-xs sm:text-sm font-medium text-white/70 hover:text-[#FCEA3C] transition-colors whitespace-nowrap"
                 >
                   Log In
                 </Link>
                 <Link
                   to="/register"
-                  className="px-5 py-2 rounded-lg text-sm font-medium text-white bg-gradient-to-b from-[#0b1e15] to-[#2e6c46] hover:brightness-110 transition-all shadow-sm"
+                  className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-[#121212] bg-[#FCEA3C] hover:brightness-105 transition-all shadow-lg shadow-yellow-500/20 whitespace-nowrap"
                 >
                   Sign Up
                 </Link>
@@ -64,53 +80,60 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* Hero */}
-        <div className="relative w-full aspect-[2.35/1]">
+        {/* HERO - FIXED: Picture now clearly visible, Glassmorphism is lean */}
+        <section className="relative min-h-[90vh] sm:min-h-[85vh] lg:min-h-[80vh] flex items-center overflow-hidden">
+          {/* Full opacity image for maximum visibility */}
           <img
             src={heroImg}
             alt="SmartSplit hero"
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="relative z-10 h-full flex items-center justify-center px-4 sm:px-6">
-            <div className="max-w-6xl mx-auto w-full">
-              <div className="max-w-2xl text-center lg:text-left">
-                <h1 className="text-4xl sm:text-6xl font-bold text-white leading-tight drop-shadow-md">
-                  What if every shared bill split itself fairly, every time?
-                  That’s SmartSplit.
-                </h1>
-                <p className="mt-4 text-lg text-gray-100 drop-shadow">
-                  Track expenses, split bills fairly, monitor balances, and
-                  settle debts with roommates, couples, or family members.
-                </p>
-                <div className="mt-8 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                  <Link
-                    to={token ? "/dashboard" : "/register"}
-                    className="px-8 py-3 rounded-lg text-base font-medium text-white shadow-[0_4px_12px_-4px_rgba(21,69,53,0.3)] bg-[#154535] hover:bg-[#1b5c48] transition"
-                  >
-                    {token ? "Go to Dashboard" : "Get Started Free"}
-                  </Link>
-                  <a
-                    href="#how-it-works"
-                    className="px-8 py-3 rounded-lg text-base font-medium text-white bg-white/20 backdrop-blur-sm border border-white/40 hover:bg-white/30 transition"
-                  >
-                    See How It Works
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          {/* Very soft overlay just to keep text readable */}
+          <div className="absolute inset-0 backdrop-blur-xs bg-[#121212]/40 border-y border-white/10 shadow-2xl" />
 
-        {/* Features */}
+          <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <div className="max-w-4xl mx-auto text-center">
+  {/* Streamlined glass box - fully centered on all screen sizes */}
+  <div className="max-w-2xl mx-auto text-center p-5 sm:p-6 lg:p-8">
+    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.2] sm:leading-[1.15] drop-shadow-lg">
+      What if every shared bill split itself fairly, every time?
+      <br className="hidden sm:block" />
+      <span className="text-[#FCEA3C]">That's SmartSplit.</span>
+    </h1>
+
+    <p className="mt-3 sm:mt-4 md:mt-5 text-sm sm:text-base md:text-lg lg:text-xl text-gray-100/95 drop-shadow-md max-w-xl mx-auto">
+      Track expenses, split bills fairly, monitor balances, and
+      settle debts with roommates, couples, or family members.
+    </p>
+
+    <div className="mt-5 sm:mt-6 md:mt-8 flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 md:gap-4 justify-center">
+      <Link
+        to={token ? "/dashboard" : "/register"}
+        className="w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-[#121212] bg-[#FCEA3C] hover:brightness-105 transition-all text-center shadow-lg shadow-yellow-500/30"
+      >
+        {token ? "Go to Dashboard" : "Get Started Free"}
+      </Link>
+      <a
+        href="#how-it-works"
+        className="w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-white bg-white/10 backdrop-blur-sm border border-white/30 hover:bg-white/20 transition text-center"
+      >
+        See How It Works
+      </a>
+    </div>
+  </div>
+</div>
+          </div>
+        </section>
+
+        {/* FEATURES - Glassmorphism Cards */}
         <section
           id="features"
-          className="scroll-mt-18 max-w-6xl mx-auto px-4 sm:px-6 py-16"
+          className="scroll-mt-14 sm:scroll-mt-16 lg:scroll-mt-18 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20"
         >
-          <h2 className="text-3xl font-bold text-center text-[#154535] mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-[#FCEA3C] mb-8 sm:mb-10 lg:mb-14">
             Core Features
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {[
               ["Household Management", "Create households and invite members."],
               [
@@ -130,26 +153,26 @@ export default function LandingPage() {
             ].map(([t, d]) => (
               <div
                 key={t}
-                className="backdrop-blur-xl bg-white/60 rounded-xl p-8 shadow-[0_4px_16px_-8px_rgba(21,69,53,0.08)] border border-white/80"
+                className="backdrop-blur-xl bg-white/5 rounded-xl p-5 sm:p-6 lg:p-8 border border-white/10 hover:bg-white/10 hover:scale-[1.02] transition-all duration-300 shadow-lg"
               >
-                <h3 className="text-lg font-semibold text-[#154535] mb-3">
+                <h3 className="text-base sm:text-lg font-semibold text-[#FCEA3C] mb-1.5 sm:mb-2">
                   {t}
                 </h3>
-                <p className="text-sm text-[#4A6B5D]">{d}</p>
+                <p className="text-sm text-gray-300 leading-relaxed">{d}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* How It Works */}
+        {/* HOW IT WORKS */}
         <section
           id="how-it-works"
-          className="scroll-mt-20 max-w-4xl mx-auto px-4 sm:px-6 py-16"
+          className="scroll-mt-14 sm:scroll-mt-16 lg:scroll-mt-18 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20"
         >
-          <h2 className="text-3xl font-bold text-center text-[#154535] mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-[#FCEA3C] mb-8 sm:mb-10 lg:mb-14">
             How SmartSplit Works
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6">
             {[
               [
                 1,
@@ -172,59 +195,69 @@ export default function LandingPage() {
                 "Record repayments and keep everything balanced.",
               ],
             ].map(([n, t, d]) => (
-              <div key={n} className="text-center">
-                <div className="w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold mx-auto mb-4 text-white shadow-sm bg-[#154535]">
+              <div
+                key={n}
+                className="text-center backdrop-blur-md bg-white/5 rounded-xl p-6 sm:p-8 border border-white/10 hover:bg-white/10 transition-all shadow-lg"
+              >
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl flex items-center justify-center text-lg sm:text-xl lg:text-2xl font-bold mx-auto mb-3 sm:mb-4 text-[#121212] bg-[#FCEA3C] shadow-lg shadow-yellow-500/20">
                   {n}
                 </div>
-                <h3 className="font-semibold text-[#154535] mb-1.5">{t}</h3>
-                <p className="text-sm text-[#4A6B5D]">{d}</p>
+                <h3 className="font-semibold text-white mb-1 sm:mb-1.5 text-sm sm:text-base">
+                  {t}
+                </h3>
+                <p className="text-sm text-gray-300 leading-relaxed">{d}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-4 sm:px-6 py-20 text-center">
-          <h2 className="text-3xl font-bold text-[#154535] mb-3">
+        <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 text-center">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-3">
             Ready to split smarter?
           </h2>
+          <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8">
+            Join thousands of people who already use SmartSplit.
+          </p>
           <Link
             to={token ? "/dashboard" : "/register"}
-            className="inline-block mt-6 px-8 py-3 rounded-lg text-base font-medium text-white shadow-[0_4px_12px_-4px_rgba(21,69,53,0.3)] bg-gradient-to-b from-[#0b1e15] to-[#2e6c46] hover:brightness-110 transition"
+            className="inline-block w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 lg:py-3.5 rounded-lg text-sm sm:text-base font-medium text-[#121212] bg-[#FCEA3C] hover:brightness-105 transition-all shadow-lg shadow-yellow-500/30"
           >
             {token ? "Go to Dashboard" : "Get Started Free"}
           </Link>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-white/80 backdrop-blur-sm border-t border-[#E1EEE8]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Logo and description column */}
-            <div className="col-span-1 md:col-span-1">
-              <div className="flex justify-center mb-4">
+      {/* FOOTER - Glassmorphism */}
+      <footer className="backdrop-blur-xl bg-white/5 border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-22">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-8">
+            {/* Logo + tagline */}
+            <div className="sm:col-span-2 lg:col-span-1 flex flex-col items-center lg:items-center">
+              <div className="flex justify-center lg:justify-start mb-3">
                 <img
                   src={footerLogo}
                   alt="SmartSplit"
-                  className="h-36 w-auto"
+                  className="h-20 sm:h-24 lg:h-28 w-auto"
                 />
               </div>
-              <p className="text-sm text-[#154535] font-extrabold leading-relaxed font-[Michroma] text-center">
-                SPLIT SMART, LIVE EASY
+              <p className="text-xs sm:text-sm text-white font-extrabold leading-relaxed font-[Michroma] text-center lg:text-left">
+                SPLIT SMART,
+                <br className="hidden sm:block lg:hidden" />
+                <span className="sm:inline"> LIVE EASY</span>
               </p>
             </div>
 
-            {/* Links columns */}
+            {/* Links */}
             <div>
-              <h4 className="text-sm font-semibold text-[#154535] uppercase tracking-wider mb-4">
+              <h4 className="text-xs sm:text-sm font-semibold text-[#FCEA3C] uppercase tracking-wider mb-3 sm:mb-4">
                 Product
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
                     href="#features"
-                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
+                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
                   >
                     Features
                   </a>
@@ -232,7 +265,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#how-it-works"
-                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
+                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
                   >
                     How It Works
                   </a>
@@ -240,22 +273,23 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
+                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
                   >
                     Pricing
                   </a>
                 </li>
               </ul>
             </div>
+
             <div>
-              <h4 className="text-sm font-semibold text-[#154535] uppercase tracking-wider mb-4">
+              <h4 className="text-xs sm:text-sm font-semibold text-[#FCEA3C] uppercase tracking-wider mb-3 sm:mb-4">
                 Company
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
+                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
                   >
                     About Us
                   </a>
@@ -263,7 +297,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
+                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
                   >
                     Careers
                   </a>
@@ -271,22 +305,23 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
+                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
                   >
                     Contact
                   </a>
                 </li>
               </ul>
             </div>
+
             <div>
-              <h4 className="text-sm font-semibold text-[#154535] uppercase tracking-wider mb-4">
+              <h4 className="text-xs sm:text-sm font-semibold text-[#FCEA3C] uppercase tracking-wider mb-3 sm:mb-4">
                 Legal
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
+                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
                   >
                     Terms
                   </a>
@@ -294,7 +329,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-[#4A6B5D] hover:text-[#154535] transition"
+                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
                   >
                     Privacy Policy
                   </a>
@@ -303,27 +338,26 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="border-t border-[#E1EEE8] my-8"></div>
+          <div className="border-t border-white/10 my-6 sm:my-8"></div>
 
-          <div className="text-8xl sm:text-9xl font-black tracking-wider text-[#154535] text-center py-5 font-[Michroma]">
+          {/* Giant brand name – fully responsive */}
+          <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-wider text-[#FCEA3C] text-center py-3 sm:py-4 font-[Michroma]">
             SmartSplit
           </div>
 
-          {/* Divider */}
-          <div className="border-t border-[#E1EEE8] my-8"></div>
+          <div className="border-t border-white/10 my-6 sm:my-8"></div>
 
-          {/* Copyright row */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-[#4A6B5D]/60">
+          {/* Copyright */}
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-400/80">
             <p>© {new Date().getFullYear()} SmartSplit. All rights reserved.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-[#154535] transition">
+            <div className="flex gap-4 sm:gap-6">
+              <a href="#" className="hover:text-[#FCEA3C] transition">
                 Twitter
               </a>
-              <a href="#" className="hover:text-[#154535] transition">
+              <a href="#" className="hover:text-[#FCEA3C] transition">
                 Facebook
               </a>
-              <a href="#" className="hover:text-[#154535] transition">
+              <a href="#" className="hover:text-[#FCEA3C] transition">
                 Instagram
               </a>
             </div>

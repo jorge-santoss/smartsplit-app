@@ -45,7 +45,7 @@ export default function HouseholdPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-[#E1EEE8] p-4 sm:p-6 lg:p-8">
+        <div className="min-h-screen bg-[#121212] p-4 sm:p-6 lg:p-8">
           <div className="space-y-4">
             <SkeletonCard />
             <SkeletonCard />
@@ -58,9 +58,9 @@ export default function HouseholdPage() {
   if (!household) {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-[#E1EEE8] p-4 sm:p-6 lg:p-8">
-          <div className="bg-white/90 backdrop-blur-sm rounded-xl border border-white/80 shadow-sm p-6">
-            <p className="text-[#4A6B5D]">Household not found</p>
+        <div className="min-h-screen bg-[#121212] p-4 sm:p-6 lg:p-8">
+          <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-xl p-6">
+            <p className="text-gray-400">Household not found</p>
           </div>
         </div>
       </AppLayout>
@@ -71,17 +71,17 @@ export default function HouseholdPage() {
 
   return (
     <AppLayout>
-      {/* Mint Green Page Wrapper */}
-      <div className="min-h-screen bg-[#E1EEE8] p-4 sm:p-6 lg:p-8">
+      {/* Dark Glassmorphism Page Wrapper */}
+      <div className="min-h-screen bg-[#121212] p-4 sm:p-6 lg:p-8">
         
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-[#154535] tracking-tight">
+            <h1 className="text-2xl font-bold text-white tracking-tight">
               {household.name}
             </h1>
             {household.description && (
-              <p className="text-[#4A6B5D] mt-1 font-medium">
+              <p className="text-gray-400 mt-1 font-medium">
                 {household.description}
               </p>
             )}
@@ -91,7 +91,7 @@ export default function HouseholdPage() {
             {isOwner && (
               <button
                 onClick={() => setShowDeleteHousehold(true)}
-                className="text-sm text-[#D94A4A] border border-[#D94A4A]/30 rounded-lg px-3 py-2 hover:bg-[#D94A4A]/10 transition-colors"
+                className="text-sm text-[#FF6B6B] border border-[#FF6B6B]/30 rounded-lg px-3 py-2 hover:bg-[#FF6B6B]/10 transition-colors"
               >
                 Delete household
               </button>
@@ -99,17 +99,17 @@ export default function HouseholdPage() {
           </div>
         </div>
 
- {/* Glassmorphism Tab Navigation */}
+        {/* Glassmorphism Tab Navigation */}
         <div className="sticky top-16 z-40 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 flex justify-center">
-          <nav className="bg-white/60 backdrop-blur-xl border border-white/80 rounded-full shadow-[0_8px_30px_-6px_rgba(21,69,53,0.08)] p-1.5 flex gap-1 overflow-x-auto w-full sm:w-auto">
+          <nav className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-full p-1.5 flex gap-1 overflow-x-auto w-full sm:w-auto">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-3 rounded-full text-sm font-semibold transition-all whitespace-nowrap flex-1 sm:flex-none ${
                   activeTab === tab
-                    ? "bg-[#154535] text-white shadow-sm"
-                    : "text-[#4A6B5D] hover:bg-white/60 hover:text-[#154535]"
+                    ? "bg-[#FCEA3C] text-[#121212] shadow-lg shadow-yellow-500/20"
+                    : "text-gray-400 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 {tab}
@@ -117,7 +117,6 @@ export default function HouseholdPage() {
             ))}
           </nav>
         </div>
-
 
         {/* Tab Content Area */}
         {activeTab === "Expenses" && (

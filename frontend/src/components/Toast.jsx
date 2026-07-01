@@ -21,11 +21,13 @@ export function ToastProvider({ children }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`px-4 py-3 rounded-lg shadow-[0_4px_12px_-4px_rgba(21,69,53,0.15)] text-white text-sm transition-all border border-white/10 ${
-              toast.type === 'success' ? 'bg-[#154535]' : 'bg-[#D94A4A]'
+            className={`px-4 py-3 rounded-xl shadow-lg text-sm transition-all border border-white/10 backdrop-blur-md flex items-center gap-2 ${
+              toast.type === 'success' 
+                ? 'bg-[#FCEA3C] text-[#121212] shadow-yellow-500/20' 
+                : 'bg-[#FF6B6B] text-white shadow-red-500/20'
             }`}
           >
-            {toast.message}
+            {toast.type === 'success' ? '✅' : '❌'} {toast.message}
           </div>
         ))}
       </div>

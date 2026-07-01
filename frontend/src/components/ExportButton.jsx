@@ -26,11 +26,11 @@ export default function ExportButton({ householdId }) {
       <button
         onClick={() => setOpen((o) => !o)}
         disabled={loading}
-        className="flex items-center gap-2 bg-white border border-[#E1EEE8] text-[#4A6B5D] hover:bg-[#154535] hover:text-[#ffffff] text-sm font-medium px-4 py-2 rounded-lg disabled:opacity-50 transition-colors"
+        className="flex items-center gap-2 backdrop-blur-xl bg-white/5 border border-white/10 text-gray-400 hover:bg-white/10 hover:text-white text-sm font-medium px-4 py-2 rounded-lg disabled:opacity-50 transition-all shadow-lg"
       >
         {loading ? (
           <>
-            <span className="w-4 h-4 border-2 border-[#E1EEE8] border-t-[#154535] rounded-full animate-spin" />
+            <span className="w-4 h-4 border-2 border-white/10 border-t-[#FCEA3C] rounded-full animate-spin" />
             Exporting...
           </>
         ) : (
@@ -46,18 +46,18 @@ export default function ExportButton({ householdId }) {
         <>
           {/* Click outside to close */}
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-1 z-50 bg-white border border-[#E1EEE8] rounded-lg shadow-[0_4px_12px_-4px_rgba(21,69,53,0.08)] overflow-hidden w-45">
+          <div className="absolute right-0 mt-1 z-50 backdrop-blur-xl bg-[#121212]/90 border border-white/10 rounded-lg shadow-2xl overflow-hidden w-45">
             <button
               onClick={() => handleExport('csv')}
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[#4A6B5D] hover:bg-[#E1EEE8] hover:text-[#154535] transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/10 hover:text-[#FCEA3C] transition-all"
             >
               <span className="text-base">📄</span>
               Download CSV
             </button>
-            <div className="border-t border-[#E1EEE8]" />
+            <div className="border-t border-white/10" />
             <button
               onClick={() => handleExport('pdf')}
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-[#4A6B5D] hover:bg-[#E1EEE8] hover:text-[#154535] transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:bg-white/10 hover:text-[#FCEA3C] transition-all"
             >
               <span className="text-base">📑</span>
               Download PDF

@@ -27,30 +27,34 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#E1EEE8] p-4">
-      <div className="w-full max-w-6xl bg-white rounded-xl shadow-[0_8px_24px_-8px_rgba(21,69,53,0.12)] border border-white/80 overflow-hidden flex flex-col lg:flex-row">
-        {/* Left - Image (Fills the entire left half) */}
-        <div className="lg:w-1/2 bg-[#E1EEE8] flex items-center justify-center overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-[#121212] p-4">
+      {/* Glassmorphism Card */}
+      <div className="w-full max-w-6xl backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl overflow-hidden flex flex-col lg:flex-row rounded-2xl">
+        
+        {/* Left - Image (Blended with dark glass effect) */}
+        <div className="lg:w-1/2 relative overflow-hidden flex items-center justify-center min-h-[200px] lg:min-h-full">
           <img 
             src={bannerImg} 
             alt="SmartSplit" 
-            className="w-full h-full object-cover" 
+            className="w-full h-full object-cover mix-blend-overlay" 
           />
+          <div className="absolute inset-0" />
         </div>
 
-        <div className="lg:w-1/2 flex items-center justify-center p-6 md:p-8">
+        {/* Right - Form */}
+        <div className="lg:w-1/2 flex items-center justify-center p-8 md:p-12 relative z-10">
           <div className="w-full max-w-sm">
             <Link 
               to="/" 
-              className="text-sm text-[#4A6B5D] hover:text-[#154535] inline-flex items-center gap-1 mb-4 transition-colors"
+              className="text-sm text-gray-400 hover:text-[#FCEA3C] inline-flex items-center gap-1 mb-4 transition-colors"
             >
               ← Back to Home
             </Link>
-            <h1 className="text-2xl font-bold text-[#154535] mb-1">Create account</h1>
-            <p className="text-[#4A6B5D] text-sm mb-5">Start splitting expenses with ease</p>
+            <h1 className="text-2xl font-bold text-white mb-1">Create account</h1>
+            <p className="text-gray-400 text-sm mb-5">Start splitting expenses with ease</p>
 
             {error && (
-              <p className="text-[#D94A4A] text-sm text-center mb-4 bg-red-50/80 border border-red-100/50 rounded-lg px-3 py-2">
+              <p className="text-[#FF6B6B] text-sm text-center mb-4 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
                 {error}
               </p>
             )}
@@ -61,7 +65,7 @@ export default function RegisterPage() {
                 placeholder="Full name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#E1EEE8] bg-[#F8FCFA] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#154535] focus:border-transparent text-sm text-[#154535] placeholder:text-[#4A6B5D]/60"
+                className="w-full px-4 py-2.5 border border-white/10 bg-white/5 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] focus:border-transparent text-sm text-white placeholder:text-gray-500 transition-all"
                 required
               />
               <input
@@ -69,7 +73,7 @@ export default function RegisterPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#E1EEE8] bg-[#F8FCFA] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#154535] focus:border-transparent text-sm text-[#154535] placeholder:text-[#4A6B5D]/60"
+                className="w-full px-4 py-2.5 border border-white/10 bg-white/5 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] focus:border-transparent text-sm text-white placeholder:text-gray-500 transition-all"
                 required
               />
               <input
@@ -77,21 +81,21 @@ export default function RegisterPage() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2.5 border border-[#E1EEE8] bg-[#F8FCFA] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#154535] focus:border-transparent text-sm text-[#154535] placeholder:text-[#4A6B5D]/60"
+                className="w-full px-4 py-2.5 border border-white/10 bg-white/5 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] focus:border-transparent text-sm text-white placeholder:text-gray-500 transition-all"
                 required
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-b from-[#0b1e15] to-[#2e6c46] hover:brightness-110 text-white py-2.5 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm shadow-sm"
+                className="w-full bg-[#FCEA3C] text-[#121212] py-2.5 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm shadow-lg shadow-yellow-500/20 hover:brightness-105"
               >
                 {loading ? "Creating account..." : "Create Account"}
               </button>
             </form>
 
-            <p className="text-xs text-center text-[#4A6B5D] mt-5">
+            <p className="text-xs text-center text-gray-400 mt-5">
               Already have an account?{" "}
-              <Link to="/login" className="text-[#154535] font-medium hover:underline">
+              <Link to="/login" className="text-[#FCEA3C] font-medium hover:underline">
                 Click here
               </Link>
             </p>
