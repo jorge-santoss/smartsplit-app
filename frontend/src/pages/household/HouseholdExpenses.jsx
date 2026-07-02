@@ -10,7 +10,7 @@ import Pagination from "../../components/Pagination";
 import { Trash2 } from "lucide-react";
 
 const inputCls =
-  "w-full px-3 py-2 border border-white/10 bg-[#1a1a1a] rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] transition-all";
+  "w-full px-3 py-2 border border-[#2C2C2E] bg-[#121214] rounded-lg text-sm text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#2DD4BF] transition-all";
 
 export default function HouseholdExpenses({ household, householdId }) {
   const queryClient = useQueryClient();
@@ -171,13 +171,13 @@ export default function HouseholdExpenses({ household, householdId }) {
   return (
     <div className="space-y-6">
       {/* ── New Expense Form ── */}
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
+      <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">
           New Expense
         </h2>
 
         {expenseError && (
-          <p className="text-sm text-[#FF6B6B] mb-3 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+          <p className="text-sm text-[#FB7185] mb-3 bg-[#FB7185]/20 border border-[#FB7185]/30 rounded-lg px-3 py-2">
             {expenseError}
           </p>
         )}
@@ -195,7 +195,7 @@ export default function HouseholdExpenses({ household, householdId }) {
 
           <div className="grid grid-cols-2 gap-2">
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280] text-sm">
                 $
               </span>
               <input
@@ -253,7 +253,7 @@ export default function HouseholdExpenses({ household, householdId }) {
 
           {/* Split type pills */}
           <div>
-            <p className="text-xs font-medium text-gray-400 mb-1">Split type</p>
+            <p className="text-xs font-medium text-[#6B7280] mb-1">Split type</p>
             <div className="flex gap-2">
               {["equal", "exact", "percentage"].map((type) => (
                 <button
@@ -281,8 +281,8 @@ export default function HouseholdExpenses({ household, householdId }) {
                   }}
                   className={`flex-1 py-1.5 text-xs font-medium rounded-xl border transition-colors capitalize ${
                     expForm.splitType === type
-                      ? "bg-[#FCEA3C] text-[#121212] border-[#FCEA3C] shadow-lg shadow-yellow-500/20"
-                      : "bg-transparent text-gray-400 border-white/10 hover:bg-white/10"
+                      ? "bg-[#2DD4BF] text-[#121214] border-[#2DD4BF] shadow-lg shadow-teal-400/25"
+                      : "bg-transparent text-[#9CA3AF] border-[#2C2C2E] hover:bg-[#2C2C2E]"
                   }`}
                 >
                   {type}
@@ -293,8 +293,8 @@ export default function HouseholdExpenses({ household, householdId }) {
 
           {/* Custom split inputs for exact / percentage */}
           {expForm.splitType !== "equal" && customSplits.length > 0 && (
-            <div className="bg-white/5 rounded-xl border border-white/10 p-3">
-              <p className="text-xs font-medium text-gray-400 mb-2">
+            <div className="bg-[#121214] rounded-xl border border-[#2C2C2E] p-3">
+              <p className="text-xs font-medium text-[#6B7280] mb-2">
                 {expForm.splitType === "exact"
                   ? "Amount per member"
                   : "Percentage per member"}
@@ -305,14 +305,14 @@ export default function HouseholdExpenses({ household, householdId }) {
                     <Avatar
                       name={sp.name}
                       size="sm"
-                      className="bg-white/10 text-[#FCEA3C]"
+                      className="bg-[#2C2C2E] text-[#2DD4BF]"
                     />
                     <span className="text-sm text-white flex-1">
                       {sp.name}
                     </span>
                     {expForm.splitType === "exact" ? (
                       <div className="relative w-28">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280] text-sm">
                           $
                         </span>
                         <input
@@ -350,8 +350,8 @@ export default function HouseholdExpenses({ household, householdId }) {
                               return updated;
                             })
                           }
-                          className={`w-full pl-7 pr-3 py-1.5 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] ${
-                            i === customSplits.length - 1 ? "bg-white/10" : "bg-transparent"
+                          className={`w-full pl-7 pr-3 py-1.5 border border-[#2C2C2E] rounded-lg text-sm text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#2DD4BF] ${
+                            i === customSplits.length - 1 ? "bg-[#1C1C1E]" : "bg-transparent"
                           }`}
                         />
                       </div>
@@ -394,11 +394,11 @@ export default function HouseholdExpenses({ household, householdId }) {
                               return updated;
                             })
                           }
-                          className={`w-full pl-3 pr-7 py-1.5 border border-white/10 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] ${
-                            i === customSplits.length - 1 ? "bg-white/10" : "bg-transparent"
+                          className={`w-full pl-3 pr-7 py-1.5 border border-[#2C2C2E] rounded-lg text-sm text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#2DD4BF] ${
+                            i === customSplits.length - 1 ? "bg-[#1C1C1E]" : "bg-transparent"
                           }`}
                         />
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B7280] text-sm">
                           %
                         </span>
                       </div>
@@ -408,8 +408,8 @@ export default function HouseholdExpenses({ household, householdId }) {
               </div>
               {/* Running total */}
               <div
-                className={`mt-2 pt-2 border-t border-white/10 flex justify-between text-xs font-medium ${
-                  splitPreviewValid() ? "text-[#FCEA3C]" : "text-[#FF6B6B]"
+                className={`mt-2 pt-2 border-t border-[#2C2C2E] flex justify-between text-xs font-medium ${
+                  splitPreviewValid() ? "text-[#2DD4BF]" : "text-[#FB7185]"
                 }`}
               >
                 {expForm.splitType === "exact" ? (
@@ -448,7 +448,7 @@ export default function HouseholdExpenses({ household, householdId }) {
               placeholder="New category"
               value={newCatName}
               onChange={(e) => setNewCatName(e.target.value)}
-              className="flex-1 px-3 py-2 border border-white/10 bg-white/5 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] transition-all"
+              className="flex-1 px-3 py-2 border border-[#2C2C2E] bg-[#121214] rounded-lg text-sm text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#2DD4BF] transition-all"
             />
             <button
               type="button"
@@ -457,7 +457,7 @@ export default function HouseholdExpenses({ household, householdId }) {
                   createCategoryMutation.mutate(newCatName.trim());
               }}
               disabled={createCategoryMutation.isPending}
-              className="bg-[#FCEA3C] text-[#121212] px-3 py-2 rounded-lg hover:brightness-105 disabled:opacity-50 text-sm whitespace-nowrap transition-all shadow-lg shadow-yellow-500/20"
+              className="bg-[#2DD4BF] text-[#121214] px-3 py-2 rounded-lg hover:brightness-110 disabled:opacity-50 text-sm whitespace-nowrap transition-all shadow-lg shadow-teal-400/25"
             >
               Add
             </button>
@@ -466,7 +466,7 @@ export default function HouseholdExpenses({ household, householdId }) {
           <button
             type="submit"
             disabled={createExpenseMutation.isPending}
-            className="self-start bg-[#FCEA3C] text-[#121212] text-sm font-medium px-4 py-2 rounded-lg hover:brightness-105 disabled:opacity-50 transition-all shadow-lg shadow-yellow-500/20"
+            className="self-start bg-[#2DD4BF] text-[#121214] text-sm font-medium px-4 py-2 rounded-lg hover:brightness-110 disabled:opacity-50 transition-all shadow-lg shadow-teal-400/25"
           >
             {createExpenseMutation.isPending ? "Adding..." : "Add Expense"}
           </button>
@@ -474,8 +474,8 @@ export default function HouseholdExpenses({ household, householdId }) {
       </div>
 
       {/* ── Expenses List ── */}
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-2xl">
-        <div className="p-6 border-b border-white/10">
+      <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl">
+        <div className="p-6 border-b border-[#2C2C2E]">
           <h2 className="text-lg font-semibold text-white">Expenses</h2>
         </div>
 
@@ -491,8 +491,8 @@ export default function HouseholdExpenses({ household, householdId }) {
                 }}
                 className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                   filterCategory === String(c.id)
-                    ? "bg-[#FCEA3C] text-[#121212] border-[#FCEA3C] shadow-lg shadow-yellow-500/20"
-                    : "bg-white/5 text-gray-400 border-white/10 hover:bg-white/10"
+                    ? "bg-[#2DD4BF] text-[#121214] border-[#2DD4BF] shadow-lg shadow-teal-400/25"
+                    : "bg-[#121214] text-[#9CA3AF] border-[#2C2C2E] hover:bg-[#2C2C2E]"
                 }`}
               >
                 {c.name}
@@ -508,28 +508,28 @@ export default function HouseholdExpenses({ household, householdId }) {
           </div>
         ) : filteredExpenses?.length === 0 ? (
           <div className="p-6 text-center">
-            <p className="text-gray-400 py-8">
+            <p className="text-[#9CA3AF] py-8">
               {filterCategory
                 ? "No expenses in this category."
                 : "No expenses yet. Add one above!"}
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-white/10">
+          <div className="divide-y divide-[#2C2C2E]">
             {filteredExpenses?.map((exp) => (
               <div
                 key={exp.id}
                 onClick={() => setDetailExpenseId(exp.id)}
-                className="p-4 cursor-pointer hover:bg-white/5 transition-colors border-b border-white/10 last:border-b-0"
+                className="p-4 cursor-pointer hover:bg-[#121214] transition-colors border-b border-[#2C2C2E] last:border-b-0"
               >
                 <div className="flex justify-between items-start">
                   <div>
                     <h3 className="font-semibold text-white">{exp.title}</h3>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-[#9CA3AF]">
                       Paid by {exp.payer_name} ·{" "}
                       {new Date(exp.expense_date).toLocaleDateString()}
                     </p>
-                    <p className="text-xs text-gray-500/70 mt-0.5">
+                    <p className="text-xs text-[#6B7280]/70 mt-0.5">
                       {exp.category_name && (
                         <span className="mr-2">{exp.category_name} ·</span>
                       )}
@@ -537,7 +537,7 @@ export default function HouseholdExpenses({ household, householdId }) {
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-[#FCEA3C]">
+                    <span className="text-sm font-bold text-[#2DD4BF]">
                       ${parseFloat(exp.amount).toFixed(2)}
                     </span>
                     <button
@@ -546,7 +546,7 @@ export default function HouseholdExpenses({ household, householdId }) {
                         e.stopPropagation();
                         setConfirmDelete({ id: exp.id });
                       }}
-                      className="text-gray-500 hover:text-[#FF6B6B] transition-colors"
+                      className="text-[#6B7280] hover:text-[#FB7185] transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -569,11 +569,11 @@ export default function HouseholdExpenses({ household, householdId }) {
 
       {detailExpenseId && expenseDetail && (
         <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 bg-[#121214]/80 backdrop-blur-sm flex items-center justify-center z-50"
           onClick={() => setDetailExpenseId(null)}
         >
           <div
-            className="backdrop-blur-xl bg-[#121212]/90 border border-white/10 shadow-2xl rounded-2xl p-6 max-w-lg w-full mx-4"
+            className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-2xl shadow-black/60 rounded-2xl p-6 max-w-lg w-full mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
@@ -582,12 +582,12 @@ export default function HouseholdExpenses({ household, householdId }) {
               </h2>
               <button
                 onClick={() => setDetailExpenseId(null)}
-                className="text-gray-500 hover:text-white text-xl leading-none transition-colors"
+                className="text-[#6B7280] hover:text-white text-xl leading-none transition-colors"
               >
                 &times;
               </button>
             </div>
-            <p className="text-sm text-gray-400 mb-4">
+            <p className="text-sm text-[#9CA3AF] mb-4">
               {new Date(expenseDetail.expense_date).toLocaleDateString()}
               {expenseDetail.category_name && (
                 <> · {expenseDetail.category_name}</>
@@ -596,33 +596,33 @@ export default function HouseholdExpenses({ household, householdId }) {
                 <> · Split: {expenseDetail.split_type}</>
               )}
             </p>
-            <div className="text-3xl font-bold text-[#FCEA3C] mb-4">
+            <div className="text-3xl font-bold text-[#2DD4BF] mb-4">
               ${parseFloat(expenseDetail.amount || 0).toFixed(2)}
             </div>
             {expenseDetail.note && (
-              <p className="text-gray-400 text-sm italic mb-4">
+              <p className="text-[#9CA3AF] text-sm italic mb-4">
                 {expenseDetail.note}
               </p>
             )}
-            <p className="text-sm text-gray-300 mb-4">
+            <p className="text-sm text-[#D1D5DB] mb-4">
               Paid by{" "}
               <span className="font-semibold text-white">{expenseDetail.payer_name}</span>
             </p>
             {(expenseDetail.splits || []).length > 0 && (
               <>
-                <h3 className="text-sm font-semibold text-white mb-2 border-t border-white/10 pt-4">
+                <h3 className="text-sm font-semibold text-white mb-2 border-t border-[#2C2C2E] pt-4">
                   Splits
                 </h3>
                 <div className="space-y-2">
                   {(expenseDetail.splits || []).map((split, i) => (
                     <div
                       key={split.id ?? i}
-                      className="flex justify-between p-3 bg-white/5 rounded-xl text-sm border border-white/10"
+                      className="flex justify-between p-3 bg-[#121214] rounded-xl text-sm border border-[#2C2C2E]"
                     >
                       <span className="font-medium text-white">
                         {split.member_name}
                       </span>
-                      <span className="text-gray-400">
+                      <span className="text-[#9CA3AF]">
                         ${parseFloat(split.amount || 0).toFixed(2)}
                         {split.percentage && (
                           <> ({parseFloat(split.percentage).toFixed(1)}%)</>

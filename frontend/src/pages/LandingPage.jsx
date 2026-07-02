@@ -1,16 +1,16 @@
 import { Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-import heroImg from "../assets/Hero-landscape-smartsplit.png";
-import logoImg from "../assets/smartsplit_logo.png";
-import footerLogo from "../assets/smartsplit_logo.png";
+import heroImg from "../assets/Hero-smartsplit-logo.png";
+import logoImg from "../assets/SmartSplit-isotipo.png";
+import footerLogo from "../assets/SmartSplit-isotipo.png";
 
 export default function LandingPage() {
   const { token } = useAuth();
 
   return (
-    <div className="min-h-screen bg-[#121212] text-white">
-      {/* HEADER - Glassmorphism Style */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#121212]/80 border-b border-white/10 shadow-sm">
+    <div className="min-h-screen bg-[#121214] text-white">
+      {/* HEADER - Solid Dark Style */}
+      <header className="sticky top-0 z-50 bg-[#1C1C1E]/90 backdrop-blur-sm border-b border-[#2C2C2E] shadow-xl shadow-black/20">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-2 sm:py-3 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-1.5 sm:gap-2">
@@ -19,32 +19,32 @@ export default function LandingPage() {
               alt="SmartSplit"
               className="h-8 sm:h-10 lg:h-12 w-auto"
             />
-            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-[#FCEA3C] font-[Michroma] tracking-tight">
+            <span className="text-lg sm:text-xl lg:text-2xl font-bold text-[#2DD4BF] font-[Michroma] tracking-tight">
               SmartSplit
             </span>
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-4 lg:gap-8 text-sm text-white/70">
+          <div className="hidden md:flex items-center gap-4 lg:gap-8 text-sm text-[#9CA3AF]">
             <a
               href="#"
               onClick={(e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="text-white font-medium hover:text-[#FCEA3C] transition-colors"
+              className="text-white font-medium hover:text-[#2DD4BF] transition-colors"
             >
               Home
             </a>
             <a
               href="#features"
-              className="hover:text-[#FCEA3C] transition-colors"
+              className="hover:text-[#2DD4BF] transition-colors"
             >
               Features
             </a>
             <a
               href="#how-it-works"
-              className="hover:text-[#FCEA3C] transition-colors"
+              className="hover:text-[#2DD4BF] transition-colors"
             >
               How It Works
             </a>
@@ -55,7 +55,7 @@ export default function LandingPage() {
             {token ? (
               <Link
                 to="/dashboard"
-                className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-[#121212] bg-[#FCEA3C] hover:brightness-105 transition-all shadow-lg shadow-yellow-500/20 whitespace-nowrap"
+                className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-[#121214] bg-[#2DD4BF] hover:brightness-110 transition-all shadow-lg shadow-teal-400/25 whitespace-nowrap"
               >
                 Dashboard
               </Link>
@@ -63,13 +63,13 @@ export default function LandingPage() {
               <>
                 <Link
                   to="/login"
-                  className="text-xs sm:text-sm font-medium text-white/70 hover:text-[#FCEA3C] transition-colors whitespace-nowrap"
+                  className="text-xs sm:text-sm font-medium text-[#9CA3AF] hover:text-[#2DD4BF] transition-colors whitespace-nowrap"
                 >
                   Log In
                 </Link>
                 <Link
                   to="/register"
-                  className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-[#121212] bg-[#FCEA3C] hover:brightness-105 transition-all shadow-lg shadow-yellow-500/20 whitespace-nowrap"
+                  className="px-3 sm:px-4 lg:px-5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium text-[#121214] bg-[#2DD4BF] hover:brightness-110 transition-all shadow-lg shadow-teal-400/25 whitespace-nowrap"
                 >
                   Sign Up
                 </Link>
@@ -80,57 +80,56 @@ export default function LandingPage() {
       </header>
 
       <main>
-        {/* HERO - FIXED: Picture now clearly visible, Glassmorphism is lean */}
+        {/* HERO */}
         <section className="relative min-h-[90vh] sm:min-h-[85vh] lg:min-h-[80vh] flex items-center overflow-hidden">
           {/* Full opacity image for maximum visibility */}
           <img
             src={heroImg}
             alt="SmartSplit hero"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            className="absolute inset-0 w-full h-full object-cover object-center bg-linear-to-br from-[#121214] to-[#1C1C1E] opacity-80 z-0"
           />
-          {/* Very soft overlay just to keep text readable */}
-          <div className="absolute inset-0 backdrop-blur-xs bg-[#121212]/40 border-y border-white/10 shadow-2xl" />
+          {/* Darker, cleaner overlay */}
+          <div className="absolute inset-0 bg-[#121214]/30 backdrop-blur-xxs border-y border-[#2C2C2E] shadow-2xl" />
 
-          <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-            <div className="max-w-4xl mx-auto text-center">
-  {/* Streamlined glass box - fully centered on all screen sizes */}
-  <div className="max-w-2xl mx-auto text-center p-5 sm:p-6 lg:p-8">
-    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.2] sm:leading-[1.15] drop-shadow-lg">
-      What if every shared bill split itself fairly, every time?
-      <br className="hidden sm:block" />
-      <span className="text-[#FCEA3C]">That's SmartSplit.</span>
-    </h1>
+          <div className="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 justify-start">
+              <div className="max-w-2xl w-full text-center lg:text-left space-y-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.15] text-white">
+                  What if every shared bill split itself fairly, every time?
+                  <br className="hidden sm:block" />
+                  <span className="text-[#2DD4BF]">That's SmartSplit.</span>
+                </h1>
 
-    <p className="mt-3 sm:mt-4 md:mt-5 text-sm sm:text-base md:text-lg lg:text-xl text-gray-100/95 drop-shadow-md max-w-xl mx-auto">
-      Track expenses, split bills fairly, monitor balances, and
-      settle debts with roommates, couples, or family members.
-    </p>
+                <p className="text-base sm:text-lg lg:text-xl text-[#ffffff] max-w-md mx-auto lg:mx-0 leading-relaxed">
+                  Track expenses, split bills fairly, monitor balances, and
+                  settle debts with roommates, couples, or family members.
+                </p>
 
-    <div className="mt-5 sm:mt-6 md:mt-8 flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 md:gap-4 justify-center">
-      <Link
-        to={token ? "/dashboard" : "/register"}
-        className="w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-[#121212] bg-[#FCEA3C] hover:brightness-105 transition-all text-center shadow-lg shadow-yellow-500/30"
-      >
-        {token ? "Go to Dashboard" : "Get Started Free"}
-      </Link>
-      <a
-        href="#how-it-works"
-        className="w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-white bg-white/10 backdrop-blur-sm border border-white/30 hover:bg-white/20 transition text-center"
-      >
-        See How It Works
-      </a>
-    </div>
-  </div>
-</div>
+                <div className="flex flex-col sm:flex-row items-center gap-4 pt-2">
+                  <Link
+                    to={token ? "/dashboard" : "/register"}
+                    className="w-full sm:w-auto px-8 py-3 rounded-lg text-base font-medium text-[#121214] bg-[#2DD4BF] hover:brightness-110 transition-all text-center shadow-lg shadow-teal-400/30"
+                  >
+                    {token ? "Go to Dashboard" : "Get Started Free"}
+                  </Link>
+                  <a
+                    href="#how-it-works"
+                    className="w-full sm:w-auto px-8 py-3 rounded-lg text-base font-medium text-white bg-[#1C1C1E] border border-[#2C2C2E] hover:bg-[#2C2C2E] transition text-center"
+                  >
+                    See How It Works
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* FEATURES - Glassmorphism Cards */}
+        {/* FEATURES - Solid Dark Cards */}
         <section
           id="features"
           className="scroll-mt-14 sm:scroll-mt-16 lg:scroll-mt-18 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20"
         >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-[#FCEA3C] mb-8 sm:mb-10 lg:mb-14">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-[#2DD4BF] mb-8 sm:mb-10 lg:mb-14">
             Core Features
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
@@ -153,12 +152,12 @@ export default function LandingPage() {
             ].map(([t, d]) => (
               <div
                 key={t}
-                className="backdrop-blur-xl bg-white/5 rounded-xl p-5 sm:p-6 lg:p-8 border border-white/10 hover:bg-white/10 hover:scale-[1.02] transition-all duration-300 shadow-lg"
+                className="bg-[#1C1C1E] rounded-xl p-5 sm:p-6 lg:p-8 border border-[#2C2C2E] hover:bg-[#2C2C2E] hover:scale-[1.02] transition-all duration-300 shadow-xl shadow-black/50"
               >
-                <h3 className="text-base sm:text-lg font-semibold text-[#FCEA3C] mb-1.5 sm:mb-2">
+                <h3 className="text-base sm:text-lg font-semibold text-[#2DD4BF] mb-1.5 sm:mb-2">
                   {t}
                 </h3>
-                <p className="text-sm text-gray-300 leading-relaxed">{d}</p>
+                <p className="text-sm text-[#9CA3AF] leading-relaxed">{d}</p>
               </div>
             ))}
           </div>
@@ -169,7 +168,7 @@ export default function LandingPage() {
           id="how-it-works"
           className="scroll-mt-14 sm:scroll-mt-16 lg:scroll-mt-18 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20"
         >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-[#FCEA3C] mb-8 sm:mb-10 lg:mb-14">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-[#2DD4BF] mb-8 sm:mb-10 lg:mb-14">
             How SmartSplit Works
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-6">
@@ -197,15 +196,15 @@ export default function LandingPage() {
             ].map(([n, t, d]) => (
               <div
                 key={n}
-                className="text-center backdrop-blur-md bg-white/5 rounded-xl p-6 sm:p-8 border border-white/10 hover:bg-white/10 transition-all shadow-lg"
+                className="text-center bg-[#1C1C1E] rounded-xl p-6 sm:p-8 border border-[#2C2C2E] hover:bg-[#2C2C2E] transition-all shadow-xl shadow-black/50"
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl flex items-center justify-center text-lg sm:text-xl lg:text-2xl font-bold mx-auto mb-3 sm:mb-4 text-[#121212] bg-[#FCEA3C] shadow-lg shadow-yellow-500/20">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-xl flex items-center justify-center text-lg sm:text-xl lg:text-2xl font-bold mx-auto mb-3 sm:mb-4 text-[#121214] bg-[#2DD4BF] shadow-lg shadow-teal-400/20">
                   {n}
                 </div>
                 <h3 className="font-semibold text-white mb-1 sm:mb-1.5 text-sm sm:text-base">
                   {t}
                 </h3>
-                <p className="text-sm text-gray-300 leading-relaxed">{d}</p>
+                <p className="text-sm text-[#9CA3AF] leading-relaxed">{d}</p>
               </div>
             ))}
           </div>
@@ -216,20 +215,20 @@ export default function LandingPage() {
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2 sm:mb-3">
             Ready to split smarter?
           </h2>
-          <p className="text-sm sm:text-base text-gray-400 mb-6 sm:mb-8">
+          <p className="text-sm sm:text-base text-[#9CA3AF] mb-6 sm:mb-8">
             Join thousands of people who already use SmartSplit.
           </p>
           <Link
             to={token ? "/dashboard" : "/register"}
-            className="inline-block w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 lg:py-3.5 rounded-lg text-sm sm:text-base font-medium text-[#121212] bg-[#FCEA3C] hover:brightness-105 transition-all shadow-lg shadow-yellow-500/30"
+            className="inline-block w-full sm:w-auto px-6 sm:px-8 lg:px-10 py-2.5 sm:py-3 lg:py-3.5 rounded-lg text-sm sm:text-base font-medium text-[#121214] bg-[#2DD4BF] hover:brightness-110 transition-all shadow-lg shadow-teal-400/30"
           >
             {token ? "Go to Dashboard" : "Get Started Free"}
           </Link>
         </section>
       </main>
 
-      {/* FOOTER - Glassmorphism */}
-      <footer className="backdrop-blur-xl bg-white/5 border-t border-white/10">
+      {/* FOOTER - Solid Dark Style */}
+      <footer className="bg-[#1C1C1E] border-t border-[#2C2C2E] shadow-xl shadow-black/20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 lg:py-22">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10 lg:gap-8">
             {/* Logo + tagline */}
@@ -250,14 +249,14 @@ export default function LandingPage() {
 
             {/* Links */}
             <div>
-              <h4 className="text-xs sm:text-sm font-semibold text-[#FCEA3C] uppercase tracking-wider mb-3 sm:mb-4">
+              <h4 className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
                 Product
               </h4>
               <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
                     href="#features"
-                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
+                    className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     Features
                   </a>
@@ -265,7 +264,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#how-it-works"
-                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
+                    className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     How It Works
                   </a>
@@ -273,7 +272,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
+                    className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     Pricing
                   </a>
@@ -282,14 +281,14 @@ export default function LandingPage() {
             </div>
 
             <div>
-              <h4 className="text-xs sm:text-sm font-semibold text-[#FCEA3C] uppercase tracking-wider mb-3 sm:mb-4">
+              <h4 className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
                 Company
               </h4>
               <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
+                    className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     About Us
                   </a>
@@ -297,7 +296,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
+                    className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     Careers
                   </a>
@@ -305,7 +304,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
+                    className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     Contact
                   </a>
@@ -314,14 +313,14 @@ export default function LandingPage() {
             </div>
 
             <div>
-              <h4 className="text-xs sm:text-sm font-semibold text-[#FCEA3C] uppercase tracking-wider mb-3 sm:mb-4">
+              <h4 className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
                 Legal
               </h4>
               <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
+                    className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     Terms
                   </a>
@@ -329,7 +328,7 @@ export default function LandingPage() {
                 <li>
                   <a
                     href="#"
-                    className="text-sm text-gray-400 hover:text-[#FCEA3C] transition"
+                    className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     Privacy Policy
                   </a>
@@ -338,26 +337,26 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="border-t border-white/10 my-6 sm:my-8"></div>
+          <div className="border-t border-[#2C2C2E] my-6 sm:my-8"></div>
 
           {/* Giant brand name – fully responsive */}
-          <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-wider text-[#FCEA3C] text-center py-3 sm:py-4 font-[Michroma]">
+          <div className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-wider text-[#2DD4BF] text-center py-3 sm:py-4 font-[Michroma]">
             SmartSplit
           </div>
 
-          <div className="border-t border-white/10 my-6 sm:my-8"></div>
+          <div className="border-t border-[#2C2C2E] my-6 sm:my-8"></div>
 
           {/* Copyright */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-400/80">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 text-xs sm:text-sm text-[#9CA3AF]/80">
             <p>© {new Date().getFullYear()} SmartSplit. All rights reserved.</p>
             <div className="flex gap-4 sm:gap-6">
-              <a href="#" className="hover:text-[#FCEA3C] transition">
+              <a href="#" className="hover:text-[#2DD4BF] transition">
                 Twitter
               </a>
-              <a href="#" className="hover:text-[#FCEA3C] transition">
+              <a href="#" className="hover:text-[#2DD4BF] transition">
                 Facebook
               </a>
-              <a href="#" className="hover:text-[#FCEA3C] transition">
+              <a href="#" className="hover:text-[#2DD4BF] transition">
                 Instagram
               </a>
             </div>

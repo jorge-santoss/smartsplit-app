@@ -45,7 +45,7 @@ export default function HouseholdPage() {
   if (isLoading) {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-[#121212] p-4 sm:p-6 lg:p-8">
+        <div className="min-h-screen bg-[#121214] p-4 sm:p-6 lg:p-8">
           <div className="space-y-4">
             <SkeletonCard />
             <SkeletonCard />
@@ -58,9 +58,9 @@ export default function HouseholdPage() {
   if (!household) {
     return (
       <AppLayout>
-        <div className="min-h-screen bg-[#121212] p-4 sm:p-6 lg:p-8">
-          <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-xl p-6">
-            <p className="text-gray-400">Household not found</p>
+        <div className="min-h-screen bg-[#121214] p-4 sm:p-6 lg:p-8">
+          <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-xl p-6">
+            <p className="text-[#9CA3AF]">Household not found</p>
           </div>
         </div>
       </AppLayout>
@@ -71,8 +71,8 @@ export default function HouseholdPage() {
 
   return (
     <AppLayout>
-      {/* Dark Glassmorphism Page Wrapper */}
-      <div className="min-h-screen bg-[#121212] p-4 sm:p-6 lg:p-8">
+      {/* Minimalist Dark Flat Design Layout referencing the image aesthetic */}
+      <div className="min-h-screen bg-[#121214] p-4 sm:p-6 lg:p-8">
         
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
@@ -81,7 +81,7 @@ export default function HouseholdPage() {
               {household.name}
             </h1>
             {household.description && (
-              <p className="text-gray-400 mt-1 font-medium">
+              <p className="text-[#9CA3AF] mt-1 font-medium">
                 {household.description}
               </p>
             )}
@@ -91,7 +91,7 @@ export default function HouseholdPage() {
             {isOwner && (
               <button
                 onClick={() => setShowDeleteHousehold(true)}
-                className="text-sm text-[#FF6B6B] border border-[#FF6B6B]/30 rounded-lg px-3 py-2 hover:bg-[#FF6B6B]/10 transition-colors"
+                className="text-sm text-[#FB7185] border border-[#FB7185]/30 rounded-lg px-3 py-2 hover:bg-[#FB7185]/10 transition-colors"
               >
                 Delete household
               </button>
@@ -99,17 +99,17 @@ export default function HouseholdPage() {
           </div>
         </div>
 
-        {/* Glassmorphism Tab Navigation */}
+        {/* Solid Dark Card Tab Navigation */}
         <div className="sticky top-16 z-40 -mx-4 px-4 sm:mx-0 sm:px-0 mb-8 flex justify-center">
-          <nav className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-full p-1.5 flex gap-1 overflow-x-auto w-full sm:w-auto">
+          <nav className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-lg shadow-black/50 rounded-full p-1.5 flex gap-1 overflow-x-auto w-full sm:w-auto">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-6 py-3 rounded-full text-sm font-semibold transition-all whitespace-nowrap flex-1 sm:flex-none ${
                   activeTab === tab
-                    ? "bg-[#FCEA3C] text-[#121212] shadow-lg shadow-yellow-500/20"
-                    : "text-gray-400 hover:bg-white/10 hover:text-white"
+                    ? "bg-[#2DD4BF] text-[#121214] shadow-lg shadow-teal-400/25"
+                    : "text-[#9CA3AF] hover:bg-[#2C2C2E] hover:text-white"
                 }`}
               >
                 {tab}

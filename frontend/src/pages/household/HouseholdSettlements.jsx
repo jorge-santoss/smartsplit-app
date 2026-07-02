@@ -11,7 +11,7 @@ import Pagination from "../../components/Pagination";
 import { Trash2 } from "lucide-react";
 
 const inputCls =
-  "w-full px-3 py-2 border border-white/10 bg-white/5 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] transition-all";
+  "w-full px-3 py-2 border border-[#2C2C2E] bg-[#121214] rounded-lg text-sm text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#2DD4BF] transition-all";
 
 const fmt = (n) => {
   const val = typeof n === "string" ? parseFloat(n) : n;
@@ -111,13 +111,13 @@ export default function HouseholdSettlements({ household, householdId }) {
 
   return (
     <div className="space-y-6">
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
+      <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">Settlements</h2>
 
         {/* Quick settle */}
         {balanceData?.debts?.length > 0 && (
           <div className="mb-4">
-            <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-[#6B7280] uppercase tracking-wide mb-2">
               Quick settle
             </p>
             <div className="flex flex-col gap-2">
@@ -126,13 +126,13 @@ export default function HouseholdSettlements({ household, householdId }) {
                   key={i}
                   onClick={() => handleSettleDebt(debt)}
                   disabled={createSettlementMutation.isPending}
-                  className="flex items-center justify-between p-3 border border-white/10 bg-white/5 rounded-lg hover:bg-white/10 hover:border-[#FCEA3C] transition-colors text-left shadow-sm"
+                  className="flex items-center justify-between p-3 border border-[#2C2C2E] bg-[#121214] rounded-lg hover:bg-[#2C2C2E] hover:border-[#2DD4BF] transition-colors text-left shadow-sm"
                 >
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-[#9CA3AF]">
                     <span className="font-medium text-white">{debt.fromName}</span> owes{" "}
                     <span className="font-medium text-white">{debt.toName}</span>
                   </span>
-                  <span className="text-sm font-semibold text-[#FCEA3C]">
+                  <span className="text-sm font-semibold text-[#2DD4BF]">
                     {fmt(debt.amount)} →
                   </span>
                 </button>
@@ -142,10 +142,10 @@ export default function HouseholdSettlements({ household, householdId }) {
         )}
 
         {/* Record payment */}
-        <div className="bg-white/5 rounded-xl border border-white/10 p-4 mb-4">
-          <p className="text-xs font-medium text-gray-400 mb-3">Record payment</p>
+        <div className="bg-[#121214] rounded-xl border border-[#2C2C2E] p-4 mb-4">
+          <p className="text-xs font-medium text-[#6B7280] mb-3">Record payment</p>
           {settlementError && (
-            <p className="text-sm text-[#FF6B6B] mb-2 bg-red-500/10 rounded-lg px-3 py-1.5 border border-red-500/20">
+            <p className="text-sm text-[#FB7185] mb-2 bg-[#FB7185]/10 rounded-lg px-3 py-1.5 border border-[#FB7185]/30">
               {settlementError}
             </p>
           )}
@@ -200,7 +200,7 @@ export default function HouseholdSettlements({ household, householdId }) {
             <button
               type="submit"
               disabled={createSettlementMutation.isPending}
-              className="self-start bg-[#FCEA3C] text-[#121212] text-sm font-medium px-4 py-2 rounded-lg hover:brightness-105 disabled:opacity-50 transition-all shadow-lg shadow-yellow-500/20"
+              className="self-start bg-[#2DD4BF] text-[#121214] text-sm font-medium px-4 py-2 rounded-lg hover:brightness-110 disabled:opacity-50 transition-all shadow-lg shadow-teal-400/25"
             >
               {createSettlementMutation.isPending ? "Recording..." : "Record payment"}
             </button>
@@ -214,7 +214,7 @@ export default function HouseholdSettlements({ household, householdId }) {
             <SkeletonCard />
           </div>
         ) : settlements?.length === 0 ? (
-          <div className="text-center py-6 text-gray-400">
+          <div className="text-center py-6 text-[#9CA3AF]">
             <div className="text-2xl mb-2">💸</div>
             <p className="text-sm">No payments recorded yet.</p>
           </div>
@@ -223,26 +223,26 @@ export default function HouseholdSettlements({ household, householdId }) {
             {settlements?.map((s) => (
               <div
                 key={s.id}
-                className="flex items-center justify-between p-3 border border-white/10 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
+                className="flex items-center justify-between p-3 border border-[#2C2C2E] bg-[#121214] rounded-lg hover:bg-[#2C2C2E] transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <Avatar name={s.from_user_name} size="sm" className="bg-white/10 text-[#FCEA3C]" />
+                  <Avatar name={s.from_user_name} size="sm" className="bg-[#2C2C2E] text-[#2DD4BF]" />
                   <div>
                     <p className="text-sm font-medium text-white">
                       {s.from_user_name} → {s.to_user_name}
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-[#6B7280]">
                       {new Date(s.settlement_date).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold text-[#FCEA3C]">
+                  <span className="text-sm font-semibold text-[#2DD4BF]">
                     ${parseFloat(s.amount).toFixed(2)}
                   </span>
                   <button
                     onClick={() => setConfirmDelete({ id: s.id })}
-                    className="text-gray-400 hover:text-[#FF6B6B] transition-colors"
+                    className="text-[#6B7280] hover:text-[#FB7185] transition-colors"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

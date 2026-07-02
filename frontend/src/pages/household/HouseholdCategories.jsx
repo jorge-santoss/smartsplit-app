@@ -7,20 +7,20 @@ import { Pencil, Trash2, Check, X } from "lucide-react";
 import { Utensils, ShoppingCart, Home, Zap, Car, Clapperboard, ShoppingBag, Pill, Plane, Tag } from "lucide-react";
 
 const inputCls =
-  "w-full px-3 py-2 border border-white/10 bg-white/5 rounded-lg text-sm text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FCEA3C] transition-all";
+  "w-full px-3 py-2 border border-[#2C2C2E] bg-[#121214] rounded-lg text-sm text-white placeholder:text-[#6B7280] focus:outline-none focus:ring-2 focus:ring-[#2DD4BF] transition-all";
 
 const categoryIcons = {
-  Food: <Utensils className="w-4 h-4 inline text-[#FCEA3C]" />,
-  Groceries: <ShoppingCart className="w-4 h-4 inline text-[#FCEA3C]" />,
-  Rent: <Home className="w-4 h-4 inline text-[#FCEA3C]" />,
-  Utilities: <Zap className="w-4 h-4 inline text-[#FCEA3C]" />,
-  Transport: <Car className="w-4 h-4 inline text-[#FCEA3C]" />,
-  Entertainment: <Clapperboard className="w-4 h-4 inline text-[#FCEA3C]" />,
-  Shopping: <ShoppingBag className="w-4 h-4 inline text-[#FCEA3C]" />,
-  Health: <Pill className="w-4 h-4 inline text-[#FCEA3C]" />,
-  Travel: <Plane className="w-4 h-4 inline text-[#FCEA3C]" />,
+  Food: <Utensils className="w-4 h-4 inline text-[#2DD4BF]" />,
+  Groceries: <ShoppingCart className="w-4 h-4 inline text-[#2DD4BF]" />,
+  Rent: <Home className="w-4 h-4 inline text-[#2DD4BF]" />,
+  Utilities: <Zap className="w-4 h-4 inline text-[#2DD4BF]" />,
+  Transport: <Car className="w-4 h-4 inline text-[#2DD4BF]" />,
+  Entertainment: <Clapperboard className="w-4 h-4 inline text-[#2DD4BF]" />,
+  Shopping: <ShoppingBag className="w-4 h-4 inline text-[#2DD4BF]" />,
+  Health: <Pill className="w-4 h-4 inline text-[#2DD4BF]" />,
+  Travel: <Plane className="w-4 h-4 inline text-[#2DD4BF]" />,
 };
-const getCategoryIcon = (name) => categoryIcons[name] || <Tag className="w-4 h-4 inline text-[#FCEA3C]" />;
+const getCategoryIcon = (name) => categoryIcons[name] || <Tag className="w-4 h-4 inline text-[#2DD4BF]" />;
 
 const SUGGESTED = ["Groceries", "Rent", "Utilities", "Transport", "Entertainment", "Shopping", "Health", "Travel", "Food", "Education"];
 
@@ -93,7 +93,7 @@ export default function HouseholdCategories({ household, householdId, user }) {
 
   return (
     <div className="space-y-6">
-      <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
+      <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
         <h2 className="text-base font-semibold text-white mb-4">Categories</h2>
 
         {isLoading ? (
@@ -102,7 +102,7 @@ export default function HouseholdCategories({ household, householdId, user }) {
             <SkeletonCard />
           </div>
         ) : !categories || categories.length === 0 ? (
-          <p className="text-sm text-gray-400 mb-3">No categories yet.</p>
+          <p className="text-sm text-[#9CA3AF] mb-3">No categories yet.</p>
         ) : (
           <div className="flex flex-col gap-2 mb-3">
             {categories.map((c) => (
@@ -119,23 +119,23 @@ export default function HouseholdCategories({ household, householdId, user }) {
                       autoFocus required
                     />
                     <button type="submit" disabled={updateCategoryMutation.isPending}
-                      className="bg-[#FCEA3C] text-[#121212] text-xs px-2 rounded-lg disabled:opacity-50 hover:brightness-105 transition-all shadow-lg shadow-yellow-500/20">
+                      className="bg-[#2DD4BF] text-[#121214] text-xs px-2 rounded-lg disabled:opacity-50 hover:brightness-110 transition-all shadow-lg shadow-teal-400/25">
                       {updateCategoryMutation.isPending ? "..." : <Check className="w-4 h-4" />}
                     </button>
                       <button type="button" onClick={() => setEditingCategory(null)}
-                         className="bg-white/10 border border-white/10 text-gray-400 text-xs px-2 rounded-lg hover:bg-white/20 hover:text-white transition-all"><X className="w-4 h-4" /></button>
+                         className="bg-[#1C1C1E] border border-[#2C2C2E] text-[#9CA3AF] text-xs px-2 rounded-lg hover:bg-[#2C2C2E] hover:text-white transition-all"><X className="w-4 h-4" /></button>
                     </form>
                 ) : (
-                  <div className="flex items-center justify-between p-2 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors">
+                  <div className="flex items-center justify-between p-2 bg-[#121214] border border-[#2C2C2E] rounded-lg hover:bg-[#2C2C2E] transition-colors">
                     <span className="text-sm text-white">
                       {getCategoryIcon(c.name)} {c.name}
                     </span>
                     <div className="flex items-center gap-2">
                       <button onClick={() => setEditingCategory({ id: c.id, name: c.name })}
-                        className="text-gray-400 hover:text-[#FCEA3C] transition-colors"><Pencil className="w-4 h-4" /></button>
+                        className="text-[#6B7280] hover:text-[#2DD4BF] transition-colors"><Pencil className="w-4 h-4" /></button>
                       {isOwner && (
                         <button onClick={() => deleteCategoryMutation.mutate(c.id)}
-                          className="text-gray-400 hover:text-[#FF6B6B] transition-colors"><Trash2 className="w-4 h-4" /></button>
+                          className="text-[#6B7280] hover:text-[#FB7185] transition-colors"><Trash2 className="w-4 h-4" /></button>
                       )}
                     </div>
                   </div>
@@ -148,14 +148,14 @@ export default function HouseholdCategories({ household, householdId, user }) {
         {/* Suggested categories */}
         {suggested.length > 0 && (
           <div className="mb-4">
-            <p className="text-xs font-medium text-gray-400 mb-2">Suggested</p>
+            <p className="text-xs font-medium text-[#6B7280] mb-2">Suggested</p>
             <div className="flex flex-wrap gap-2">
               {suggested.map((name) => (
                 <button
                   key={name}
                   onClick={() => createCategoryMutation.mutate(name)}
                   disabled={createCategoryMutation.isPending}
-                  className="text-xs px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-gray-400 hover:border-[#FCEA3C] hover:text-[#FCEA3C] hover:bg-white/10 transition-all disabled:opacity-50 shadow-sm"
+                  className="text-xs px-3 py-1.5 bg-[#121214] border border-[#2C2C2E] rounded-full text-[#9CA3AF] hover:border-[#2DD4BF] hover:text-[#2DD4BF] hover:bg-[#2C2C2E] transition-all disabled:opacity-50 shadow-sm"
                 >
                   {getCategoryIcon(name)} +{name}
                 </button>
@@ -165,7 +165,7 @@ export default function HouseholdCategories({ household, householdId, user }) {
         )}
 
         {categoryError && (
-          <p className="text-sm text-[#FF6B6B] mb-2 bg-red-500/10 rounded-lg px-3 py-1.5 border border-red-500/20">
+          <p className="text-sm text-[#FB7185] mb-2 bg-[#FB7185]/10 rounded-lg px-3 py-1.5 border border-[#FB7185]/30">
             {categoryError}
           </p>
         )}
@@ -180,7 +180,7 @@ export default function HouseholdCategories({ household, householdId, user }) {
             required
           />
           <button type="submit" disabled={createCategoryMutation.isPending}
-            className="bg-[#FCEA3C] hover:brightness-105 text-[#121212] text-sm font-medium px-3 py-2 rounded-lg disabled:opacity-50 transition-all flex-shrink-0 shadow-lg shadow-yellow-500/20">
+            className="bg-[#2DD4BF] hover:brightness-110 text-[#121214] text-sm font-medium px-3 py-2 rounded-lg disabled:opacity-50 transition-all flex-shrink-0 shadow-lg shadow-teal-400/25">
             {createCategoryMutation.isPending ? "..." : "Add"}
           </button>
         </form>

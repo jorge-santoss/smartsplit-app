@@ -14,8 +14,8 @@ function ProtectedRoute({ children }) {
   const { token, loading } = useAuth();
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#121212]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FCEA3C]" />
+      <div className="min-h-screen flex items-center justify-center bg-[#121214]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#2DD4BF]" />
       </div>
     );
   }
@@ -91,9 +91,9 @@ export default function App() {
             <Route
               path="*"
               element={
-                <div className="min-h-screen flex items-center justify-center bg-[#121212]">
-                  <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-2xl rounded-2xl p-8 max-w-md mx-auto text-center">
-                    <p className="text-xl text-gray-400">Page not found</p>
+                <div className="min-h-screen flex items-center justify-center bg-[#121214]">
+                  <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-8 max-w-md mx-auto text-center">
+                    <p className="text-xl text-[#9CA3AF]">Page not found</p>
                   </div>
                 </div>
               }

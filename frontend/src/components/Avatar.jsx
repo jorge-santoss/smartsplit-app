@@ -1,5 +1,3 @@
-// 
-
 export default function Avatar({ name, size = 'md', className = '' }) {
   const initial = name?.charAt(0)?.toUpperCase() || '?';
   const sizeMap = {
@@ -9,7 +7,7 @@ export default function Avatar({ name, size = 'md', className = '' }) {
   };
 
   return (
-    <div className={`${sizeMap[size]} rounded-full font-bold flex items-center justify-center shrink-0 ${className}`}>
+    <div className={`${sizeMap[size]} bg-[#2C2C2E] text-[#2DD4BF] rounded-full font-bold flex items-center justify-center shrink-0 ${className}`}>
       {initial}
     </div>
   );

@@ -44,7 +44,7 @@ export default function HouseholdBalances({ householdId }) {
   };
 
   return (
-    <div className="backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-2xl p-6">
+    <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
       <h2 className="text-base font-semibold text-white mb-4">Balances</h2>
       {isLoading ? (
         <div className="space-y-2">
@@ -55,11 +55,11 @@ export default function HouseholdBalances({ householdId }) {
         <div className="space-y-5">
           {/* Debts */}
           <div>
-            <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-[#6B7280] uppercase tracking-wide mb-2">
               Debts to settle
             </p>
             {balanceData.debts.length === 0 ? (
-              <div className="flex items-center gap-2 bg-white/5 rounded-lg px-4 py-3 border border-white/10">
+              <div className="flex items-center gap-2 bg-[#121214] rounded-lg px-4 py-3 border border-[#2C2C2E]">
                 <span>🎉</span>
                 <span className="text-sm font-medium text-white">All settled up!</span>
               </div>
@@ -73,18 +73,18 @@ export default function HouseholdBalances({ householdId }) {
                       key={i}
                       className={`flex justify-between items-center rounded-lg px-4 py-3 border ${
                         isMe 
-                          ? "bg-red-500/10 border-red-500/20" 
+                          ? "bg-[#FB7185]/10 border-[#FB7185]/30" 
                           : theyOweMe 
-                            ? "bg-white/10 border-white/10" 
-                            : "bg-white/5 border-white/10"
+                            ? "bg-[#2DD4BF]/10 border-[#2DD4BF]/30" 
+                            : "bg-[#121214] border-[#2C2C2E]"
                       }`}
                     >
                       <span className={`text-sm font-medium ${
                         isMe 
-                          ? "text-[#FF6B6B]" 
+                          ? "text-[#FB7185]" 
                           : theyOweMe 
-                            ? "text-[#FCEA3C]" 
-                            : "text-gray-400"
+                            ? "text-[#2DD4BF]" 
+                            : "text-[#9CA3AF]"
                       }`}>
                         {isMe
                           ? `You owe ${debt.toName}`
@@ -97,12 +97,12 @@ export default function HouseholdBalances({ householdId }) {
                         <button
                           onClick={() => handleSettleDebt(debt)}
                           disabled={settleMutation.isPending}
-                          className="text-xs bg-[#FCEA3C] text-[#121212] px-3 py-1.5 rounded-lg hover:brightness-105 transition-all disabled:opacity-50 shadow-lg shadow-yellow-500/20"
+                          className="text-xs bg-[#2DD4BF] text-[#121214] px-3 py-1.5 rounded-lg hover:brightness-110 transition-all disabled:opacity-50 shadow-lg shadow-teal-400/25"
                         >
                           Settle →
                         </button>
                       ) : theyOweMe ? (
-                        <span className="text-xs text-gray-500 italic">Awaiting</span>
+                        <span className="text-xs text-[#6B7280] italic">Awaiting</span>
                       ) : null}
                     </div>
                   );
@@ -113,7 +113,7 @@ export default function HouseholdBalances({ householdId }) {
 
           {/* Member breakdown */}
           <div>
-            <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">
+            <p className="text-xs font-medium text-[#6B7280] uppercase tracking-wide mb-2">
               Member breakdown
             </p>
             <div className="flex flex-col gap-2">
@@ -121,23 +121,23 @@ export default function HouseholdBalances({ householdId }) {
                 const net = parseFloat(b.net_balance);
                 const isMe = b.id === user?.id;
                 return (
-                  <div key={b.id} className="flex items-center gap-3 bg-white/5 rounded-lg px-3 py-2 border border-white/10">
-                    <Avatar name={b.name} size="sm" className="bg-white/10 text-[#FCEA3C]" />
+                  <div key={b.id} className="flex items-center gap-3 bg-[#121214] rounded-lg px-3 py-2 border border-[#2C2C2E]">
+                    <Avatar name={b.name} size="sm" className="bg-[#2C2C2E] text-[#2DD4BF]" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-white truncate">
                         {b.name}
-                        {isMe && <span className="text-xs text-gray-500 ml-1">(you)</span>}
+                        {isMe && <span className="text-xs text-[#6B7280] ml-1">(you)</span>}
                       </p>
-                      <p className="text-xs text-gray-400">
+                      <p className="text-xs text-[#6B7280]">
                         Paid {fmt(b.total_paid)} · owes {fmt(b.total_owed)}
                       </p>
                     </div>
                     <span className={`text-sm font-semibold ${
                       net > 0.005 
-                        ? "text-[#FCEA3C]" 
+                        ? "text-[#2DD4BF]" 
                         : net < -0.005 
-                          ? "text-[#FF6B6B]" 
-                          : "text-gray-400"
+                          ? "text-[#FB7185]" 
+                          : "text-[#6B7280]"
                     }`}>
                       {Math.abs(net) < 0.005 ? "settled" : `${net > 0 ? "+" : ""}${fmt(net)}`}
                     </span>
@@ -148,7 +148,7 @@ export default function HouseholdBalances({ householdId }) {
           </div>
         </div>
       ) : (
-        <p className="text-gray-400">No balance data.</p>
+        <p className="text-[#9CA3AF]">No balance data.</p>
       )}
     </div>
   );
