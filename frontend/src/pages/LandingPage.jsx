@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-import heroImg from "../assets/Hero-smartsplit-logo.png";
+import heroImg from "../assets/smartsplit-hero-banner.png";
 import logoImg from "../assets/SmartSplit-isotipo.png";
 import footerLogo from "../assets/SmartSplit-isotipo.png";
 

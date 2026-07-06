@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-import bannerImg from "../assets/smartsplit-landscape-banner.png";
+import bannerImg from "../assets/register-banner.png";
+import bannerImgMobile from "../assets/mobile-register-banner.png"; // new import
+
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -29,23 +31,31 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#121214] p-4">
       {/* Solid Dark Card */}
-      <div className="w-full max-w-6xl bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 overflow-hidden flex flex-col lg:flex-row rounded-2xl">
+      <div className="w-full max-w-2xl bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 overflow-hidden flex flex-col lg:flex-row rounded-2xl">
         
         {/* Left - Image */}
-        <div className="lg:w-1/2 relative overflow-hidden flex items-center justify-center min-h-[200px] lg:min-h-full">
-          <img 
-            src={bannerImg} 
-            alt="SmartSplit" 
-            className="w-full h-full object-cover" 
+        <div className="lg:w-1/2 relative overflow-hidden flex items-center justify-center w-full aspect-[4/3] lg:aspect-auto lg:min-h-full">
+          {/* Desktop image – hidden on mobile */}
+          <img
+            src={bannerImg}
+            alt="SmartSplit"
+            className="hidden lg:block w-full h-full object-cover"
           />
+          {/* Mobile image – hidden on desktop, 4:3 aspect ratio enforced by parent */}
+          <img
+            src={bannerImgMobile}
+            alt="SmartSplit Mobile"
+            className="block lg:hidden w-full h-full object-cover"
+          />
+          {/* Dark overlay to keep the image from overpowering the look */}
           <div className="absolute inset-0" />
         </div>
 
         {/* Right - Form */}
-        <div className="lg:w-1/2 flex items-center justify-center p-8 md:p-12 relative z-10">
+        <div className="lg:w-1/2 flex items-center justify-center p-8 md:p-8 relative z-10">
           <div className="w-full max-w-sm">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] inline-flex items-center gap-1 mb-4 transition-colors"
             >
               ← Back to Home

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router";
 import { useAuth } from "../hooks/useAuth";
-import bannerImg from "../assets/smartsplit-landscape-banner.png";
+import bannerImg from "../assets/smartsplit-login.png";
+import bannerImgMobile from "../assets/mobile-login-banner.png"; // new import
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -28,21 +30,28 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#121214] p-4">
       {/* Solid Dark Card */}
-      <div className="w-full max-w-5xl bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 overflow-hidden flex flex-col lg:flex-row rounded-2xl">
+      <div className="w-full max-w-2xl bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 overflow-hidden flex flex-col lg:flex-row rounded-2xl">
         
         {/* Left - Image */}
-        <div className="lg:w-1/2 relative overflow-hidden flex items-center justify-center min-h-[200px] lg:min-h-full">
+        <div className="lg:w-1/2 relative overflow-hidden flex items-center justify-center w-full aspect-[4/3] lg:aspect-auto lg:min-h-full">
+          {/* Desktop image – hidden on mobile */}
           <img
             src={bannerImg}
             alt="SmartSplit"
-            className="w-full h-full object-cover"
+            className="hidden lg:block w-full h-full object-cover"
+          />
+          {/* Mobile image – hidden on desktop, aspect ratio 4:3 enforced by parent */}
+          <img
+            src={bannerImgMobile}
+            alt="SmartSplit Mobile"
+            className="block lg:hidden w-full h-full object-cover"
           />
           {/* Dark overlay to keep the image from overpowering the look */}
           <div className="absolute inset-0" />
         </div>
 
         {/* Right - Form */}
-        <div className="lg:w-1/2 flex items-center justify-center p-8 md:p-12 relative z-10">
+        <div className="lg:w-1/2 flex items-center justify-center p-8 md:p-8 relative z-10">
           <div className="w-full max-w-sm">
             <Link
               to="/"

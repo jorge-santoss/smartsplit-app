@@ -719,7 +719,7 @@ export default function DashboardPage() {
           onClick={() => setShowCreate(false)}
         >
           <div
-            className="bg-[#FB7185] border border-[#FB7185]/20 shadow-2xl shadow-rose-400/30 rounded-2xl p-8 w-full max-w-md"
+            className="bg-[#ffffff] border border-[#FB7185]/20 shadow-2xl shadow-teal-400/30 rounded-2xl p-8 w-full max-w-md"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-lg font-semibold text-[#121214] mb-4">Create Household</h2>
