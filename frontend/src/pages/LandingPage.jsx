@@ -86,6 +86,7 @@ export default function LandingPage() {
           <img
             src={heroImg}
             alt="SmartSplit hero"
+            fetchpriority="high"
             className="absolute inset-0 w-full h-full object-cover object-center bg-linear-to-br from-[#121214] to-[#1C1C1E] opacity-80 z-0"
           />
           {/* Darker, cleaner overlay */}
@@ -249,9 +250,9 @@ export default function LandingPage() {
 
             {/* Links */}
             <div>
-              <h4 className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
+              <p className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
                 Product
-              </h4>
+              </p>
               <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
@@ -281,9 +282,9 @@ export default function LandingPage() {
             </div>
 
             <div>
-              <h4 className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
+              <p className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
                 Company
-              </h4>
+              </p>
               <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
@@ -313,9 +314,9 @@ export default function LandingPage() {
             </div>
 
             <div>
-              <h4 className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
+              <p className="text-xs sm:text-sm font-semibold text-[#2DD4BF] uppercase tracking-wider mb-3 sm:mb-4">
                 Legal
-              </h4>
+              </p>
               <ul className="space-y-1.5 sm:space-y-2">
                 <li>
                   <a
