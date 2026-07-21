@@ -186,7 +186,6 @@ export default function DashboardPage() {
       {/* Minimalist Dark Flat Design Layout referencing the image aesthetic */}
       <div className="min-h-screen bg-[#121214] p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto">
-          
           {/* Header - Teal Accent */}
           <header className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
             <div>
@@ -215,49 +214,51 @@ export default function DashboardPage() {
           ) : !households?.length ? (
             <div className="text-center py-20 bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl">
               <Home className="w-12 h-12 text-[#6B7280] mx-auto mb-3" />
-              <p className="text-[#9CA3AF] font-medium">No households yet. Create one!</p>
+              <p className="text-[#9CA3AF] font-medium">
+                No households yet. Create one!
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              
-              {/* Row 1: Total Owed to You - Dark solid card */}
-              <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6 flex flex-col gap-4">
-                <div className="flex items-center gap-2 text-[#6B7280]">
-                  <CircleDollarSign className="w-5 h-5 text-[#2DD4BF]" />
-                  <span className="text-xs font-semibold uppercase tracking-wider">
-                    Total Owed to You
+              <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Row 1: Total Owed to You - Dark solid card */}
+                <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6 flex flex-col gap-4">
+                  <div className="flex items-center gap-2 text-[#6B7280]">
+                    <CircleDollarSign className="w-5 h-5 text-[#2DD4BF]" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">
+                      Total Owed to You
+                    </span>
+                  </div>
+                  <span className="text-4xl font-bold tracking-tight text-white">
+                    ${(summary?.totalOwedToMe || 0).toFixed(2)}
                   </span>
+                  <div className="w-full bg-[#2C2C2E] h-2 rounded-full overflow-hidden">
+                    <div
+                      className="bg-[#2DD4BF] h-full rounded-full"
+                      style={{ width: `${owedPct}%` }}
+                    />
+                  </div>
                 </div>
-                <span className="text-4xl font-bold tracking-tight text-white">
-                  ${(summary?.totalOwedToMe || 0).toFixed(2)}
-                </span>
-                <div className="w-full bg-[#2C2C2E] h-2 rounded-full overflow-hidden">
-                  <div
-                    className="bg-[#2DD4BF] h-full rounded-full"
-                    style={{ width: `${owedPct}%` }}
-                  />
+
+                {/* Row 1: Total You Owe - Dark solid card */}
+                <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6 flex flex-col gap-4">
+                  <div className="flex items-center gap-2 text-[#6B7280]">
+                    <CreditCard className="w-5 h-5 text-[#FB7185]" />
+                    <span className="text-xs font-semibold uppercase tracking-wider">
+                      Total You Owe
+                    </span>
+                  </div>
+                  <span className="text-4xl font-bold tracking-tight text-[#FB7185]">
+                    ${(summary?.totalIOwe || 0).toFixed(2)}
+                  </span>
+                  <div className="w-full bg-[#2C2C2E] h-2 rounded-full overflow-hidden">
+                    <div
+                      className="bg-[#FB7185] h-full rounded-full"
+                      style={{ width: `${owePct}%` }}
+                    />
+                  </div>
                 </div>
               </div>
-
-              {/* Row 1: Total You Owe - Dark solid card */}
-              <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6 flex flex-col gap-4">
-                <div className="flex items-center gap-2 text-[#6B7280]">
-                  <CreditCard className="w-5 h-5 text-[#FB7185]" />
-                  <span className="text-xs font-semibold uppercase tracking-wider">
-                    Total You Owe
-                  </span>
-                </div>
-                <span className="text-4xl font-bold tracking-tight text-[#FB7185]">
-                  ${(summary?.totalIOwe || 0).toFixed(2)}
-                </span>
-                <div className="w-full bg-[#2C2C2E] h-2 rounded-full overflow-hidden">
-                  <div
-                    className="bg-[#FB7185] h-full rounded-full"
-                    style={{ width: `${owePct}%` }}
-                  />
-                </div>
-              </div>
-
               {/* Row 1: Household Switcher - Dark solid card */}
               <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6 flex flex-col gap-4">
                 <label className="text-sm font-medium text-white">
@@ -286,7 +287,11 @@ export default function DashboardPage() {
                   className="md:hidden w-full bg-[#121214] border-[#2C2C2E] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#2DD4BF]"
                 >
                   {households.map((h) => (
-                    <option key={h.id} value={h.id} className="bg-[#121214] text-white">
+                    <option
+                      key={h.id}
+                      value={h.id}
+                      className="bg-[#121214] text-white"
+                    >
                       {h.name}
                     </option>
                   ))}
@@ -466,7 +471,10 @@ export default function DashboardPage() {
                         </div>
                       )}
                       {balances.balances.map((b) => (
-                        <div key={b.id} className="flex items-center gap-2 py-2">
+                        <div
+                          key={b.id}
+                          className="flex items-center gap-2 py-2"
+                        >
                           <Avatar
                             name={b.name}
                             size="sm"
@@ -639,7 +647,9 @@ export default function DashboardPage() {
                     <SkeletonCard />
                   </div>
                 ) : feedError ? (
-                  <p className="text-[#FB7185]">Failed to load activity feed.</p>
+                  <p className="text-[#FB7185]">
+                    Failed to load activity feed.
+                  </p>
                 ) : feed?.length === 0 ? (
                   <div className="text-center py-12 bg-[#121214] rounded-xl border border-[#2C2C2E]">
                     <Bell className="w-10 h-10 text-[#4B4B4F] opacity-40 mx-auto mb-2" />
@@ -665,7 +675,9 @@ export default function DashboardPage() {
                           <div>
                             <p className="text-sm font-semibold text-white">
                               {item.type === "expense" && <>{item.label}</>}
-                              {item.type === "member" && <>{item.label} joined</>}
+                              {item.type === "member" && (
+                                <>{item.label} joined</>
+                              )}
                               {item.type === "settlement" && (
                                 <>Settlement: {item.label}</>
                               )}
@@ -722,7 +734,9 @@ export default function DashboardPage() {
             className="bg-[#ffffff] border border-[#FB7185]/20 shadow-2xl shadow-teal-400/30 rounded-2xl p-8 w-full max-w-md"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-lg font-semibold text-[#121214] mb-4">Create Household</h2>
+            <h2 className="text-lg font-semibold text-[#121214] mb-4">
+              Create Household
+            </h2>
             <form onSubmit={handleCreate} className="space-y-4">
               <input
                 type="text"
