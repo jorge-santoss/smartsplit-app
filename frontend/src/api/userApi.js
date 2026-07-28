@@ -11,3 +11,7 @@ export const updateProfile = (name, email) => {
 export const changePassword = (currentPassword, newPassword) => {
   return client.put('/api/auth/password', { currentPassword, newPassword });
 };
+
+export const deleteAccount = () => {
+  return client.delete('/api/auth/profile');
+};

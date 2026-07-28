@@ -72,6 +72,15 @@ export function AuthProvider({ children }) {
     navigate("/");
   }, [navigate]);
 
+  const deleteAccount = useCallback(async () => {
+    await userApi.deleteAccount();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setToken(null);
+    setUser(null);
+    navigate("/");
+  }, [navigate]);
+
   const updateUser = useCallback((userData) => {
     const stored = JSON.parse(localStorage.getItem("user") || "{}");
     const updated = { ...stored, ...userData };
@@ -79,7 +88,7 @@ export function AuthProvider({ children }) {
     setUser(updated);
   }, []);
 
-  const value = { user, token, loading, login, register, logout, updateUser };
+  const value = { user, token, loading, login, register, logout, updateUser, deleteAccount };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

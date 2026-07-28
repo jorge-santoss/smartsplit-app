@@ -86,7 +86,7 @@ export default function LandingPage() {
           <img
             src={heroImg}
             alt="SmartSplit hero"
-            fetchpriority="high"
+            fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover object-center bg-linear-to-br from-[#121214] to-[#1C1C1E] opacity-80 z-0"
           />
           {/* Darker, cleaner overlay */}
@@ -270,14 +270,14 @@ export default function LandingPage() {
                     How It Works
                   </a>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     href="#"
                     className="text-sm text-[#9CA3AF] hover:text-[#2DD4BF] transition"
                   >
                     Pricing
                   </a>
-                </li>
+                </li> */}
               </ul>
             </div>
 

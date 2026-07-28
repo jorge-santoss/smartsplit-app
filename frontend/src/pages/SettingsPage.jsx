@@ -4,14 +4,17 @@ import { getProfile, updateProfile, changePassword } from '../api/userApi';
 import AppLayout from '../layouts/AppLayout';
 import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../context/ToastContext';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 export default function SettingsPage() {
   const toast = useToast();
-  const { updateUser } = useAuth();
+  const { updateUser, deleteAccount: deleteUserAccount } = useAuth();
 
   const [profile, setProfile] = useState({ name: '', email: '' });
   const [password, setPassword] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' });
   const [changingPw, setChangingPw] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
     const { data: profileData } = useQuery({
     queryKey: ['profile'],
@@ -143,7 +146,40 @@ export default function SettingsPage() {
             </button>
           </form>
         </div>
+
+        <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
+          <h3 className="text-lg font-semibold text-red-400 mb-4">Delete Account</h3>
+          <p className="text-sm text-[#9CA3AF] mb-4">
+            Permanently delete your account and all associated data. This action cannot be undone.
+          </p>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            disabled={deleting}
+            className="bg-[#FB7185] text-white px-4 py-2 rounded-lg text-sm font-medium hover:brightness-110 disabled:opacity-50 transition-all shadow-lg shadow-rose-400/25"
+          >
+            {deleting ? 'Deleting...' : 'Delete Account'}
+          </button>
+        </div>
       </div>
+
+      <ConfirmDialog
+        open={showDeleteConfirm}
+        title="Delete Account"
+        message="Are you sure you want to delete your account? All your data, expenses, and balances will be permanently removed."
+        onConfirm={async () => {
+          setDeleting(true);
+          try {
+            await deleteUserAccount();
+          } catch (err) {
+            toast(err.response?.data?.error || 'Failed to delete account', 'error');
+            setDeleting(false);
+            setShowDeleteConfirm(false);
+          }
+        }}
+        onCancel={() => {
+          setShowDeleteConfirm(false);
+        }}
+      />
     </AppLayout>
   );
 }
