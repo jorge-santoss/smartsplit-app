@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { ToastContext } from '../context/ToastContext';
+import { Check, X } from 'lucide-react';
 
 let nextId = 0;
 
@@ -27,7 +28,7 @@ export function ToastProvider({ children }) {
                 : 'bg-[#FB7185] text-[#121214] shadow-lg shadow-rose-400/25'
             }`}
           >
-            {toast.type === 'success' ? '✅' : '❌'} {toast.message}
+            {toast.type === 'success' ? <Check className="w-4 h-4" /> : <X className="w-4 h-4" />} {toast.message}
           </div>
         ))}
       </div>

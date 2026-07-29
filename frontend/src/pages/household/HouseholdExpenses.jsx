@@ -304,7 +304,7 @@ export default function HouseholdExpenses({ household, householdId }) {
                   <div key={sp.memberId} className="flex items-center gap-2">
                     <Avatar
                       name={sp.name}
-                      size="sm"
+                      size="small"
                       className="bg-[#2C2C2E] text-[#2DD4BF]"
                     />
                     <span className="text-sm text-white flex-1">

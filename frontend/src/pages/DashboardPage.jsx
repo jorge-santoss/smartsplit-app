@@ -24,6 +24,7 @@ import {
   Pencil,
   Trash2,
   Receipt,
+  EllipsisVertical,
   Handshake,
   Banknote,
   Bell,
@@ -43,6 +44,7 @@ export default function DashboardPage() {
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
   const [feedPage, setFeedPage] = useState(1);
+  const [menuHouseholdId, setMenuHouseholdId] = useState(null);
   const feedLimit = 5;
 
   const { data: households, isLoading } = useQuery({
@@ -298,34 +300,20 @@ export default function DashboardPage() {
                 </select>
               </div>
 
-              {/* Row 2: Members Count */}
-              <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">
-                  Members
-                </p>
-                <p className="text-4xl font-bold tracking-tight text-white mt-1">
-                  {householdDetail?.members?.length || 0}
-                </p>
-              </div>
-
-              {/* Row 2: Expenses Count */}
-              <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">
-                  Expenses
-                </p>
-                <p className="text-4xl font-bold tracking-tight text-white mt-1">
-                  {expenses?.length || 0}
-                </p>
-              </div>
-
-              {/* Row 2: Total Spent */}
-              <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
-                <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">
-                  Total Spent
-                </p>
-                <p className="text-4xl font-bold tracking-tight text-white mt-1">
-                  ${totalSpent.toFixed(2)}
-                </p>
+              {/* Row 2: Members / Expenses / Total Spent */}
+              <div className="lg:col-span-3 grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">Members</p>
+                  <p className="text-4xl font-bold tracking-tight text-white mt-1">{householdDetail?.members?.length || 0}</p>
+                </div>
+                <div className="bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">Expenses</p>
+                  <p className="text-4xl font-bold tracking-tight text-white mt-1">{expenses?.length || 0}</p>
+                </div>
+                <div className="col-span-2 lg:col-span-1 bg-[#1C1C1E] border border-[#2C2C2E] shadow-xl shadow-black/50 rounded-2xl p-6">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-[#6B7280]">Total Spent</p>
+                  <p className="text-4xl font-bold tracking-tight text-white mt-1">${totalSpent.toFixed(2)}</p>
+                </div>
               </div>
 
               {/* Row 3: My Households (full width) - Dark Card */}
@@ -380,18 +368,56 @@ export default function DashboardPage() {
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-1 shrink-0 ml-2">
+                          <div className="flex items-center gap-1 shrink-0 ml-2 relative">
                             {h.owner_id === user?.id && (
                               <>
+                                {/* Mobile: 3-dot menu */}
+                                <div className="sm:hidden relative">
+                                  <button
+                                    onClick={() =>
+                                      setMenuHouseholdId(
+                                        menuHouseholdId === h.id ? null : h.id
+                                      )
+                                    }
+                                    className="text-[#6B7280] hover:text-white p-1 transition-colors"
+                                  >
+                                    <EllipsisVertical className="w-4 h-4" />
+                                  </button>
+                                  {menuHouseholdId === h.id && (
+                                    <div className="absolute right-0 top-8 w-32 bg-[#1C1C1E] border border-[#2C2C2E] rounded-lg shadow-xl py-1 z-50">
+                                      <button
+                                        onClick={() => {
+                                          setMenuHouseholdId(null);
+                                          handleStartEdit(h);
+                                        }}
+                                        className="flex items-center gap-2 w-full px-3 py-2 text-sm text-[#D1D5DB] hover:bg-[#2C2C2E] transition-colors"
+                                      >
+                                        <Pencil className="w-3.5 h-3.5" />
+                                        Edit
+                                      </button>
+                                      <button
+                                        onClick={() => {
+                                          setMenuHouseholdId(null);
+                                          setConfirmDelete(h);
+                                        }}
+                                        className="flex items-center gap-2 w-full px-3 py-2 text-sm text-[#FB7185] hover:bg-[#2C2C2E] transition-colors"
+                                      >
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                        Delete
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                                {/* Desktop: inline icons */}
                                 <button
                                   onClick={() => handleStartEdit(h)}
-                                  className="text-[#6B7280] hover:text-[#2DD4BF] p-1 transition-colors"
+                                  className="hidden sm:inline-flex text-[#6B7280] hover:text-[#2DD4BF] p-1 transition-colors"
                                 >
                                   <Pencil className="w-4 h-4" />
                                 </button>
                                 <button
                                   onClick={() => setConfirmDelete(h)}
-                                  className="text-[#6B7280] hover:text-[#FB7185] p-1 transition-colors"
+                                  className="hidden sm:inline-flex text-[#6B7280] hover:text-[#FB7185] p-1 transition-colors"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>

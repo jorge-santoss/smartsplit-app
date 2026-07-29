@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import HouseholdPage from "./pages/HouseholdPage";
-import ExpenseDetailPage from "./pages/ExpenseDetailPage";
+
 import SettingsPage from "./pages/SettingsPage";
 import LandingPage from "./pages/LandingPage";
 import { AuthProvider } from "./context/AuthProvider";

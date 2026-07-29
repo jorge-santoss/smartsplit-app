@@ -122,7 +122,7 @@ export default function HouseholdBalances({ householdId }) {
                 const isMe = b.id === user?.id;
                 return (
                   <div key={b.id} className="flex items-center gap-3 bg-[#121214] rounded-lg px-3 py-2 border border-[#2C2C2E]">
-                    <Avatar name={b.name} size="sm" className="bg-[#2C2C2E] text-[#2DD4BF]" />
+                    <Avatar name={b.name} size="small" className="bg-[#2C2C2E] text-[#2DD4BF]" />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-white truncate">
                         {b.name}

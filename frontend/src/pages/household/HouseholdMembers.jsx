@@ -82,7 +82,7 @@ export default function HouseholdMembers({ household, householdId, user }) {
           </div>
           <div className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Avatar name={owner.name} size="md" className="bg-[#2DD4BF] text-[#121214]" />
+              <Avatar name={owner.name} size="medium" className="bg-[#2DD4BF] text-[#121214]" />
               <div>
                 <p className="font-medium text-white">{owner.name}</p>
                 <p className="text-xs text-[#6B7280]">{owner.email}</p>
@@ -113,7 +113,7 @@ export default function HouseholdMembers({ household, householdId, user }) {
                 className="p-4 flex items-center justify-between"
               >
                 <div className="flex items-center gap-3">
-                  <Avatar name={m.name} size="md" className="bg-[#2C2C2E] text-[#2DD4BF]" />
+                  <Avatar name={m.name} size="medium" className="bg-[#2C2C2E] text-[#2DD4BF]" />
                   <div>
                     <p className="font-medium text-white">{m.name}</p>
                     <p className="text-xs text-[#6B7280]">{m.email}</p>

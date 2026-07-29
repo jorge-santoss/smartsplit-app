@@ -1,9 +1,9 @@
-export default function Avatar({ name, size = 'md', className = '' }) {
+export default function Avatar({ name, size = 'medium', className = '' }) {
   const initial = name?.charAt(0)?.toUpperCase() || '?';
   const sizeMap = {
-    sm: 'w-8 h-8 text-xs',
-    md: 'w-10 h-10 text-sm',
-    lg: 'w-12 h-12 text-base',
+    small: 'w-8 h-8 text-xs',
+    medium: 'w-10 h-10 text-sm',
+    large: 'w-12 h-12 text-base',
   };
 
   return (

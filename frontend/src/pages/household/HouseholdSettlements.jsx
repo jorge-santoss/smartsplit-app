@@ -226,7 +226,7 @@ export default function HouseholdSettlements({ household, householdId }) {
                 className="flex items-center justify-between p-3 border border-[#2C2C2E] bg-[#121214] rounded-lg hover:bg-[#2C2C2E] transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <Avatar name={s.from_user_name} size="sm" className="bg-[#2C2C2E] text-[#2DD4BF]" />
+                  <Avatar name={s.from_user_name} size="small" className="bg-[#2C2C2E] text-[#2DD4BF]" />
                   <div>
                     <p className="text-sm font-medium text-white">
                       {s.from_user_name} → {s.to_user_name}
