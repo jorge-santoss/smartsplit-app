@@ -30,12 +30,15 @@ services:
       DB_NAME: ${DB_NAME:-smartsplit_db}
       JWT_SECRET: ${JWT_SECRET:-change_me_in_production}
       JWT_EXPIRES_IN: 7d
-      CORS_ORIGIN: http://localhost
+      CORS_ORIGIN: http://localhost:8080,http://localhost:4001
     ports:
-      - "4000:4000"
+      - "4001:4000"
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:4001
     restart: always
     depends_on:
       - backend
